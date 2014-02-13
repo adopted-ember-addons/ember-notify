@@ -1,5 +1,3 @@
-'use strict';
-
 Ember.Notify = function() {
   var Container = Ember.ContainerView.extend({
 
@@ -7,6 +5,7 @@ Ember.Notify = function() {
     success: show('success'),
     warning: show('warning'),
     alert: show('alert'),
+    error: show('error alert'),
 
     classNames: ['ember-notify-cn'],
     show: function(type, message, options) {
@@ -23,7 +22,7 @@ Ember.Notify = function() {
   function show(type) {
     return function(message, options) {
       return this.show(type, message, options);
-    }
+    };
   }
 
   var Notify = Container.createWithMixins({
@@ -47,7 +46,7 @@ Ember.Notify = function() {
     classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
     attributeBindings: ['data-alert'],
     'data-alert': '',
-    layout: Ember.Handlebars.compile('{{view.message}}<a {{action "close" target="view"}} class="close">&times;</a>'),
+    template: Ember.Handlebars.compile('{{view.message}}<a {{action "close" target="view"}} class="close">&times;</a>'),
     type: null, // normal (default), success, alert, secondary
     hidden: Ember.computed.not('visible'),
     closeAfter: 2500,
