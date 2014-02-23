@@ -16,9 +16,6 @@ Ember.Notify = function() {
       if (options) {
         view.setProperties(options);
       }
-      view.addObserver('isDestroyed', this, function() {
-        this.removeObject(view);
-      });
       return this.pushObject(view);
     }
   });
@@ -65,8 +62,9 @@ Ember.Notify = function() {
       if (closeAfter = this.get('closeAfter')) {
         Ember.run.later(this, function() {
           this.set('visible', false);
+          var parent = this.get('parentView');
           Ember.run.later(this, function() {
-            this.destroy();
+            parent.removeObject(this);
           }, 1000);
         }, closeAfter);
       }
