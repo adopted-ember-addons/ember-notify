@@ -1,18 +1,18 @@
 .ember-notify-cn {
   position: fixed;
   z-index: 5000;
-  bottom: 10px;
-  right: 10px;
-  width: 300px;
+  bottom: 0px;
+  right: 0px;
   pointer-events: none;
 }
 .ember-notify {
   display: block;
-  margin-top: 10px;
+  margin: 10px;
   position: relative;
+  width: 300px;
   right: -310px;
 }
-.ember-notify-show {
+.ember-notify-cn .ember-notify-show {
   right: 0;
 }
 .ember-notify-show,
@@ -35,11 +35,12 @@
 }
 
 @media only screen and (max-width: 680px) {
-  .ember-notify,
   .ember-notify-cn {
     width: 90%;
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+  }
+  .ember-notify {
+    width: 100%;
+    right: -110%;
+    float: right;
   }
 }
