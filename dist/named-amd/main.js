@@ -62,7 +62,7 @@ define("ember-notify",
       didInsertElement: function() {
         this.set('visible', true);
         var closeAfter;
-        if (closeAfter = this.get('closeAfter')) {
+        if (!Ember.testing && (closeAfter = this.get('closeAfter'))) {
           Ember.run.later(this, function() {
             this.set('visible', false);
             this.send('close');
@@ -73,8 +73,10 @@ define("ember-notify",
         close: function() {
           var that = this, removeAfter;
           this.set('visible', false);
-          if (removeAfter = this.get('removeAfter')) {
-            Ember.run.later(this, close, removeAfter);
+          if (!Ember.testing) {
+            if (removeAfter = this.get('removeAfter')) {
+              Ember.run.later(this, close, removeAfter);
+            }
           }
           else {
             close();
