@@ -26,6 +26,7 @@ module('ember-notify', {
 test('shows info messages', function() {
   var view;
   Ember.run(function() {
+    Ember.testing = false;
     view = Notify.info('Hello world', {
       closeAfter: 500,
       removeAfter: 500
