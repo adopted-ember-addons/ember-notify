@@ -1,11 +1,11 @@
 "use strict";
 var Container = Ember.ContainerView.extend({
 
-  info: show(null),
-  success: show('success'),
-  warning: show('warning'),
-  alert: show('alert'),
-  error: show('error alert'),
+  info: aliasToShow(null),
+  success: aliasToShow('success'),
+  warning: aliasToShow('warning'),
+  alert: aliasToShow('alert'),
+  error: aliasToShow('error alert'),
 
   classNames: ['ember-notify-cn'],
   show: function(type, message, options) {
@@ -19,20 +19,22 @@ var Container = Ember.ContainerView.extend({
     return this.pushObject(view);
   }
 });
-function show(type) {
+
+function aliasToShow(type) {
   return function(message, options) {
     return this.show(type, message, options);
   };
 }
 
 var Notify = Container.createWithMixins({
+  rootElement: null,
   classNames: ['default-cn'],
   init: function() {
     this._super();
     var that = this;
     var observer = {
       arrayWillChange: function(that, start, removeCount, addCount) {
-        that.append();
+        that.appendTo(that.get('rootElement') || document.body);
         that.removeArrayObserver(observer);
       }
     };
@@ -55,26 +57,29 @@ Notify.BaseView = Ember.View.extend({
     this.send('close');
   },
   didInsertElement: function() {
-    Ember.run.next(this, function() {
-      this.set('visible', true);
-    });
+    this.set('visible', true);
     var closeAfter;
     if (closeAfter = this.get('closeAfter')) {
       Ember.run.later(this, function() {
         this.set('visible', false);
-        var parent = this.get('parentView');
-        Ember.run.later(this, function() {
-          parent.removeObject(this);
-        }, 1000);
+        this.send('close');
       }, closeAfter);
     }
   },
   actions: {
     close: function() {
+      var that = this, removeAfter;
       this.set('visible', false);
-      Ember.run.later(this, function() {
-        this.get('parentView').removeObject(this);
-      }, this.get('removeAfter'));
+      if (removeAfter = this.get('removeAfter')) {
+        Ember.run.later(this, close, removeAfter);
+      }
+      else {
+        close();
+      }
+      function close() {
+        var parentView = that.get('parentView');
+        if (parentView) parentView.removeObject(that);
+      }
     }
   }
 });
@@ -85,5 +90,15 @@ Notify.FoundationView = Notify.BaseView.extend({
 });
 
 Notify.View = Notify.FoundationView;
+
+Ember.Application.initializer({
+  name: 'ember-notify',
+  initialize: function(container, App) {
+    // set the rootElement of the Notify container to the first Ember Application
+    // instance that initializes
+    if (Notify.get('rootElement')) return;
+    Notify.set('rootElement', App.rootElement);
+  }
+});
 
 exports["default"] = Notify;

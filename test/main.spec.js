@@ -3,7 +3,7 @@ emq.globalize();
 var App, Notify = EmberNotify.default;
 
 // avoid slowing down the tests
-Notify.View.reopenClass({
+Notify.View.reopen({
   closeAfter: 0,
   removeAfter: 0
 });
@@ -55,14 +55,48 @@ test('shows info messages', function() {
 });
 
 test('shows success messages', function() {
+  testLevelMethod.call(this, 'success');
+});
+
+test('shows warning messages', function() {
+  testLevelMethod.call(this, 'warning');
+});
+
+test('shows alert messages', function() {
+  testLevelMethod.call(this, 'alert');
+});
+
+test('shows error messages', function() {
+  testLevelMethod.call(this, 'error');
+});
+
+function testLevelMethod(level) {
   var view;
   Ember.run(function() {
-    view = Notify.success('Hello world');
+    view = Notify[level].call(Notify, 'Hello world');
   });
   Ember.run(function() {
     var $el = find('.ember-notify');
     equal($el.length, 1, 'view is added');
-    ok($el.hasClass('success'), 'view has a success class');
+    ok($el.hasClass(level), 'view has a ' + level + ' class');
+    view.send('close');
+  });
+}
+
+test('supports multiple containers', function() {
+  var parent, view;
+  Ember.run(function() {
+    var container = Notify.Container.create({});
+    parent = Ember.ContainerView.create({
+      childViews: [container]
+    });
+    parent.appendTo(App.rootElement);
+    view = container.info('Hello from another container');
+  });
+  Ember.run(function() {
+    var $el = find('.ember-notify');
+    equal($el.length, 1, 'view is added');
+    ok($.contains(parent.get('element'), $el.get(0)), 'message is inside the container');
     view.send('close');
   });
 });
