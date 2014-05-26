@@ -1,5 +1,7 @@
 # ember-notify
 
+[![Build Status](https://travis-ci.org/aexmachina/ember-notify.png)](https://travis-ci.org/aexmachina/ember-notify)
+
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!
 
 Currently uses Zurb Foundation 5 for styling, but it's designed to have support for Bootstrap or custom styling at some point in the future. It does what I need right now, just [create an Issue]() if you want to use it for anything.
@@ -50,7 +52,7 @@ app.import('vendor/ember-notify/dist/ember-notify.css');
 
 ### DIY
 
-Use the global module - `Notify` can be found at `window.EmberNotify.default`.
+Use the global module. The `Notify` object can be found at `window.EmberNotify.default`.
 
 ```
 <link rel="stylesheet" href="/ember-notify/dist/ember-notify.css">
