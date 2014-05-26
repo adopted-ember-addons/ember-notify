@@ -1,0 +1,46 @@
+.ember-notify-cn {
+  position: fixed;
+  z-index: 5000;
+  bottom: 0px;
+  right: 0px;
+  pointer-events: none;
+}
+.ember-notify {
+  display: block;
+  margin: 10px;
+  position: relative;
+  width: 300px;
+  right: -310px;
+}
+.ember-notify-cn .ember-notify-show {
+  right: 0;
+}
+.ember-notify-show,
+.ember-notify {
+  pointer-events: all;
+  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1); /* older webkit */
+  -webkit-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+     -moz-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+      -ms-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+       -o-transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+          transition: all 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275); /* easeOutBack */
+}
+.ember-notify-hide {
+  -webkit-transition: all 250ms cubic-bezier(0.600, 0, 0.735, 0.045); /* older webkit */
+  -webkit-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+     -moz-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+      -ms-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+       -o-transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045);
+          transition: all 250ms cubic-bezier(0.600, -0.280, 0.735, 0.045); /* easeInBack */
+}
+
+@media only screen and (max-width: 680px) {
+  .ember-notify-cn {
+    width: 90%;
+  }
+  .ember-notify {
+    width: 100%;
+    right: -110%;
+    float: right;
+  }
+}
