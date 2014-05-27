@@ -1,7 +1,9 @@
 define("ember-notify",
-  ["exports"],
-  function(__exports__) {
+  ["./template","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
+    var template = __dependency1__["default"] || __dependency1__;
+
     var Container = Ember.ContainerView.extend({
 
       info: aliasToShow(null),
@@ -51,7 +53,7 @@ define("ember-notify",
       classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
       attributeBindings: ['data-alert'],
       'data-alert': '',
-      template: Ember.Handlebars.compile('{{view.message}}<a {{action "close" target="view"}} class="close">&times;</a>'),
+      template: template,
       type: null, // normal (default), success, alert, secondary
       hidden: Ember.computed.not('visible'),
       closeAfter: 2500,
@@ -107,4 +109,25 @@ define("ember-notify",
     });
 
     __exports__["default"] = Notify;
+  });
+define("ember-notify/template",
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    this.compilerInfo = [4,'>= 1.0.0'];
+    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+      var buffer = '', stack1, escapeExpression=this.escapeExpression;
+
+
+      stack1 = helpers._triageMustache.call(depth0, "view.message", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+      data.buffer.push("<a ");
+      data.buffer.push(escapeExpression(helpers.action.call(depth0, "close", {hash:{
+        'target': ("view")
+      },hashTypes:{'target': "STRING"},hashContexts:{'target': depth0},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(" class=\"close\">&times;</a>\n");
+      return buffer;
+      
+    });
   });

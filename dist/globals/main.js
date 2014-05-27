@@ -1,5 +1,7 @@
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.EmberNotify=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 "use strict";
+var template = _dereq_("./template")["default"] || _dereq_("./template");
+
 var Container = Ember.ContainerView.extend({
 
   info: aliasToShow(null),
@@ -49,7 +51,7 @@ Notify.BaseView = Ember.View.extend({
   classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
   attributeBindings: ['data-alert'],
   'data-alert': '',
-  template: Ember.Handlebars.compile('{{view.message}}<a {{action "close" target="view"}} class="close">&times;</a>'),
+  template: template,
   type: null, // normal (default), success, alert, secondary
   hidden: Ember.computed.not('visible'),
   closeAfter: 2500,
@@ -105,6 +107,24 @@ Ember.Application.initializer({
 });
 
 exports["default"] = Notify;
+},{"./template":2}],2:[function(_dereq_,module,exports){
+"use strict";
+exports["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, escapeExpression=this.escapeExpression;
+
+
+  stack1 = helpers._triageMustache.call(depth0, "view.message", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("<a ");
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "close", {hash:{
+    'target': ("view")
+  },hashTypes:{'target': "STRING"},hashContexts:{'target': depth0},contexts:[depth0],types:["STRING"],data:data})));
+  data.buffer.push(" class=\"close\">&times;</a>\n");
+  return buffer;
+  
+});
 },{}]},{},[1])
 (1)
 });

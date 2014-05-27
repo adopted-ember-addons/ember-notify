@@ -1,4 +1,6 @@
 "use strict";
+var template = require("./template")["default"] || require("./template");
+
 var Container = Ember.ContainerView.extend({
 
   info: aliasToShow(null),
@@ -48,7 +50,7 @@ Notify.BaseView = Ember.View.extend({
   classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
   attributeBindings: ['data-alert'],
   'data-alert': '',
-  template: Ember.Handlebars.compile('{{view.message}}<a {{action "close" target="view"}} class="close">&times;</a>'),
+  template: template,
   type: null, // normal (default), success, alert, secondary
   hidden: Ember.computed.not('visible'),
   closeAfter: 2500,
