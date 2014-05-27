@@ -23,7 +23,8 @@
     "deepEqual",
     "test",
     "emq",
-    "setResolver"
+    "setResolver",
+    "require"
   ],
   "node" : false,
   "browser" : false,

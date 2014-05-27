@@ -58,3 +58,10 @@ Use the global module. The `Notify` object can be found at `window.EmberNotify.d
 <link rel="stylesheet" href="/ember-notify/dist/ember-notify.css">
 <script src="/ember-notify/dist/globals/main.js"></script>
 ```
+
+## Contributing
+
+You can run the tests using `npm test` or in dev mode using `karma start`.
+
+- Uncomment `http://localhost:4200/globals/main.js` in `karma.conf` to use with `broccoli serve` in development
+- The `template.hbs` is compiled into `dist/template.js`, but if this is updated it'll need to be copied into `lib/template.js` (with `export default` before it). If you have a way to do this then please let me know :)
