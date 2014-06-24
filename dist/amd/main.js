@@ -53,7 +53,7 @@ define(
       classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
       attributeBindings: ['data-alert'],
       'data-alert': '',
-      template: template,
+      defaultTemplate: template,
       type: null, // normal (default), success, alert, secondary
       hidden: Ember.computed.not('visible'),
       closeAfter: 2500,
