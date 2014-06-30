@@ -45,7 +45,9 @@ Add the following imports to your `Brocfile.js`:
 
 ```javascript
 app.import('vendor/ember-notify/dist/named-amd/main.js', {
-  'ember-notify': ['default']
+  exports: {
+    'ember-notify': ['default']
+  }
 });
 app.import('vendor/ember-notify/dist/ember-notify.css');
 ```
