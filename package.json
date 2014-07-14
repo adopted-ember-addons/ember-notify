@@ -3,12 +3,16 @@
   "version": "0.2.2",
   "description": "Displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!",
   "main": "dist/cjs/main.js",
+  "ember-addon-main": "ember-addon.js",
   "scripts": {
     "test": "bower install && rm -rf dist && broccoli build dist && karma start --browsers PhantomJS --single-run",
     "build": "rm -rf dist && broccoli build dist"
   },
   "authors": [
     "Simon Wade"
+  ],
+  "keywords": [
+    "ember-addon"
   ],
   "license": "MIT",
   "devDependencies": {
@@ -21,5 +25,8 @@
     "karma": "~0.10.9",
     "karma-phantomjs-launcher": "~0.1.2",
     "karma-qunit": "~0.1.1"
+  },
+  "dependencies": {
+    "broccoli-static-compiler": "^0.1.4"
   }
 }
