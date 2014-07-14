@@ -16,9 +16,18 @@ import Notify from 'ember-notify';
 Notify.alert("This is some info.");
 Notify.success("That worked!"):
 Notify.warning("Hmmn, that didn't work out.");
+```
+
+### Features!
+
+```javascript
 Notify.alert("This one's got rounded corners.", {
   radius: true
 });
+var notify = Notify.alert("You can control how long it's displayed.", {
+  closeAfter: 10000 // or set to null to disable auto-hiding
+});
+notify.send('close'); // and you can trigger close from code
 ```
 
 ### Containers
