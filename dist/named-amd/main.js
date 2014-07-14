@@ -46,23 +46,27 @@ define("ember-notify",
         this.addArrayObserver(observer);
       }
     });
+    __exports__["default"] = Notify;
 
     Notify.Container = Container;
     Notify.BaseView = Ember.View.extend({
       classNames: ['ember-notify'],
-      classNameBindings: ['type', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
+      classNameBindings: ['typeCss', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
       attributeBindings: ['data-alert'],
       'data-alert': '',
       defaultTemplate: template,
       type: null, // normal (default), success, alert, secondary
       hidden: Ember.computed.not('visible'),
       closeAfter: 2500,
-      removeAfter: 250,
+      removeAfter: 250, // allow time for the close animation to finish
+      typeCss: Em.computed.alias('type'),
       close: function() {
         this.send('close');
       },
       didInsertElement: function() {
-        this.set('visible', true);
+        Ember.run.next(this, function() {
+          this.set('visible', true);
+        });
         var closeAfter;
         if (!Ember.testing && (closeAfter = this.get('closeAfter'))) {
           Ember.run.later(this, function() {
@@ -95,8 +99,20 @@ define("ember-notify",
       classNames: ['alert-box'],
       classNameBindings: ['radius::']
     });
+    Notify.BootstrapView = Notify.BaseView.extend({
+      classNames: ['alert'],
+      typeCss: function() {
+        return 'alert-%@'.fmt(this.get('type'));
+      }.property('type')
+    });
 
-    Notify.View = Notify.FoundationView;
+    Notify.setViewClass = function(view) {
+      Notify.View = view;
+    };
+    Notify.setViewClass(Notify.FoundationView);
+    Notify.useBootstrap = function() {
+      this.setViewClass(Notify.BootstrapView);
+    };
 
     Ember.Application.initializer({
       name: 'ember-notify',
@@ -107,8 +123,6 @@ define("ember-notify",
         Notify.set('rootElement', App.rootElement);
       }
     });
-
-    __exports__["default"] = Notify;
   });
 define("ember-notify/template",
   ["exports"],

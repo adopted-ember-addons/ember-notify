@@ -2,28 +2,27 @@
 var path = require('path');
 var pickFiles = require('broccoli-static-compiler');
 
-var EmberAddon = function() {};
+var EmberAddon = function() {
+  var tree = 'node_modules/ember-notify/dist';
+  tree = unwatchedTree(tree);
+  this.tree = pickFiles(tree, {
+    srcDir: '.',
+    destDir: 'ember-notify'
+  });
+};
 
 EmberAddon.prototype.treeFor = function treeFor(type) {
   if (type == 'vendor') {
-    var code = unwatchedTree('node_modules/ember-notify/dist/named-amd');
-    return pickFiles(code, {
-      srcDir: '.',
-      destDir: 'ember-notify'
-    });
+    return this.tree;
   }
   else if (type == 'styles') {
-    var assets = unwatchedTree('node_modules/ember-notify/assets');
-    return pickFiles(assets, {
-      srcDir: '.',
-      destDir: 'ember-notify'
-    });
+    return this.tree;
   }
 };
 
 EmberAddon.prototype.included = function included(app) {
   this.app = app;
-  this.app.import('vendor/ember-notify/main.js', {
+  this.app.import('vendor/ember-notify/named-amd/main.js', {
     exports: {
       'ember-notify': ['default']
     }

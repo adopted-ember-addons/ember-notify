@@ -4,13 +4,11 @@
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!
 
-Currently uses Zurb Foundation 5 for styling, but it's designed to have support for Bootstrap or custom styling at some point in the future. It does what I need right now, just [create an Issue]() if you want to use it for anything.
+By default assumes Zurb Foundation 5 for styling, but you can use Bootstrap styling by calling `Notify.useBootstrap()`.
 
 The CSS animations are based on the CSS in [alertify.js](http://fabien-d.github.io/alertify.js/).
 
 ## Usage
-
-`Ember.Notify` is an instance of the `Ember.Notify.Container` class, and will automatically append itself to the `rootElement` (of the first `Ember.Application` to initialize) the first time you display a notification. 
 
 ```javascript
 import Notify from 'ember-notify';
@@ -25,6 +23,8 @@ Notify.alert("This one's got rounded corners.", {
 
 ### Containers
 
+`Notify` is an instance of the `Notify.Container` class, and will automatically append itself to the `rootElement` (of the first `Ember.Application` to initialize) the first time you display a notification. 
+
 You can create your own containers and control where they're inserted into the DOM like so:
 
 ```javascript
@@ -35,31 +35,21 @@ container.alert("Yo dawg.");
 
 ## Installation
 
-### Module Formats
-
-You will find all the popular formats in `dist/`.
-
 ### Ember CLI
 
-Add the following imports to your `Brocfile.js`:
-
-```javascript
-app.import('vendor/ember-notify/dist/named-amd/main.js', {
-  exports: {
-    'ember-notify': ['default']
-  }
-});
-app.import('vendor/ember-notify/dist/ember-notify.css');
-```
-
-### DIY
-
-Use the global module. The `Notify` object can be found at `window.EmberNotify.default`.
+This module is an `ember-addon`, so all you need to do is:
 
 ```
-<link rel="stylesheet" href="/ember-notify/dist/ember-notify.css">
-<script src="/ember-notify/dist/globals/main.js"></script>
+npm install ember-notify --save-dev
 ```
+
+Then you can `import Notify from 'ember-notify';` as above.
+
+### Module Formats
+
+You will find all the popular formats in `dist/`. If you're using the `dist/global/main.js` module, the `Notify` object can be found at `window.EmberNotify.default`.
+
+Don't forget to import the CSS from `ember-notify/dist/ember-notify.css`.
 
 ## Contributing
 
