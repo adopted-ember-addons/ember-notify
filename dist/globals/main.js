@@ -4,11 +4,11 @@ var template = _dereq_("./template")["default"] || _dereq_("./template");
 
 var Container = Ember.ContainerView.extend({
 
-  info: aliasToShow(null),
+  info: aliasToShow('info'),
   success: aliasToShow('success'),
   warning: aliasToShow('warning'),
   alert: aliasToShow('alert'),
-  error: aliasToShow('error alert'),
+  error: aliasToShow('error'),
 
   classNames: ['ember-notify-cn'],
   show: function(type, message, options) {
@@ -57,7 +57,11 @@ Notify.BaseView = Ember.View.extend({
   hidden: Ember.computed.not('visible'),
   closeAfter: 2500,
   removeAfter: 250, // allow time for the close animation to finish
-  typeCss: Em.computed.alias('type'),
+  typeCss: function() {
+    var cssClass = this.get('type');
+    if (cssClass == 'error') cssClass = 'alert error';
+    return cssClass;
+  }.property('type'),
   close: function() {
     this.send('close');
   },
@@ -100,7 +104,9 @@ Notify.FoundationView = Notify.BaseView.extend({
 Notify.BootstrapView = Notify.BaseView.extend({
   classNames: ['alert'],
   typeCss: function() {
-    return 'alert-%@'.fmt(this.get('type'));
+    var type = this.get('type');
+    if (type == 'error') type = 'danger';
+    return 'alert-%@'.fmt(type);
   }.property('type')
 });
 
