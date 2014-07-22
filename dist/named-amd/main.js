@@ -68,12 +68,16 @@ define("ember-notify",
         this.send('close');
       },
       didInsertElement: function() {
+        // ensure that the element is added to the DOM in it's hidden state, so that
+        // adding the 'ember-notify-show' class triggers the CSS transition
         Ember.run.next(this, function() {
+          if (this.get('isDestroyed')) return;
           this.set('visible', true);
         });
         var closeAfter;
         if (!Ember.testing && (closeAfter = this.get('closeAfter'))) {
           Ember.run.later(this, function() {
+            if (this.get('isDestroyed')) return;
             this.set('visible', false);
             this.send('close');
           }, closeAfter);
