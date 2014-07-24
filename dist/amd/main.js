@@ -14,6 +14,10 @@ define(
 
       classNames: ['ember-notify-cn'],
       show: function(type, message, options) {
+        if (typeof message == 'object') {
+          options = message;
+          message = null;
+        }
         var view = Notify.View.create({
           message: message,
           type: type

@@ -12,6 +12,10 @@ var Container = Ember.ContainerView.extend({
 
   classNames: ['ember-notify-cn'],
   show: function(type, message, options) {
+    if (typeof message == 'object') {
+      options = message;
+      message = null;
+    }
     var view = Notify.View.create({
       message: message,
       type: type
@@ -141,13 +145,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
   stack1 = helpers._triageMustache.call(depth0, "view.message", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.raw", {hash:{
+    'unescaped': ("true")
+  },hashTypes:{'unescaped': "STRING"},hashContexts:{'unescaped': depth0},contexts:[depth0],types:["ID"],data:data})));
   data.buffer.push("<a ");
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "close", {hash:{
     'target': ("view")
   },hashTypes:{'target': "STRING"},hashContexts:{'target': depth0},contexts:[depth0],types:["STRING"],data:data})));
-  data.buffer.push(" class=\"close\">&times;</a>\n");
+  data.buffer.push("\n    class=\"close\">&times;</a>\n");
   return buffer;
-  
+
 });
 },{}]},{},[1])
 (1)
