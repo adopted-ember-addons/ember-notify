@@ -101,3 +101,16 @@ test('supports multiple containers', function() {
     view.send('close');
   });
 });
+
+test('supports raw HTML', function() {
+  Ember.run(function() {
+    view = Notify.show('info', {raw: '<div class="my-div">Hello</div>'});
+  });
+  Ember.run(function() {
+    var $el = find('.ember-notify');
+    equal($el.length, 1, 'view is added');
+    ok($el.hasClass('info'), 'view has an info class');
+    ok($el.find('.my-div').length, 'view contains the raw HTML');
+    view.send('close');
+  });
+});

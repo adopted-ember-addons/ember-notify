@@ -2,15 +2,15 @@
 
 [![Build Status](https://travis-ci.org/aexmachina/ember-notify.png)](https://travis-ci.org/aexmachina/ember-notify)
 
-`ember-notify` displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!
+`ember-notify` displays wee little notification messages down the bottom of your Ember.js app. They're animated!
 
-By default assumes Zurb Foundation 5 for styling, but you can use Bootstrap styling by calling `Notify.useBootstrap()`.
+By default assumes Zurb Foundation 5 for styling, or you can use Bootstrap styling by calling `Notify.useBootstrap()`.
 
-The CSS animations are based on the CSS in [alertify.js](http://fabien-d.github.io/alertify.js/).
+The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/).
 
 ## Usage
 
-```javascript
+```
 import Notify from 'ember-notify';
 
 Notify.alert("This is some info.");
@@ -18,16 +18,27 @@ Notify.success("That worked!"):
 Notify.warning("Hmmn, that didn't work out.");
 ```
 
-### Features!
+By default the notifications close after 2.5 seconds, or you can control when they're closed.
 
-```javascript
-Notify.alert("This one's got rounded corners.", {
-  radius: true
-});
+```
 var notify = Notify.alert("You can control how long it's displayed.", {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 notify.send('close'); // and you can trigger close from code
+```
+
+You can specify raw HTML:
+
+```
+Notify.info({raw: '<div class="my-div">Hooray!</div>'});
+```
+
+Rounded corners, if that's your thing.
+
+```
+Notify.alert("This one's got rounded corners.", {
+  radius: true
+});
 ```
 
 ### Containers
