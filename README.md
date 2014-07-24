@@ -13,8 +13,9 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 ```
 import Notify from 'ember-notify';
 
-Notify.alert("This is some info.");
-Notify.success("That worked!"):
+Notify.info("Hello there!");
+Notify.alert("This is an alert.");
+Notify.success("It worked."):
 Notify.warning("Hmmn, that didn't work out.");
 ```
 
@@ -24,7 +25,7 @@ By default the notifications close after 2.5 seconds, or you can control when th
 var notify = Notify.alert("You can control how long it's displayed.", {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
-notify.send('close'); // and you can trigger close from code
+notify.send('close'); // and you can trigger close from your code
 ```
 
 You can specify raw HTML:
