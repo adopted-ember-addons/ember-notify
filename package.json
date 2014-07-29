@@ -20,7 +20,8 @@
     "dist/",
     "lib/",
     "test/",
-    "ember-addon.js"
+    "ember-addon.js",
+    "app-addon"
   ],
   "license": "MIT",
   "devDependencies": {
