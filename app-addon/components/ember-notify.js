@@ -1,3 +1,4 @@
+/* global Ember */
 import Notify from 'ember-notify';
 
 export default Ember.Component.extend({
