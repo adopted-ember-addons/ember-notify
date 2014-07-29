@@ -1,6 +1,6 @@
 {
   "name": "ember-notify",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!",
   "main": "dist/cjs/main.js",
   "ember-addon": {
