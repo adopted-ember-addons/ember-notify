@@ -46,13 +46,35 @@ Notify.alert("This one's got rounded corners.", {
 
 `Notify` is an instance of the `Notify.Container` class, and will automatically append itself to the `rootElement` (of the first `Ember.Application` to initialize) the first time you display a notification. 
 
-You can create your own containers and control where they're inserted into the DOM like so:
+If you want to control where they're inserted into the DOM then there's two options. 
 
-```javascript
-var container = Notify.Container.create();
-container.appendTo($('#some-element'));
-container.alert("Yo dawg.");
-```
+1. If you're interting the element outside of the root element of your Ember app:
+
+  ```
+  var container = Notify.Container.create();
+  container.appendTo($('#some-element'));
+  container.alert("Yo dawg.");
+  ```
+1. Otherwise you'll need to use a component. Create an instance of `Notify.Container` in your controller:
+
+  ```
+  import Notify from 'ember-notify';
+  export default Ember.Controller.extend({
+    notify: Notify.Container.create(),
+    actions: {
+      clicked: function() {
+        this.notify.info('Hello from the controller');
+      }
+    }
+  });
+  ```
+
+  Pass this to the component in your template:
+  
+  ```
+  <button {{action "clicked"}}>Click me!</button>
+  {{ember-notify notify=notify}}
+  ```
 
 ## Installation
 

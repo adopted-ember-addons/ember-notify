@@ -51,6 +51,7 @@ define(
       }
     });
     __exports__["default"] = Notify;
+    __exports__.Container = Container;
 
     Notify.Container = Container;
     Notify.BaseView = Ember.View.extend({

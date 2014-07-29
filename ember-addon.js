@@ -18,6 +18,14 @@ EmberAddon.prototype.treeFor = function treeFor(type) {
   else if (type == 'styles') {
     return this.tree;
   }
+  else if (type == 'app') {
+    var tree = 'node_modules/ember-notify/app-addon';
+    return unwatchedTree(tree);
+  }
+  else if (type == 'templates') {
+    var tree = 'node_modules/ember-notify/app-addon/templates';
+    return unwatchedTree(tree);
+  }
 };
 
 EmberAddon.prototype.included = function included(app) {

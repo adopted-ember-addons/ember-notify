@@ -48,6 +48,7 @@ var Notify = Container.createWithMixins({
   }
 });
 exports["default"] = Notify;
+exports.Container = Container;
 
 Notify.Container = Container;
 Notify.BaseView = Ember.View.extend({
