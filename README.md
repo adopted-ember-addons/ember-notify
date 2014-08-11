@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/aexmachina/ember-notify.png)](https://travis-ci.org/aexmachina/ember-notify)
 
-`ember-notify` displays wee little notification messages down the bottom of your Ember.js app. They're animated!
+`ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
 By default assumes Zurb Foundation 5 for styling, or you can use Bootstrap styling by calling `Notify.useBootstrap()`.
 
@@ -44,37 +44,30 @@ Notify.alert("This one's got rounded corners.", {
 
 ### Containers
 
-`Notify` is an instance of the `Notify.Container` class, and will automatically append itself to the `rootElement` (of the first `Ember.Application` to initialize) the first time you display a notification. 
+`Notify` is an instance of the `Notify.Container` class, and will automatically append itself to the `document.body` the first time you display a notification.
 
-If you want to control where they're inserted into the DOM then there's two options. 
+#### Multiple Containers
 
-1. If you're interting the element outside of the root element of your Ember app:
+If you want to have separate notifications and control where they're inserted into the DOM you can use the `{{ember-notify}}` component. Create an instance of `Notify.Container` in your controller:
 
-  ```
-  var container = Notify.Container.create();
-  container.appendTo($('#some-element'));
-  container.alert("Yo dawg.");
-  ```
-1. Otherwise you'll need to use a component. Create an instance of `Notify.Container` in your controller:
-
-  ```
-  import Notify from 'ember-notify';
-  export default Ember.Controller.extend({
-    notify: Notify.Container.create(),
-    actions: {
-      clicked: function() {
-        this.notify.info('Hello from the controller');
-      }
+```
+import Notify from 'ember-notify';
+export default Ember.Controller.extend({
+  notify: Notify.Container.create(),
+  actions: {
+    clicked: function() {
+      this.notify.info('Hello from the controller');
     }
-  });
-  ```
+  }
+});
+```
 
-  Pass this to the component in your template:
+and pass this to the component in your template:
   
-  ```
-  <button {{action "clicked"}}>Click me!</button>
-  {{ember-notify notify=notify}}
-  ```
+```
+<button {{action "clicked"}}>Click me!</button>
+{{ember-notify notify=notify}}
+```
 
 ## Installation
 

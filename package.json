@@ -1,7 +1,7 @@
 {
   "name": "ember-notify",
   "version": "1.1.2",
-  "description": "Displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!",
+  "description": "Displays wee little notification messages down the bottom of your Ember.js app.",
   "main": "dist/cjs/main.js",
   "ember-addon": {
     "main": "ember-addon.js"
@@ -13,6 +13,7 @@
   "authors": [
     "Simon Wade"
   ],
+  "repository": "https://github.com/aexmachina/ember-notify.git",
   "keywords": [
     "ember-addon"
   ],
@@ -30,6 +31,7 @@
     "broccoli-cli": "0.0.1",
     "broccoli-dist-es6-module": "^0.2.0",
     "broccoli-ember-hbs-template-compiler": "^1.5.0",
+    "broccoli-export-tree": "^0.3.2",
     "broccoli-merge-trees": "^0.1.3",
     "karma": "~0.10.9",
     "karma-phantomjs-launcher": "~0.1.2",

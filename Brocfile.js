@@ -1,6 +1,7 @@
 var makeModules = require('broccoli-dist-es6-module'),
     mergeTrees = require('broccoli-merge-trees'),
-    templateCompiler = require('broccoli-ember-hbs-template-compiler');
+    templateCompiler = require('broccoli-ember-hbs-template-compiler'),
+    exportTree = require('broccoli-export-tree');
 
 var dist = makeModules('lib/', {
   global: 'EmberNotify',
@@ -11,5 +12,7 @@ var dist = makeModules('lib/', {
   }
 });
 var assets = templateCompiler('assets/');
+var tree = mergeTrees([dist, assets]);
+//tree = exportTree(tree, {destDir: 'dist'});
 
-module.exports = mergeTrees([dist, assets]);
+module.exports = tree;
