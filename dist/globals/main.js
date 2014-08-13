@@ -16,7 +16,7 @@ var Container = Ember.ContainerView.extend({
       options = message;
       message = null;
     }
-    var view = Notify.View.create({
+    var view = this.createChildView(Notify.View, {
       message: message,
       type: type
     });
@@ -35,6 +35,7 @@ function aliasToShow(type) {
 
 var Notify = Container.createWithMixins({
   rootElement: null,
+  container: null,
   classNames: ['default-cn'],
   init: function() {
     this._super();
@@ -132,8 +133,7 @@ Ember.Application.initializer({
   initialize: function(container, App) {
     // set the rootElement of the Notify container to the first Ember Application
     // instance that initializes
-    if (Notify.get('rootElement')) return;
-    Notify.set('rootElement', App.rootElement);
+    if (!Notify.get('rootElement')) Notify.set('rootElement', App.rootElement);
   }
 });
 },{"./template":2}],2:[function(_dereq_,module,exports){
