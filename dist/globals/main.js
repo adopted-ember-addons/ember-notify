@@ -133,7 +133,10 @@ Ember.Application.initializer({
   initialize: function(container, App) {
     // set the rootElement of the Notify container to the first Ember Application
     // instance that initializes
-    if (!Notify.get('rootElement')) Notify.set('rootElement', App.rootElement);
+    if (!Notify.get('rootElement')) {
+      Notify.set('rootElement', App.rootElement);
+      Notify.container = container;
+    }
   }
 });
 },{"./template":2}],2:[function(_dereq_,module,exports){
