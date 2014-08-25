@@ -4,7 +4,7 @@
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
-By default assumes Zurb Foundation 5 for styling, or you can use Bootstrap styling by calling `Notify.useBootstrap()`.
+By default assumes Zurb Foundation 5 for styling, or you can use Bootstrap styling by calling `Notify.useBootstrap()` once on startup (eg. in app.js).
 
 The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/).
 
