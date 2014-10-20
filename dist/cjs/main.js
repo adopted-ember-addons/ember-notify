@@ -114,7 +114,7 @@ Notify.BootstrapView = Notify.BaseView.extend({
   classNames: ['alert'],
   typeCss: function() {
     var type = this.get('type');
-    if (type == 'error') type = 'danger';
+    if (type == 'alert' || type == 'error') type = 'danger';
     return 'alert-%@'.fmt(type);
   }.property('type')
 });
