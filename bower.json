@@ -3,7 +3,7 @@
   "authors": [
     "Simon Wade"
   ],
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!",
   "keywords": [
     "ember.js",

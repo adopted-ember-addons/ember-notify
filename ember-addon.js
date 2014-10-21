@@ -1,5 +1,4 @@
 /* jshint node: true */
-var path = require('path');
 var pickFiles = require('broccoli-static-compiler');
 
 var EmberAddon = function() {

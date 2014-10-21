@@ -27,7 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.2.8",
-    "broccoli": "^0.12.0",
+    "broccoli": "^0.13.2",
     "broccoli-cli": "0.0.1",
     "broccoli-dist-es6-module": "^0.2.0",
     "broccoli-ember-hbs-template-compiler": "^1.5.0",
@@ -38,7 +38,6 @@
     "karma-qunit": "~0.1.1"
   },
   "dependencies": {
-    "broccoli": "^0.13.2",
     "broccoli-static-compiler": "^0.2.1"
   }
 }
