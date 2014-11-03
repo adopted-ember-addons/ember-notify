@@ -53,12 +53,16 @@ exports.Container = Container;
 
 Notify.Container = Container;
 Notify.BaseView = Ember.View.extend({
+  type: null, // normal (default), success, alert, secondary
+  message: '',
+  raw: '',
+
   classNames: ['ember-notify'],
   classNameBindings: ['typeCss', 'visible:ember-notify-show', 'hidden:ember-notify-hidden'],
   attributeBindings: ['data-alert'],
   'data-alert': '',
+
   defaultTemplate: template,
-  type: null, // normal (default), success, alert, secondary
   hidden: Ember.computed.not('visible'),
   closeAfter: 2500,
   removeAfter: 250, // allow time for the close animation to finish
