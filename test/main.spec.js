@@ -32,27 +32,25 @@ test('shows info messages', function() {
       removeAfter: 500
     });
   });
-  Ember.run(function() {
-    var $el = find('.ember-notify');
-    equal($el.length, 1, 'view is added');
+  var $el = find('.ember-notify');
+  equal($el.length, 1, 'view is added');
+  stop();
+  setTimeout(function() {
+    start();
+    $el = find('.ember-notify');
+    equal(view.get('visible'), true, 'view is still visible');
+    equal($el.length, 1, 'view is still in the DOM');
+  }, 400);
+  stop();
+  setTimeout(function() {
+    start();
+    equal(view.get('visible'), false, 'view is not visible');
     stop();
-    setTimeout(function() {
-      start();
-      $el = find('.ember-notify');
-      equal(view.get('visible'), true, 'view is still visible');
-      equal($el.length, 1, 'view is still in the DOM');
-    }, 400);
-    stop();
-    setTimeout(function() {
-      start();
-      equal(view.get('visible'), false, 'view is not visible');
-      stop();
-    }, 900);
-    setTimeout(function() {
-      start();
-      ok(!view.$(), 'view is removed from the DOM');
-    }, 1500);
-  });
+  }, 900);
+  setTimeout(function() {
+    start();
+    ok(!view.$(), 'view is removed from the DOM');
+  }, 1500);
 });
 
 test('shows success messages', function() {
@@ -72,14 +70,15 @@ test('shows error messages', function() {
 });
 
 function testLevelMethod(level) {
-  var view;
+  var view, message = 'Hello world';
   Ember.run(function() {
-    view = Notify[level].call(Notify, 'Hello world');
+    view = Notify[level].call(Notify, message);
   });
   Ember.run(function() {
     var $el = find('.ember-notify');
     equal($el.length, 1, 'view is added');
     ok($el.hasClass(level), 'view has a ' + level + ' class');
+    equal($el.find('.message').text(), message);
     view.send('close');
   });
 }
