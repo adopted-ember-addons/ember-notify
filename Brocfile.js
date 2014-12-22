@@ -1,6 +1,6 @@
 var makeModules = require('broccoli-dist-es6-module'),
     mergeTrees = require('broccoli-merge-trees'),
-    templateCompiler = require('broccoli-ember-hbs-template-compiler'),
+    templateCompiler = require('ember-cli-htmlbars'),
     exportTree = require('broccoli-export-tree');
 
 var dist = makeModules('lib/', {

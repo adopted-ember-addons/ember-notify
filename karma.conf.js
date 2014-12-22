@@ -10,7 +10,7 @@ module.exports = function(config) {
       'bower_components/ember-qunit/dist/globals/main.js',
       'dist/globals/main.js',
       // when running broccoli serve, we use this instead
-      // 'http://localhost:4200/globals/main.js',
+      'http://localhost:4200/globals/main.js',
       'test/support/setup.js',
       'test/**/*.spec.js'
     ],

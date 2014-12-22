@@ -30,9 +30,9 @@
     "broccoli": "^0.13.2",
     "broccoli-cli": "0.0.1",
     "broccoli-dist-es6-module": "^0.2.0",
-    "broccoli-ember-hbs-template-compiler": "^1.5.0",
     "broccoli-export-tree": "^0.3.2",
     "broccoli-merge-trees": "^0.2.1",
+    "ember-cli-htmlbars": "^0.5.4",
     "karma": "~0.10.9",
     "karma-phantomjs-launcher": "~0.1.2",
     "karma-qunit": "~0.1.1"
