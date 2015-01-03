@@ -10,34 +10,35 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ## Usage
 
-```
+```js
 import Notify from 'ember-notify';
 
-Notify.info("Hello there!");
-Notify.alert("This is an alert.");
-Notify.success("It worked."):
-Notify.warning("Hmmn, that didn't work out.");
+Notify.info('Hello there!');
+Notify.alert('This is an alert.');
+Notify.success('It worked.'):
+Notify.warning('Hmmn, that didn\'t work out.');
 ```
 
 By default the notifications close after 2.5 seconds, or you can control when they're closed.
 
-```
-var notify = Notify.alert("You can control how long it's displayed.", {
+```js
+var notify = Notify.alert('You can control how long it\'s displayed.', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
+
 notify.send('close'); // and you can trigger close from your code
 ```
 
 You can specify raw HTML:
 
-```
+```js
 Notify.info({raw: '<div class="my-div">Hooray!</div>'});
 ```
 
 Rounded corners, if that's your thing.
 
-```
-Notify.alert("This one's got rounded corners.", {
+```js
+Notify.alert('This one's got rounded corners.', {
   radius: true
 });
 ```
@@ -50,8 +51,9 @@ Notify.alert("This one's got rounded corners.", {
 
 If you want to have separate notifications and control where they're inserted into the DOM you can use the `{{ember-notify}}` component. Create an instance of `Notify.Container` in your controller:
 
-```
+```js
 import Notify from 'ember-notify';
+
 export default Ember.Controller.extend({
   notify: Notify.Container.create(),
   actions: {
@@ -64,7 +66,7 @@ export default Ember.Controller.extend({
 
 and pass this to the component in your template:
   
-```
+```hbs
 <button {{action "clicked"}}>Click me!</button>
 {{ember-notify notify=notify}}
 ```
@@ -75,7 +77,7 @@ and pass this to the component in your template:
 
 This module is an `ember-addon`, so all you need to do is:
 
-```
+```sh
 npm install ember-notify --save-dev
 ```
 
