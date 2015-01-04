@@ -1,29 +1,14 @@
 {
   "name": "ember-notify",
-  "authors": [
-    "Simon Wade"
-  ],
-  "version": "1.1.9",
-  "description": "Displays wee little notification messages down the bottom of your Ember.js app. They're animated, it's awesome!",
-  "keywords": [
-    "ember.js",
-    "notification",
-    "alert"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/aexmachina/ember-notify",
-  "main": "dist/cjs/main.js",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "ember": "^1.9.0"
-  },
   "devDependencies": {
-    "ember-qunit": "~0.1.8"
+    "handlebars": "~1.3.0",
+    "jquery": "^1.11.1",
+    "ember": "1.8.1",
+    "ember-resolver": "~0.1.10",
+    "loader.js": "stefanpenner/loader.js#1.0.1",
+    "ember-cli-shims": "stefanpenner/ember-cli-shims#0.0.3",
+    "ember-cli-test-loader": "dgeb/ember-cli-test-loader#test-agnostic",
+    "ember-load-initializers": "stefanpenner/ember-load-initializers#0.0.2",
+    "ember-mocha": "~0.2.0"
   }
 }

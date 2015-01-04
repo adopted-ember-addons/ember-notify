@@ -10,8 +10,11 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ## Usage
 
-```
-import Notify from 'ember-notify';
+1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`.
+2. Use the `Notify` helper to display messages: 
+
+```js
+import Notify from 'ember-notify/main';
 
 Notify.info("Hello there!");
 Notify.alert("This is an alert.");
@@ -22,7 +25,7 @@ Notify.warning("Hmmn, that didn't work out.");
 By default the notifications close after 2.5 seconds, or you can control when they're closed.
 
 ```
-var notify = Notify.alert("You can control how long it's displayed.", {
+var message = Notify.alert("You can control how long it's displayed.", {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 notify.send('close'); // and you can trigger close from your code
@@ -42,13 +45,13 @@ Notify.alert("This one's got rounded corners.", {
 });
 ```
 
-### Containers
+### Multiple Containers
 
-`Notify` is an instance of the `Notify.Container` class, and will automatically append itself to the `document.body` the first time you display a notification.
+If you want to have separate notifications and control where they're inserted into the DOM you can 
+have multiple `{{ember-notify}}` components, but only one of them can be the 'primary' - this is the
+one that is accessed using the `Notify` helper.
 
-#### Multiple Containers
-
-If you want to have separate notifications and control where they're inserted into the DOM you can use the `{{ember-notify}}` component. Create an instance of `Notify.Container` in your controller:
+All of the other containers should be used as follows: 
 
 ```
 import Notify from 'ember-notify';

@@ -1,43 +1,44 @@
 {
   "name": "ember-notify",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Displays wee little notification messages down the bottom of your Ember.js app.",
-  "main": "dist/cjs/main.js",
-  "ember-addon": {
-    "main": "ember-addon.js"
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
   },
-  "scripts": {
-    "test": "bower install && rm -rf dist && broccoli build dist && karma start --browsers PhantomJS --single-run",
-    "build": "rm -rf dist && broccoli build dist"
-  },
-  "authors": [
-    "Simon Wade"
+  "files": [
+    "addon/",
+    "app/",
+    "vendor/"
   ],
+  "scripts": {
+    "start": "ember server",
+    "build": "ember build",
+    "test": "ember test"
+  },
   "repository": "https://github.com/aexmachina/ember-notify.git",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "author": "@aexmachina",
+  "license": "MIT",
+  "devDependencies": {
+    "broccoli-asset-rev": "^1.0.0",
+    "broccoli-ember-hbs-template-compiler": "^1.6.1",
+    "ember-cli": "0.1.4",
+    "ember-cli-content-security-policy": "0.3.0",
+    "ember-cli-dependency-checker": "0.0.6",
+    "ember-cli-esnext": "0.1.1",
+    "ember-cli-ic-ajax": "0.1.1",
+    "ember-cli-inject-live-reload": "^1.3.0",
+    "ember-cli-mocha": "^0.2.1",
+    "ember-data": "1.0.0-beta.12",
+    "ember-export-application-global": "^1.0.0",
+    "express": "^4.8.5",
+    "glob": "^4.0.5"
+  },
   "keywords": [
     "ember-addon"
   ],
-  "files": [
-    "dist/",
-    "lib/",
-    "test/",
-    "ember-addon.js",
-    "app-addon"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "bower": "^1.2.8",
-    "broccoli": "^0.13.2",
-    "broccoli-cli": "0.0.1",
-    "broccoli-dist-es6-module": "^0.2.0",
-    "broccoli-export-tree": "^0.3.2",
-    "broccoli-merge-trees": "^0.2.1",
-    "ember-cli-htmlbars": "^0.5.4",
-    "karma": "~0.10.9",
-    "karma-phantomjs-launcher": "~0.1.2",
-    "karma-qunit": "~0.1.1"
-  },
-  "dependencies": {
-    "broccoli-static-compiler": "^0.2.1"
-  }
+  "ember-addon": {}
 }
