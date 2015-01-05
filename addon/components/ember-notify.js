@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Notify from 'ember-notify/main';
-import {Message} from 'ember-notify/main';
+import Notify from 'ember-notify';
+import Message from 'ember-notify/message';
 
 export default Ember.Component.extend({
   primary: true,
@@ -33,7 +33,7 @@ export default Ember.Component.extend({
   }
 });
 
-export var BaseView = Ember.View.extend({
+export var MessageView = Ember.View.extend({
   message: null,
 
   classNames: ['ember-notify'],
@@ -45,7 +45,8 @@ export var BaseView = Ember.View.extend({
     if (Ember.isNone(this.get('message.visible'))) {
       // the element is added to the DOM in its hidden state, so that
       // adding the 'ember-notify-show' class triggers the CSS transition
-      Ember.run.schedule('afterRender', this, function() {
+      Ember.run.next(this, function() {
+        if (this.get('isDestroyed')) return;
         this.set('message.visible', true);
       });
     }
@@ -54,7 +55,6 @@ export var BaseView = Ember.View.extend({
       Ember.run.later(this, function() {
         if (this.get('isDestroyed')) return;
         this.set('message.visible', false);
-        this.send('close');
       }, closeAfter);
     }
   },
@@ -63,14 +63,18 @@ export var BaseView = Ember.View.extend({
     if (cssClass === 'error') cssClass = 'alert error';
     return cssClass;
   }.property('message.type'),
-  close: function() {
-    this.send('close');
-  },
+  visibleObserver: function() {
+    if (!this.get('message.visible')) {
+      this.send('close');
+    }
+  }.observes('message.visible'),
+
   actions: {
     close: function() {
-      var that = this, removeAfter;
+      var that = this,
+          removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
       this.set('message.visible', false);
-      if (removeAfter = this.get('message.removeAfter')) {
+      if (removeAfter) {
         Ember.run.later(this, remove, removeAfter);
       }
       else {
@@ -82,17 +86,19 @@ export var BaseView = Ember.View.extend({
       }
     }
   }
+}).reopenClass({
+  removeAfter: 250 // allow time for the close animation to finish
 });
 
-export var FoundationView = BaseView.extend({
+export var FoundationView = MessageView.extend({
   classNames: ['alert-box'],
   classNameBindings: ['radius::']
 });
 
-export var BootstrapView = BaseView.extend({
+export var BootstrapView = MessageView.extend({
   classNames: ['alert'],
   typeCss: function() {
-    var type = this.get('type');
+    var type = this.get('message.type');
     if (type === 'alert' || type === 'error') type = 'danger';
     return 'alert-%@'.fmt(type);
   }.property('type')

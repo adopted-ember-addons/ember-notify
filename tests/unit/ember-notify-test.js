@@ -1,16 +1,9 @@
+import Ember from 'ember';
 import {
   describeComponent,
   it
 } from 'ember-mocha';
-import {Message} from 'ember-notify/main';
-import startApp from '../helpers/start-app';
-import Notify from 'ember-notify/main';
-
-// avoid slowing down the tests
-Message.reopen({
-  closeAfter: 0,
-  removeAfter: 0
-});
+import Notify from 'ember-notify';
 
 describeComponent('ember-notify', 'ember-notify', () => {
   it('shows and hides messages with animations', function(done) {
@@ -25,19 +18,19 @@ describeComponent('ember-notify', 'ember-notify', () => {
     var $el = component.$();
     var $message = messages($el);
     expect($el.length).to.equal(1, 'component is added');
-    expect($message.length).to.equal(1, 'element is added');
-    expect($message.is('.info')).to.be.true;
+    expect($message.length).to.equal(1, 'element is in DOM');
+    expect(message.get('visible')).to.equal(undefined, 'but not visible');
+    expect($message.is('.info')).to.be.true();
     expect($message.find('.message').text()).to.equal('Hello world');
 
-    setTimeout(function() {
-      expect(messages($el).length).to.equal(1, 'element is still in DOM');
-      expect(message.get('visible')).to.equal(true, 'message is still visible');
+    Ember.run.later(function() {
+      expect(message.get('visible')).to.equal(true, 'message is visible');
     }, 400);
-    setTimeout(function() {
+    Ember.run.later(function() {
       expect(messages($el).length).to.equal(1, 'element is still in DOM');
       expect(message.get('visible')).to.equal(false, 'message is not visible');
     }, 900);
-    setTimeout(function() {
+    Ember.run.later(function() {
       expect(messages($el).length).to.equal(0, 'element is removed from DOM');
       done();
     }, 1500);
@@ -61,7 +54,7 @@ describeComponent('ember-notify', 'ember-notify', () => {
 
   function testLevelMethod(level) {
     var component = this.subject();
-    var message = component.show({
+    component.show({
       message: 'Hello world',
       type: level
     });
@@ -72,7 +65,7 @@ describeComponent('ember-notify', 'ember-notify', () => {
     expect($el.length).to.equal(1, 'component is added');
     expect($message.length).to.equal(1, 'element is added');
     expect($message.find('.message').text()).to.equal('Hello world');
-    expect($message.is('.' + level)).to.be.true;
+    expect($message.is('.' + level)).to.be.true();
   }
 
   it('can be shown manually', function() {
@@ -86,14 +79,57 @@ describeComponent('ember-notify', 'ember-notify', () => {
     var $el = component.$();
     var $message = messages($el);
     expect($message.length).to.equal(1, 'element is added');
-    expect($message.is('.ember-notify-hidden')).to.be.true;
+    expect($message.is('.ember-notify-hidden')).to.equal(true, 'message is hidden');
     Ember.run(() => message.set('visible', true));
-    expect($message.is('.ember-notify-hidden')).to.be.false;
+    expect($message.is('.ember-notify-show')).to.equal(true, 'message is shown');
+  });
+
+  it('can be hidden manually', function(done) {
+    var component = this.subject();
+    var message = component.show({
+      message: 'Hello world',
+      removeAfter: 100
+    });
+    this.render();
+
+    var $el = component.$();
+    var $message = messages($el);
+    expect($message.length).to.equal(1, 'element is added');
+    Ember.run.next(() => Ember.run.next(() => {
+      expect($message.is('.ember-notify-show')).to.equal(true, 'message is shown');
+      Ember.run(() => message.set('visible', false));
+      Ember.run.next(() =>
+        expect($message.is('.ember-notify-hidden')).to.equal(true, 'message is hidden')
+      );
+      Ember.run.later(() => {
+        expect(messages($el).length).to.equal(0, 'element is removed');
+        done();
+      }, 200);
+    }));
+  });
+
+  it('supports Bootstrap styling', function() {
+    var component = this.subject({
+      messageStyle: 'bootstrap'
+    });
+    component.show({
+      message: 'Hello world'
+    });
+    component.show({
+      message: 'Hello again',
+      type: 'alert'
+    });
+    this.render();
+
+    var $el = component.$();
+    var $message = messages($el);
+    expect($message.eq(0).is('.alert.alert-info')).to.be.true();
+    expect($message.eq(1).is('.alert.alert-danger')).to.be.true();
   });
 });
 
 describeComponent('ember-notify', 'Notify helper', () => {
-  it('can be used to show messages', function() {
+  it('can be used to show messages', function(done) {
     var component = this.subject();
     var message = Notify.info('Hello world');
     expect(message.get('visible')).to.equal(undefined, 'message is initially hidden');
@@ -101,14 +137,18 @@ describeComponent('ember-notify', 'Notify helper', () => {
 
     var $messages = messages(component.$());
     expect($messages.length).to.equal(1, 'element is shown');
-    expect(message.get('visible')).to.equal(true, 'message is visible');
-    Ember.run(() => message.set('visible', false));
-    expect($messages.hasClass('ember-notify-hidden')).to.equal(true, 'messages can be hidden');
+    Ember.run.next(() => {
+      expect(message.get('visible')).to.equal(true, 'message is visible');
+      Ember.run(() => message.set('visible', false));
+      expect($messages.hasClass('ember-notify-hidden')).to.equal(true, 'messages can be hidden');
 
-    Ember.run(() => Notify.success('Hello world'));
-    $messages = messages(component.$());
-    expect($messages.length).to.equal(2, '2 elements are shown');
-    expect($messages.eq(1).hasClass('success')).to.equal(true);
+      Ember.run(() => Notify.success('Hello world'));
+      $messages = messages(component.$());
+      expect($messages.length).to.equal(2, '2 elements are shown');
+      expect($messages.eq(1).hasClass('success')).to.equal(true);
+
+      done();
+    });
   });
 });
 
@@ -127,12 +167,11 @@ describeComponent('multiple-components', 'messages property', {
     expect(messages($primary).length).to.equal(1);
     expect(messages($secondary).length).to.equal(0);
 
-    Ember.run(() => secondaryMessages.pushObject(
-      Message.create({text: 'Hello again'}))
-    );
+    Ember.run(() => secondaryMessages.pushObject({message: 'Hello again'}));
     expect(messages($secondary).length).to.equal(1);
   });
-})
+});
+
 function messages($el) {
   return $el.find('.ember-notify');
 }

@@ -19,5 +19,8 @@ var app = new EmberAddon();
 // along with the exports of each module as its value.
 
 app.import('vendor/ember-notify.css');
+app.import('bower_components/bind-polyfill/index.js', {
+  type: 'test'
+});
 
 module.exports = app.toTree();

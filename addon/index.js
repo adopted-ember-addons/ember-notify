@@ -21,7 +21,7 @@ export default Ember.Object.extend({
 
   primary: function(key, val) {
     if (arguments.length === 1) {
-      Ember.assert("Can't display notifications without a {{ember-notify}} in your " +
+      Ember.assert("Can't display notifications without an {{ember-notify}} in your " +
         "templates, usually in application.hbs",
         this._primary
       );
@@ -37,16 +37,6 @@ export default Ember.Object.extend({
   }.property()
 
 }).create();
-
-export var Message = Ember.Object.extend({
-  message: null,
-  raw: '',
-  type: 'info',
-  closeAfter: 2500,
-  removeAfter: 250, // allow time for the close animation to finish
-
-  visible: undefined // set to false to disable auto-showing
-});
 
 function aliasToShow(type) {
   return function(message, options) {
