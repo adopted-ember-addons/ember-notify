@@ -15,6 +15,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ```js
 import Notify from 'ember-notify';
+
 Notify.info('Hello there!');
 Notify.alert('This is an alert.');
 Notify.success('It worked.'):
@@ -24,7 +25,7 @@ Notify.warning('Hmmn, that didn\'t work out.');
 By default the notifications close after 2.5 seconds, or you can control when they're closed:
 
 ```js
-var message = Notify.alert("You can control how long it's displayed.", {
+var message = Notify.alert('You can control how long it\'s displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 message.set('visible', false); // and you can hide messages programmatically.
@@ -38,10 +39,10 @@ You can specify raw HTML:
 Notify.info({raw: '<div class="my-div">Hooray!</div>'});
 ```
 
-Rounded corners, if that's your thing.
+Rounded corners, if that's your thing:
 
 ```js
-Notify.alert('This one's got rounded corners.', {
+Notify.alert('This one\'s got rounded corners.', {
   radius: true
 });
 ```
@@ -49,24 +50,21 @@ Notify.alert('This one's got rounded corners.', {
 ### Multiple Containers
 
 If you want to have separate notifications and control where they're inserted into the DOM you can 
-have multiple `{{ember-notify}}` components, but only one of them can be the 'primary' - this is the
-one that is accessed using the `Notify` helper.
+have multiple `{{ember-notify}}` components, but only one of them can be accessed using the `Notify` helper. The others you will need to provide a `source` property.
 
 Secondary containers should be used as follows:
 
 ```hbs
-{{ember-notify primary=false messages=someProperty}} 
+{{ember-notify source=someProperty}} 
 ```
 
 ```js
 // in your controller
 export default Ember.Controller.extend({
+  someProperty: Notify.property(), // or this.set('someProperty', Notify.create())
   actions: {
     clicked: function() {
-      this.get('someProperty').pushObject({
-        text: 'Hello from the controller',
-        type: 'success'
-      }); // if you want to be able to set visible you'll need to pass an Ember.Object 
+      this.get('someProperty').success('Hello from the controller');
     }
   }
 });

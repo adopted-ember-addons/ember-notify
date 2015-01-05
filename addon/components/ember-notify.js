@@ -3,17 +3,19 @@ import Notify from 'ember-notify';
 import Message from 'ember-notify/message';
 
 export default Ember.Component.extend({
-  primary: true,
-  messages: null, // this should be a Stream, maybe in Ember 2
+  source: null,
+  messages: null,
 
   classNames: ['ember-notify-cn'],
   messageStyle: 'foundation',
 
   init: function() {
     this._super();
-    if (!this.get('messages')) this.set('messages', []);
+    this.set('messages', []);
 
-    if (this.get('primary')) Notify.set('primary', this);
+    if (Ember.isNone(this.get('source'))) this.set('source', Notify);
+    this.set('source.target', this);
+
     var style = this.get('messageStyle'), klass;
     if (style) {
       if ('foundation' === style) klass = FoundationView;

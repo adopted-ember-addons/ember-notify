@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Object.extend({
+var Notify = Ember.Object.extend({
 
   info: aliasToShow('info'),
   success: aliasToShow('success'),
@@ -13,13 +13,30 @@ export default Ember.Object.extend({
       options = message;
       message = null;
     }
-    return this.get('primary').show(Ember.merge({
+    return this.get('target').show(Ember.merge({
       message: message,
       type: type
     }, options));
   },
 
-  primary: function(key, val) {
+  create: function(component) {
+    return Notify.create({
+      target: component
+    });
+  }
+
+});
+
+export default Notify.extend({
+  property: function() {
+    return Ember.computed(function() {
+      return Notify.create();
+    });
+  },
+  create: function() {
+    return Notify.create();
+  },
+  target: function(key, val) {
     if (arguments.length === 1) {
       Ember.assert("Can't display notifications without an {{ember-notify}} in your " +
         "templates, usually in application.hbs",
@@ -27,8 +44,8 @@ export default Ember.Object.extend({
       );
     }
     if (arguments.length === 2) {
-      Ember.assert("Only one <ember-notify> should be primary=true. " +
-        "If you want more than one then use <ember-notify primary=false messages=boundProperty>",
+      Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
+        "If you want more than one then use {{ember-notify source=someProperty}}",
         !this._primary || this._primary.get('isDestroyed')
       );
       this._primary = val;
