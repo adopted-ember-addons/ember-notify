@@ -9,7 +9,10 @@
   "files": [
     "addon/",
     "app/",
-    "vendor/"
+    "vendor/",
+    "*.js",
+    "*.md",
+    "*.txt"
   ],
   "scripts": {
     "start": "ember server",
