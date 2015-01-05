@@ -15,6 +15,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ```js
 import Notify from 'ember-notify';
+
 Notify.info('Hello there!');
 Notify.alert('This is an alert.');
 Notify.success('It worked.'):
@@ -24,9 +25,10 @@ Notify.warning('Hmmn, that didn\'t work out.');
 By default the notifications close after 2.5 seconds, or you can control when they're closed:
 
 ```js
-var message = Notify.alert("You can control how long it's displayed.", {
+var message = Notify.alert('You can control how long it\'s displayed.', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
+
 message.set('visible', false); // and you can hide messages programmatically.
 ```
 
@@ -41,7 +43,7 @@ Notify.info({raw: '<div class="my-div">Hooray!</div>'});
 Rounded corners, if that's your thing.
 
 ```js
-Notify.alert('This one's got rounded corners.', {
+Notify.alert('This one\'s got rounded corners.', {
   radius: true
 });
 ```
