@@ -1,6 +1,6 @@
 {{#each message in messages}}
-  {{#view view.messageClass message=message}}
-    <div class='message'>{{message.message}}{{{message.raw}}}</div>
-    <a {{action "close" target="view"}} class="close">&times;</a>
+  {{#view view.messageClass message=message class='clearfix'}}
+    <a {{action 'close' target='view'}} class='close'>&times;</a>
+    <span class='message'>{{message.message}}{{{message.raw}}}</span>
   {{/view}}
 {{/each}}

@@ -13,6 +13,11 @@
   width: 300px;
   right: -310px;
 }
+
+.ember-notify-cn .close {
+  float: right;
+}
+
 .ember-notify-cn .ember-notify-show {
   right: 0;
 }
@@ -44,4 +49,16 @@
     right: -110%;
     float: right;
   }
+}
+
+.ember-notify-cn .clearfix {
+  *zoom: 1;
+}
+.ember-notify-cn .clearfix:before,
+.ember-notify-cn .clearfix:after {
+  content: " ";
+  display: table;
+}
+.ember-notify-cn .clearfix:after {
+  clear: both;
 }
