@@ -5,6 +5,7 @@ import {
 } from 'ember-mocha';
 import Notify from 'ember-notify';
 
+Notify.testing = true;
 describeComponent('ember-notify', 'ember-notify', () => {
   it('shows and hides messages with animations', function(done) {
     var component = this.subject();

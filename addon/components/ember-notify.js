@@ -43,18 +43,35 @@ export var MessageView = Ember.View.extend({
   attributeBindings: ['data-alert'],
   'data-alert': '',
 
+  run: Ember.Object.create({
+    init: function() {
+      this.next = runner('next');
+      this.later = runner('later');
+      function runner(method) {
+        return function(ctx) {
+          var disable = Ember.testing && !Notify.testing,
+              run = disable ? this.zalkoBegone : Ember.run[method];
+          return run.apply(ctx, arguments);
+        };
+      }
+    },
+    zalkoBegone: function(ctx, fn) {
+      Ember.run.next(ctx, fn);
+    }
+  }),
+
   didInsertElement: function() {
     if (Ember.isNone(this.get('message.visible'))) {
       // the element is added to the DOM in its hidden state, so that
       // adding the 'ember-notify-show' class triggers the CSS transition
-      Ember.run.next(this, function() {
+      this.run.next(this, function() {
         if (this.get('isDestroyed')) return;
         this.set('message.visible', true);
       });
     }
     var closeAfter = this.get('message.closeAfter');
     if (closeAfter) {
-      Ember.run.later(this, function() {
+      this.run.later(this, function() {
         if (this.get('isDestroyed')) return;
         this.set('message.visible', false);
       }, closeAfter);
@@ -77,7 +94,7 @@ export var MessageView = Ember.View.extend({
           removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
       this.set('message.visible', false);
       if (removeAfter) {
-        Ember.run.later(this, remove, removeAfter);
+        this.run.later(this, remove, removeAfter);
       }
       else {
         remove();

@@ -25,6 +25,10 @@ var Notify = Ember.Object.extend({
     });
   }
 
+}).reopenClass({
+  // set to true to disable testing optimizations that are enabled when
+  // Ember.testing is true
+  testing: false
 });
 
 export default Notify.extend({
