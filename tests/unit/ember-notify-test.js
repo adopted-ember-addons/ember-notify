@@ -5,7 +5,8 @@ import {
 } from 'ember-mocha';
 import Notify from 'ember-notify';
 
-Notify.testing = true;
+beforeEach(() => Notify.testing = true);
+
 describeComponent('ember-notify', 'ember-notify', () => {
   it('shows and hides messages with animations', function(done) {
     var component = this.subject();
@@ -153,10 +154,10 @@ describeComponent('ember-notify', 'Notify helper', () => {
   });
 });
 
-describeComponent('multiple-components', 'messages property', {
+describeComponent('multiple-components', 'multiple sources', {
   needs: ['component:ember-notify', 'template:components/ember-notify']
 }, () => {
-  it('messages property allows multiple {{ember-notify}} components', function() {
+  it('source property allows multiple {{ember-notify}} components', function() {
     var secondarySource = Notify.create();
     var component = this.subject({
       notify: secondarySource

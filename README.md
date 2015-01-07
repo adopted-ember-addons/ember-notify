@@ -11,15 +11,19 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 ## Usage
 
 1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`.
-2. Use the `Notify` helper to display messages: 
+2. Use `this.notify` in routes or controllers to display messages: 
+
+```js
+this.info('Hello there!');
+this.alert('This is an alert.');
+this.success('It worked.'):
+this.warning('Hmmn, that didn\'t work out.');
+```
+
+If you're not in a route or a controller you can use the `Notify` helper: 
 
 ```js
 import Notify from 'ember-notify';
-
-Notify.info('Hello there!');
-Notify.alert('This is an alert.');
-Notify.success('It worked.'):
-Notify.warning('Hmmn, that didn\'t work out.');
 ```
 
 By default the notifications close after 2.5 seconds, or you can control when they're closed:
