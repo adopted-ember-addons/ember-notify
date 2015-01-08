@@ -8,21 +8,43 @@ var Notify = Ember.Object.extend({
   alert: aliasToShow('alert'),
   error: aliasToShow('error'),
 
+  init: function() {
+    this.pending = [];
+  },
+
   show: function(type, message, options) {
     if (typeof message === 'object') {
       options = message;
       message = null;
     }
-    return this.get('target').show(Ember.merge({
+    message = Ember.merge({
       message: message,
       type: type
-    }, options));
+    }, options);
+    var target = this.get('target');
+    if (target) {
+      return target.show(message);
+    }
+    else {
+      this.pending.push(message);
+    }
   },
 
   create: function(component) {
     return Notify.create({
       target: component
     });
+  },
+
+  target: function(key, val) {
+    if (arguments.length === 2) {
+      this.showPending(val);
+    }
+    return val;
+  }.property(),
+
+  showPending: function(target) {
+    this.pending.map(target.show.bind(target));
   }
 
 }).reopenClass({
@@ -41,20 +63,14 @@ export default Notify.extend({
     return Notify.create();
   },
   target: function(key, val) {
-    if (arguments.length === 1) {
-      Ember.assert("Can't display notifications without an {{ember-notify}} in your " +
-        "templates, usually in application.hbs",
-        this._primary
-      );
-    }
     if (arguments.length === 2) {
       Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
         "If you want more than one then use {{ember-notify source=someProperty}}",
         !this._primary || this._primary.get('isDestroyed')
       );
-      this._primary = val;
+      this.showPending(val);
     }
-    return this._primary;
+    return val;
   }.property()
 
 }).create();
