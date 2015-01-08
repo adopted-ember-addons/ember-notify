@@ -11,7 +11,7 @@ export default Ember.Component.extend({
 
   init: function() {
     this._super();
-    this.set('messages', []);
+    this.messages = [];
 
     if (Ember.isNone(this.get('source'))) this.set('source', Notify);
     this.set('source.target', this);
