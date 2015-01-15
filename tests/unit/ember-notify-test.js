@@ -152,6 +152,22 @@ describeComponent('ember-notify', 'Notify helper', () => {
       done();
     });
   });
+
+  it('will queue pending messages if the compontent isn\'t rendered', function(done) {
+    var component = this.subject();
+    var message = Notify.info('Hello world');
+    expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
+    expect(message.then).to.be.a('function', 'the returned message is a PromiseProxy');
+    this.render();
+
+    Ember.run.next(() => {
+      var $messages = messages(component.$());
+      expect($messages.length).to.equal(1, '1 element is shown');
+      message.set('visible', false);
+      expect($messages.hasClass('ember-notify-hidden')).to.equal(true, 'messages can be hidden');
+      done();
+    });
+  });
 });
 
 describeComponent('multiple-components', 'multiple sources', {

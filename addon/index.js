@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+
 var Notify = Ember.Object.extend({
 
   info: aliasToShow('info'),
@@ -22,12 +24,23 @@ var Notify = Ember.Object.extend({
       type: type
     }, options);
     var target = this.get('target');
+    var promise;
     if (target) {
-      return target.show(message);
+      var view = target.show(message);
+      promise = Ember.RSVP.resolve(view);
     }
     else {
-      this.pending.push(message);
+      promise = new Ember.RSVP.Promise(function(resolve) {
+        this.pending.push({
+          message: message,
+          resolve: resolve
+        });
+      }.bind(this));
     }
+    return MessagePromise.create({
+      message: message,
+      promise: promise
+    });
   },
 
   create: function(component) {
@@ -44,7 +57,10 @@ var Notify = Ember.Object.extend({
   }.property(),
 
   showPending: function(target) {
-    this.pending.map(target.show.bind(target));
+    this.pending.map(function(pending) {
+      pending.resolve(target.show(pending.message));
+    });
+    this.pending = [];
   }
 
 }).reopenClass({
