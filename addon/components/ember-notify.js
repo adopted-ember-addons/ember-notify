@@ -43,23 +43,15 @@ export var MessageView = Ember.View.extend({
   attributeBindings: ['data-alert'],
   'data-alert': '',
 
-  run: Ember.Object.create({
-    init: function() {
-      this.next = runner('next');
-      this.later = runner('later');
-      function runner(method) {
-        return function(ctx) {
-          var disable = Ember.testing && !Notify.testing,
-              run = disable ? this.zalkoBegone : Ember.run[method];
-          return run.apply(ctx, arguments);
-        };
-      }
-    },
-    zalkoBegone: function(ctx, fn) {
-      Ember.run.next(ctx, fn);
-    }
-  }),
+  run: null,
 
+  init: function() {
+    this._super();
+    this.run = Runner.create({
+      // disable all the scheduling in tests
+      disabled: Ember.testing && !Notify.testing
+    });
+  },
   didInsertElement: function() {
     if (Ember.isNone(this.get('message.visible'))) {
       // the element is added to the DOM in its hidden state, so that
@@ -101,7 +93,10 @@ export var MessageView = Ember.View.extend({
       }
       function remove() {
         var parentView = that.get('parentView');
-        if (parentView) parentView.get('messages').removeObject(that.get('message'));
+        if (parentView) {
+          parentView.get('messages').removeObject(that.get('message'));
+          that.set('message.visible', null);
+        }
       }
     }
   }
@@ -122,3 +117,26 @@ export var BootstrapView = MessageView.extend({
     return 'alert-%@'.fmt(type);
   }.property('type')
 });
+
+// getting the run loop to do what we want is difficult, hence the Runner...
+var Runner = Ember.Object.extend({
+  init: function() {
+    if (!this.disabled) {
+      // this is horrible but this avoids delays from the run loop
+      this.next = function(ctx, fn) {
+        setTimeout(function() {
+          Ember.run(function() {
+            fn.apply(ctx, arguments);
+          });
+        }, 0);
+      };
+      this.later = Ember.run.later.bind(Ember.run);
+    }
+    else {
+      this.next = this.later = function zalkoBegone(ctx, fn) {
+        Ember.run.next(ctx, fn);
+      };
+    }
+  }
+});
+

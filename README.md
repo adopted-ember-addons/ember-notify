@@ -35,7 +35,7 @@ var message = Notify.alert('You can control how long it\'s displayed', {
 message.set('visible', false); // and you can hide messages programmatically.
 ```
 
-The Notify methods (`info`, `success`, `warning`, `alert` and `error`) all return an instance of `Message`, rather than the `View` instance. You can use this object to change the `message` property, or to programatically hide the message by setting `visible` to `false`.
+The Notify methods (`info`, `success`, `warning`, `alert` and `error`) all return a Promise for an instance of `Message`. You can use this object to change the `message` property, or to programatically hide the message by setting `visible` to `false`.
 
 You can specify raw HTML:
 
