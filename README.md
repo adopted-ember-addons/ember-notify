@@ -14,10 +14,10 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 2. Use `this.notify` in routes or controllers to display messages: 
 
 ```js
-this.info('Hello there!');
-this.alert('This is an alert.');
-this.success('It worked.'):
-this.warning('Hmmn, that didn\'t work out.');
+this.notify.info('Hello there!');
+this.notify.alert('This is an alert.');
+this.notify.success('It worked.'):
+this.notify.warning('Hmmn, that didn\'t work out.');
 ```
 
 If you're not in a route or a controller you can use the `Notify` helper: 
