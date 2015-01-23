@@ -1,6 +1,8 @@
+[<img align='right' alt='Build Status' src='https://travis-ci.org/aexmachina/ember-notify.png'>](https://travis-ci.org/aexmachina/ember-notify)
+
 # ember-notify
 
-[![Build Status](https://travis-ci.org/aexmachina/ember-notify.png)](https://travis-ci.org/aexmachina/ember-notify)
+### [Visit project page and demo](http://aexmachina.info/ember-notify)
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
