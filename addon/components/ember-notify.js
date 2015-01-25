@@ -5,6 +5,7 @@ import Message from 'ember-notify/message';
 export default Ember.Component.extend({
   source: null,
   messages: null,
+  closeAfter: 2500,
 
   classNames: ['ember-notify-cn'],
   messageStyle: 'foundation',
@@ -37,6 +38,7 @@ export default Ember.Component.extend({
 
 export var MessageView = Ember.View.extend({
   message: null,
+  closeAfter: undefined,
 
   classNames: ['ember-notify'],
   classNameBindings: ['typeCss', 'message.visible:ember-notify-show:ember-notify-hidden'],
@@ -61,7 +63,7 @@ export var MessageView = Ember.View.extend({
         this.set('message.visible', true);
       });
     }
-    var closeAfter = this.get('message.closeAfter');
+    var closeAfter = this.get('message.closeAfter') || this.get('closeAfter');
     if (closeAfter) {
       this.run.later(this, function() {
         if (this.get('isDestroyed')) return;

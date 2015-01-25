@@ -4,6 +4,6 @@ export default Ember.Object.extend({
   message: null,
   raw: '',
   type: 'info',
-  closeAfter: 2500,
+  closeAfter: undefined,
   visible: undefined
 });
