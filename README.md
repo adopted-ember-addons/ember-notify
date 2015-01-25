@@ -26,22 +26,22 @@ If you're not in a route or a controller you can use the `Notify` helper:
 
 ```js
 import Notify from 'ember-notify';
+Notify.info('Peace.');
 ```
 
-By default the notifications close after 2.5 seconds, or you can control when they're closed:
+By default the notifications close after 2.5 seconds, although you can control this in your template:
+
+```handlebars
+{{ember-notify closeAfter=4000}}
+```
+
+Or you can control when each message is closed:
 
 ```js
 var message = Notify.alert('You can control how long it\'s displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 message.set('visible', false); // and you can hide messages programmatically.
-```
-
-You can also change the default value for closing the notification in the template:
-
-
-```handlebars
-{{ember-notify closeAfter=4000}}
 ```
 
 The Notify methods (`info`, `success`, `warning`, `alert` and `error`) all return a Promise for an instance of `Message`. You can use this object to change the `message` property, or to programatically hide the message by setting `visible` to `false`.
@@ -93,4 +93,4 @@ npm install ember-notify --save-dev
 
 ### Upgrading from a previous version
 
-See [the CHANGELOG](CHANGELOG.md).
+See [the CHANGELOG](https://github.com/aexmachina/ember-notify/blob/master/CHANGELOG.md).
