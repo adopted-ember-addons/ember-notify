@@ -32,7 +32,9 @@
     "ember-cli-jstransform": "^2.0.0",
     "ember-cli-mocha": "^0.2.1",
     "express": "^4.8.5",
-    "glob": "^4.0.5",
+    "glob": "^4.0.5"
+  },
+  "dependency": {
     "object-assign": "^2.0.0"
   },
   "keywords": [
