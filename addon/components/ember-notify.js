@@ -38,7 +38,7 @@ export default Ember.Component.extend({
 
 export var MessageView = Ember.View.extend({
   message: null,
-  closeAfter: undefined,
+  closeAfter: null,
 
   classNames: ['ember-notify'],
   classNameBindings: ['typeCss', 'message.visible:ember-notify-show:ember-notify-hidden'],
@@ -63,7 +63,8 @@ export var MessageView = Ember.View.extend({
         this.set('message.visible', true);
       });
     }
-    var closeAfter = this.get('message.closeAfter') || this.get('closeAfter');
+    var closeAfter = this.get('message.closeAfter');
+    if (closeAfter === undefined) closeAfter = this.get('closeAfter');
     if (closeAfter) {
       this.run.later(this, function() {
         if (this.get('isDestroyed')) return;
@@ -84,8 +85,8 @@ export var MessageView = Ember.View.extend({
 
   actions: {
     close: function() {
-      var that = this,
-          removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
+      var that = this;
+      var removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
       this.set('message.visible', false);
       if (removeAfter) {
         this.run.later(this, remove, removeAfter);

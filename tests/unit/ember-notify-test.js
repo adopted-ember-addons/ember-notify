@@ -29,7 +29,6 @@ describeComponent('ember-notify', 'ember-notify', () => {
       .then(function(observed) {
         expect(messages($el).length).to.equal(0, 'element is removed from DOM');
         var times = timesSince(observed, start);
-        console.log(times);
         expect(times[1]).to.be.greaterThan(500);
         expect(times[2]).to.be.greaterThan(1000);
       });
