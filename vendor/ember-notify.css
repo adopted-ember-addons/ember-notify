@@ -13,6 +13,12 @@
   width: 300px;
   right: -310px;
 }
+.ember-notify {
+  /* the following is purely so that it doesn't look broken without Foundation installed */
+  box-sizing: border-box;
+  background: #ccc;
+  padding: 10px;
+}
 
 .ember-notify-cn .close {
   float: right;
@@ -44,6 +50,7 @@
   .ember-notify-cn {
     width: 100%;
     padding-left: 20px;
+    box-sizing: border-box;
   }
   .ember-notify-cn .ember-notify {
     width: 100%;
