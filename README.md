@@ -2,6 +2,8 @@
 
 # ember-notify
 
+[![Join the chat at https://gitter.im/aexmachina/ember-notify](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aexmachina/ember-notify?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### [Visit project page and demo](http://aexmachina.info/ember-notify)
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
