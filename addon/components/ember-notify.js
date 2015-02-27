@@ -55,6 +55,10 @@ export var MessageView = Ember.View.extend({
     });
   },
   didInsertElement: function() {
+    var element = this.get('message.element');
+    if (element) {
+      this.$('.message').append(element);
+    }
     if (Ember.isNone(this.get('message.visible'))) {
       // the element is added to the DOM in its hidden state, so that
       // adding the 'ember-notify-show' class triggers the CSS transition

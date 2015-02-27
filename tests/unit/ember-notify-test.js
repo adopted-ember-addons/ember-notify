@@ -124,6 +124,15 @@ describeComponent('ember-notify', 'ember-notify', () => {
     expect($message.eq(0).is('.alert.alert-info')).to.be.true();
     expect($message.eq(1).is('.alert.alert-danger')).to.be.true();
   });
+
+  it('supports being provided an element', function() {
+    var component = this.subject({});
+    component.show({
+      element: $('<input>')
+    });
+    this.render();
+    expect(component.$('.message input').length).to.equal(1);
+  });
 });
 
 describeComponent('ember-notify', 'Notify helper', () => {
