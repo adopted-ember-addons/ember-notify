@@ -31,7 +31,9 @@ export default Ember.Component.extend({
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }
-    this.messages.pushObject(message);
+    if (!this.get('isDestroyed')) {
+      this.messages.pushObject(message);
+    }
     return message;
   }
 });
