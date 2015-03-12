@@ -28,12 +28,11 @@ export default Ember.Component.extend({
     this.set('messageClass', klass || this.constructor.defaultViewClass);
   },
   show: function(message) {
+    if (this.get('isDestroyed')) return;
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }
-    if (!this.get('isDestroyed')) {
-      this.messages.pushObject(message);
-    }
+    this.messages.pushObject(message);
     return message;
   }
 });
