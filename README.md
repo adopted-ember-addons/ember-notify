@@ -18,7 +18,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 ```js
 this.notify.info('Hello there!');
 this.notify.alert('This is an alert.');
-this.notify.success('It worked.'):
+this.notify.success('It worked.');
 this.notify.warning('Hmmn, that didn\'t work out.');
 ```
 
