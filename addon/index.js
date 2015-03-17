@@ -26,8 +26,8 @@ var Notify = Ember.Object.extend({
     var target = this.get('target');
     var promise;
     if (target) {
-      var view = target.show(message);
-      promise = Ember.RSVP.resolve(view);
+      var messageObj = target.show(message);
+      promise = Ember.RSVP.resolve(messageObj);
     }
     else {
       promise = new Ember.RSVP.Promise(function(resolve) {
@@ -58,7 +58,8 @@ var Notify = Ember.Object.extend({
 
   showPending: function(target) {
     this.pending.map(function(pending) {
-      pending.resolve(target.show(pending.message));
+      var messageObj = target.show(pending.message);
+      pending.resolve(messageObj);
     });
     this.pending = [];
   }
