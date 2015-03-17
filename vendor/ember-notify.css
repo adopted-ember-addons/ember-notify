@@ -16,7 +16,7 @@
 .ember-notify {
   /* the following is purely so that it doesn't look broken without Foundation installed */
   box-sizing: border-box;
-  background: #ccc;
+  border: 1px solid #ccc;
   padding: 10px;
 }
 

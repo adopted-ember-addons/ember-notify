@@ -159,7 +159,7 @@ describeComponent('ember-notify', 'Notify helper', () => {
     });
   });
 
-  it('will queue pending messages if the compontent isn\'t rendered', function() {
+  it('will queue pending messages if the component isn\'t rendered', function() {
     var component = this.subject();
     var message = Notify.info('Hello world');
     expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
