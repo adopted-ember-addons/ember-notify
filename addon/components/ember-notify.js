@@ -26,10 +26,10 @@ export default Ember.Component.extend({
     }
     this.set('messageClass', klass || this.constructor.defaultViewClass);
   },
-  didInsertElement() {
+  didInsertElement: function() {
     this.set('source.target', this);
   },
-  willDestroyElement() {
+  willDestroyElement: function() {
     this.set('source.target', null);
   },
   show: function(message) {
