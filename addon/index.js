@@ -97,13 +97,12 @@ export default Notify.extend({
 }).create();
 
 var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin, {
-  set(key, val) {
+  set: function (key, val) {
     // if the message hasn't been displayed then set the value on the message hash
     if (!this.get('content')) {
       this.message[key] = val;
       return this;
-    }
-    else {
+    } else {
       return this._super(key, val);
     }
   }
