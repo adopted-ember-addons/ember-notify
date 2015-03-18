@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
-var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin);
+function aliasToShow(type) {
+  return function(message, options) {
+    return this.show(type, message, options);
+  };
+}
 
 var Notify = Ember.Object.extend({
 
@@ -92,8 +96,15 @@ export default Notify.extend({
 
 }).create();
 
-function aliasToShow(type) {
-  return function(message, options) {
-    return this.show(type, message, options);
-  };
-}
+var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin, {
+  set(key, val) {
+    // if the message hasn't been displayed then set the value on the message hash
+    if (!this.get('content')) {
+      this.message[key] = val;
+      return this;
+    }
+    else {
+      return this._super(key, val);
+    }
+  }
+});

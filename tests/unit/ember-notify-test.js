@@ -166,10 +166,22 @@ describeComponent('ember-notify', 'Notify helper', () => {
     expect(message.then).to.be.a('function', 'the returned message is a PromiseProxy');
     this.render();
 
-    return observeSequence(message, 'visible', [undefined, true])
+    return observeSequence(message, 'visible', [true])
       .then(() =>
         expect(messages(component.$()).length).to.equal(1, '1 element is shown')
-      );
+    );
+  });
+
+  it('handles calling set on a queued message', function() {
+    var component = this.subject();
+    var message = Notify.info('Hello world');
+    message.set('message', 'Frank Zappa');
+    this.render();
+
+    return observeSequence(message, 'visible', [true])
+      .then(() =>
+        expect(messages(component.$()).find('.message').text()).to.equal('Frank Zappa', 'message is updated')
+    );
   });
 });
 

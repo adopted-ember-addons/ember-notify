@@ -15,7 +15,6 @@ export default Ember.Component.extend({
     this.messages = [];
 
     if (Ember.isNone(this.get('source'))) this.set('source', Notify);
-    this.set('source.target', this);
 
     var style = this.get('messageStyle'), klass;
     if (style) {
@@ -26,6 +25,12 @@ export default Ember.Component.extend({
       );
     }
     this.set('messageClass', klass || this.constructor.defaultViewClass);
+  },
+  didInsertElement() {
+    this.set('source.target', this);
+  },
+  willDestroyElement() {
+    this.set('source.target', null);
   },
   show: function(message) {
     if (this.get('isDestroyed')) return;
