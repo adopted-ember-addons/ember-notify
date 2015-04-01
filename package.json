@@ -20,16 +20,12 @@
     "test": "ember test"
   },
   "repository": "https://github.com/aexmachina/ember-notify.git",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
   "author": "@aexmachina",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",
     "ember-cli": "0.2.0",
     "ember-cli-app-version": "0.3.2",
-    "ember-cli-babel": "^4.0.0",
     "ember-cli-dependency-checker": "0.0.8",
     "ember-cli-htmlbars": "0.7.4",
     "ember-cli-ic-ajax": "0.1.1",
@@ -39,6 +35,7 @@
     "ember-export-application-global": "^1.0.2"
   },
   "dependencies": {
+    "ember-cli-babel": "^4.0.0",
     "object-assign": "^2.0.0"
   },
   "keywords": [
