@@ -34,12 +34,12 @@ var Notify = Ember.Object.extend({
       promise = Ember.RSVP.resolve(messageObj);
     }
     else {
-      promise = new Ember.RSVP.Promise(function(resolve) {
+      promise = new Ember.RSVP.Promise(Ember.run.bind(this, function(resolve) {
         this.pending.push({
           message: message,
           resolve: resolve
         });
-      }.bind(this));
+      }));
     }
     return MessagePromise.create({
       message: message,
