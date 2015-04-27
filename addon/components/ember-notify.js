@@ -137,13 +137,16 @@ var Runner = Ember.Object.extend({
     if (!this.disabled) {
       // this is horrible but this avoids delays from the run loop
       this.next = function(ctx, fn) {
+        var args = arguments;
         setTimeout(function() {
           Ember.run(function() {
-            fn.apply(ctx, arguments);
+            fn.apply(ctx, args);
           });
         }, 0);
       };
-      this.later = Ember.run.later.bind(Ember.run);
+      this.later = function() {
+        Ember.run.later.apply(Ember.run, arguments);
+      };
     }
     else {
       this.next = this.later = function zalkoBegone(ctx, fn) {
