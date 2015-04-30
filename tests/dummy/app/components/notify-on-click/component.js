@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Route.extend({
+export default Ember.Component.extend({
   actions: {
-    notifyFromRoute: function() {
+    notifyFromComponent: function() {
       this.notify.success('It worked!');
     }
   }
