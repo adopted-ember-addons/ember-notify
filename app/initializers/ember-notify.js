@@ -7,5 +7,6 @@ export default {
     app.register('notify:main', Notify);
     app.inject('route', 'notify', 'notify:main');
     app.inject('controller', 'notify', 'notify:main');
+    app.inject('component', 'notify', 'notify:main');
   }
 };
