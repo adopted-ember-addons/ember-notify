@@ -53,20 +53,16 @@ var Notify = Ember.Object.extend({
     });
   },
 
-  target: function(key, val) {
-    if (arguments.length === 2) {
-      this.showPending(val);
+  showPending: function() {
+    var target = this.get('target');
+    if (target) {
+      this.pending.map(function(pending) {
+        var messageObj = target.show(pending.message);
+        pending.resolve(messageObj);
+      });
+      this.pending = [];
     }
-    return val;
-  }.property(),
-
-  showPending: function(target) {
-    this.pending.map(function(pending) {
-      var messageObj = target.show(pending.message);
-      pending.resolve(messageObj);
-    });
-    this.pending = [];
-  }
+  }.observes('target')
 
 }).reopenClass({
   // set to true to disable testing optimizations that are enabled when
