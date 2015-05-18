@@ -8,7 +8,7 @@ module.exports = {
     return true;
   },
   included: function(app) {
-    this._super.included(app);
+    this._super.included.apply(this, arguments);
     var options = objectAssign({
       importCss: true
     }, app.options.emberNotify);

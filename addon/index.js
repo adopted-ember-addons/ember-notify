@@ -34,11 +34,9 @@ var Notify = Ember.Object.extend({
       promise = Ember.RSVP.resolve(messageObj);
     }
     else {
-      promise = new Ember.RSVP.Promise(Ember.run.bind(this, function(resolve) {
-        this.pending.push({
-          message: message,
-          resolve: resolve
-        });
+      promise = new Ember.RSVP.Promise(resolve => this.pending.push({
+        message: message,
+        resolve: resolve
       }));
     }
     return MessagePromise.create({
@@ -79,15 +77,18 @@ export default Notify.extend({
   create: function() {
     return Notify.create();
   },
-  target: Ember.computed(function(key, val) {
-    if (arguments.length === 2) {
+  target: Ember.computed({
+    get() {
+      return this._target;
+    },
+    set(key, val) {
       Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
         "If you want more than one then use {{ember-notify source=someProperty}}",
         !this._primary || this._primary.get('isDestroyed')
       );
-      this.showPending(val);
+      this._target = val;
+      return this._target;
     }
-    return val;
   })
 
 }).create();

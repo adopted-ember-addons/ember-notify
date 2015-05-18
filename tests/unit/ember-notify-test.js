@@ -3,6 +3,11 @@ import {
   describeComponent,
   it
 } from 'ember-mocha';
+import {
+  messages,
+  observeSequence,
+  timesSince
+} from '../helpers';
 import Notify from 'ember-notify';
 
 describeComponent('ember-notify', 'ember-notify', () => {
@@ -26,12 +31,12 @@ describeComponent('ember-notify', 'ember-notify', () => {
     expect($message.find('.message').text()).to.equal('Hello world');
 
     return observeSequence(message, 'visible', [true, false, null])
-      .then(function(observed) {
+      .then(observed => Ember.run.next(() => {
         expect(messages($el).length).to.equal(0, 'element is removed from DOM');
         var times = timesSince(observed, start);
         expect(times[1]).to.be.greaterThan(500);
         expect(times[2]).to.be.greaterThan(1000);
-      });
+      }));
   });
 
   it('shows success messages', function() {
@@ -99,11 +104,11 @@ describeComponent('ember-notify', 'ember-notify', () => {
         message.set('visible', false);
         return observeSequence(message, 'visible', [null]);
       })
-      .then(function(observed) {
+      .then(observed => Ember.run.next(() => {
         expect(messages($el).length).to.equal(0, 'element is removed from DOM');
         var times = timesSince(observed, start);
         expect(times[0]).to.be.greaterThan(100);
-      });
+      }));
   });
 
   it('supports Bootstrap styling', function() {
@@ -134,114 +139,3 @@ describeComponent('ember-notify', 'ember-notify', () => {
     expect(component.$('.message input').length).to.equal(1);
   });
 });
-
-describeComponent('ember-notify', 'Notify helper', () => {
-  beforeEach(() => Notify.testing = true);
-  it('can be used to show messages', function(done) {
-    var component = this.subject();
-    var message = Notify.info('Hello world');
-    expect(message.get('visible')).to.equal(undefined, 'message is initially hidden');
-    this.render();
-
-    var $messages = messages(component.$());
-    expect($messages.length).to.equal(1, 'element is shown');
-    Ember.run.next(() => {
-      expect(message.get('visible')).to.equal(true, 'message is visible');
-      Ember.run(() => message.set('visible', false));
-      expect($messages.hasClass('ember-notify-hidden')).to.equal(true, 'messages can be hidden');
-
-      Ember.run(() => Notify.success('Hello world'));
-      $messages = messages(component.$());
-      expect($messages.length).to.equal(2, '2 elements are shown');
-      expect($messages.eq(1).hasClass('success')).to.equal(true);
-
-      done();
-    });
-  });
-
-  it('will queue pending messages if the component isn\'t rendered', function() {
-    var component = this.subject();
-    var message = Notify.info('Hello world');
-    expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
-    expect(message.then).to.be.a('function', 'the returned message is a PromiseProxy');
-    this.render();
-
-    return observeSequence(message, 'visible', [true])
-      .then(() =>
-        expect(messages(component.$()).length).to.equal(1, '1 element is shown')
-    );
-  });
-
-  it('handles calling set on a queued message', function() {
-    var component = this.subject();
-    var message = Notify.info('Hello world');
-    message.set('message', 'Frank Zappa');
-    this.render();
-
-    return observeSequence(message, 'visible', [true])
-      .then(() =>
-        expect(messages(component.$()).find('.message').text()).to.equal('Frank Zappa', 'message is updated')
-    );
-  });
-});
-
-describeComponent('multiple-components', 'multiple sources', {
-  needs: ['component:ember-notify', 'template:components/ember-notify']
-}, () => {
-  beforeEach(() => Notify.testing = true);
-  it('source property allows multiple {{ember-notify}} components', function() {
-    var secondarySource = Notify.create();
-    var component = this.subject({
-      notify: secondarySource
-    });
-    this.render();
-    Ember.run(() => Notify.info('Hello world'));
-    var $primary = component.$('.primary');
-    var $secondary = component.$('.secondary');
-    expect(messages($primary).length).to.equal(1);
-    expect(messages($secondary).length).to.equal(0);
-
-    Ember.run(() => secondarySource.info('Hello again'));
-    expect(messages($secondary).length).to.equal(1);
-
-    var propertyTest = Ember.Object.extend({
-      property: Notify.property()
-    }).create();
-    expect(propertyTest.get('property')).to.respondTo('show',
-      'Notify.property provides a Notify instance'
-    );
-  });
-});
-
-function messages($el) {
-  return $el.find('.ember-notify');
-}
-
-function observeSequence(obj, prop, seq) {
-  var observed = [];
-  var observer;
-  return new Ember.RSVP.Promise(
-    function(resolve, reject) {
-      obj.addObserver(prop, observer = function() {
-        var expected = seq[observed.length];
-        var val = obj.get(prop);
-        observed.push({
-          value: val,
-          time: new Date()
-        });
-        if (expected !== val) {
-          reject(new Error('Expected ' + seq + ' and got ' + observed.mapBy('value')));
-        }
-        if (observed.length === seq.length) resolve(observed);
-      });
-    })
-    .finally(function() {
-      obj.removeObserver(prop, observer);
-    });
-}
-
-function timesSince(observed, start) {
-  return Ember.A(observed).mapBy('time').map(function(date) {
-    return date.getTime() - start.getTime();
-  });
-}

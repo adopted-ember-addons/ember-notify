@@ -78,7 +78,7 @@ export var MessageView = Ember.View.extend({
     if (closeAfter) {
       this.run.later(this, function() {
         if (this.get('isDestroyed')) return;
-        this.set('message.visible', false);
+        this.send('close');
       }, closeAfter);
     }
   },
@@ -97,7 +97,9 @@ export var MessageView = Ember.View.extend({
     close: function() {
       var that = this;
       var removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
-      this.set('message.visible', false);
+      if (this.get('message.visible')) {
+        this.set('message.visible', false);
+      }
       if (removeAfter) {
         this.run.later(this, remove, removeAfter);
       }
@@ -105,6 +107,7 @@ export var MessageView = Ember.View.extend({
         remove();
       }
       function remove() {
+        if (this.get('isDestroyed')) return;
         var parentView = that.get('parentView');
         if (parentView) {
           parentView.get('messages').removeObject(that.get('message'));
