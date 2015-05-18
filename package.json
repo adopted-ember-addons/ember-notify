@@ -17,25 +17,30 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember test"
+    "test": "ember try:testall"
   },
   "repository": "https://github.com/aexmachina/ember-notify.git",
   "author": "@aexmachina",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.0.0",
-    "ember-cli": "0.2.3",
-    "ember-cli-app-version": "0.3.2",
+    "broccoli-asset-rev": "^2.0.2",
+    "ember-cli": "0.2.4",
+    "ember-cli-app-version": "0.3.3",
     "ember-cli-dependency-checker": "0.0.8",
     "ember-cli-htmlbars": "0.7.4",
     "ember-cli-ic-ajax": "0.1.1",
     "ember-cli-inject-live-reload": "^1.3.0",
     "ember-cli-mocha": "^0.4.0",
     "ember-cli-uglify": "1.0.1",
-    "ember-export-application-global": "^1.0.2"
+    "ember-export-application-global": "^1.0.2",
+    "ember-disable-prototype-extensions": "^1.0.0",
+    "ember-try": "0.0.5"
   },
   "dependencies": {
-    "ember-cli-babel": "^4.0.0",
+    "ember-cli-babel": "^5.0.0",
     "object-assign": "^2.0.0"
   },
   "keywords": [
