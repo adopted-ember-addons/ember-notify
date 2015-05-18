@@ -241,7 +241,7 @@ function observeSequence(obj, prop, seq) {
 }
 
 function timesSince(observed, start) {
-  return observed.mapBy('time').map(function(date) {
+  return Ember.A(observed).mapBy('time').map(function(date) {
     return date.getTime() - start.getTime();
   });
 }

@@ -53,7 +53,7 @@ var Notify = Ember.Object.extend({
     });
   },
 
-  showPending: function() {
+  showPending: Ember.observer('target', function() {
     var target = this.get('target');
     if (target) {
       this.pending.map(function(pending) {
@@ -62,7 +62,7 @@ var Notify = Ember.Object.extend({
       });
       this.pending = [];
     }
-  }.observes('target')
+  })
 
 }).reopenClass({
   // set to true to disable testing optimizations that are enabled when
@@ -79,7 +79,7 @@ export default Notify.extend({
   create: function() {
     return Notify.create();
   },
-  target: function(key, val) {
+  target: Ember.computed(function(key, val) {
     if (arguments.length === 2) {
       Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
         "If you want more than one then use {{ember-notify source=someProperty}}",
@@ -88,7 +88,7 @@ export default Notify.extend({
       this.showPending(val);
     }
     return val;
-  }.property()
+  })
 
 }).create();
 

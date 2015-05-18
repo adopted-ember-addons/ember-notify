@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 
   init: function() {
     this._super();
-    this.messages = [];
+    this.set('messages', Ember.A());
 
     if (Ember.isNone(this.get('source'))) this.set('source', Notify);
 
@@ -21,7 +21,7 @@ export default Ember.Component.extend({
       if ('foundation' === style) klass = FoundationView;
       else if ('bootstrap' === style) klass = BootstrapView;
       else throw new Error(
-        "Unknown messageStyle %s: options are 'foundation' and 'bootstrap'".fmt(style)
+        `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
       );
     }
     this.set('messageClass', klass || this.constructor.defaultViewClass);
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }
-    this.messages.pushObject(message);
+    this.get('messages').pushObject(message);
     return message;
   }
 });
@@ -82,16 +82,16 @@ export var MessageView = Ember.View.extend({
       }, closeAfter);
     }
   },
-  typeCss: function() {
+  typeCss: Ember.computed('message.type', function() {
     var cssClass = this.get('message.type');
     if (cssClass === 'error') cssClass = 'alert error';
     return cssClass;
-  }.property('message.type'),
-  visibleObserver: function() {
+  }),
+  visibleObserver: Ember.observer('message.visible', function() {
     if (!this.get('message.visible')) {
       this.send('close');
     }
-  }.observes('message.visible'),
+  }),
 
   actions: {
     close: function() {
@@ -124,11 +124,11 @@ export var FoundationView = MessageView.extend({
 
 export var BootstrapView = MessageView.extend({
   classNames: ['alert'],
-  typeCss: function() {
+  typeCss: Ember.computed('type', function() {
     var type = this.get('message.type');
     if (type === 'alert' || type === 'error') type = 'danger';
-    return 'alert-%@'.fmt(type);
-  }.property('type')
+    return 'alert-' + type;
+  })
 });
 
 // getting the run loop to do what we want is difficult, hence the Runner...
