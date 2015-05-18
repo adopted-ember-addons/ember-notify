@@ -21,7 +21,7 @@ export default Ember.Component.extend({
       if ('foundation' === style) klass = FoundationView;
       else if ('bootstrap' === style) klass = BootstrapView;
       else throw new Error(
-        `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
+        "Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'"
       );
     }
     this.set('messageClass', klass || this.constructor.defaultViewClass);
