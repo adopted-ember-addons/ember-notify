@@ -77,18 +77,14 @@ export default Notify.extend({
   create: function() {
     return Notify.create();
   },
-  target: Ember.computed({
-    get() {
-      return this._target;
-    },
-    set(key, val) {
+  target: Ember.computed(function(key, val) {
+    if (arguments.length > 1) {
       Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
         "If you want more than one then use {{ember-notify source=someProperty}}",
         !this._primary || this._primary.get('isDestroyed')
       );
-      this._target = val;
-      return this._target;
     }
+    return val;
   })
 
 }).create();
