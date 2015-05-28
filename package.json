@@ -42,7 +42,8 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.0.0",
-    "object-assign": "^2.0.0"
+    "object-assign": "^2.0.0",
+    "ember-new-computed": "1.0.0"
   },
   "keywords": [
     "ember-addon"
