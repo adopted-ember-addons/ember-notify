@@ -1,4 +1,4 @@
-{{#each message in messages}}
+{{#each messages as |message|}}
   {{#view view.messageClass message=message closeAfter=closeAfter class='clearfix'}}
     <a {{action 'close' target='view'}} class='close'>&times;</a>
     <span class='message'>{{message.message}}{{{message.raw}}}</span>
