@@ -20,6 +20,7 @@ export default Ember.Component.extend({
     if (style) {
       if ('foundation' === style) klass = FoundationView;
       else if ('bootstrap' === style) klass = BootstrapView;
+      else if ('refills' === style) klass = RefillsView;
       else throw new Error(
         `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
       );
@@ -131,6 +132,21 @@ export var BootstrapView = MessageView.extend({
     var type = this.get('message.type');
     if (type === 'alert' || type === 'error') type = 'danger';
     return 'alert-' + type;
+  })
+});
+
+export var RefillsView = MessageView.extend({
+  typeCss: Ember.computed('type', function() {
+    var type = this.get('message.type');
+    var typeMapping = {
+      'success': 'success',
+      'alert': 'error',
+      'error': 'error',
+      'info': 'notice',
+      'warning': 'alert'
+    };
+
+    return 'flash-' + typeMapping[type];
   })
 });
 
