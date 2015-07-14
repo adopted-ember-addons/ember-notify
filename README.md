@@ -6,7 +6,7 @@
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
-The CSS classes are compatible with Zurb Foundation 5, or you can use Bootstrap styling using `{{ember-notify messageStyle='bootstrap'}}`.
+The CSS classes are compatible with Zurb Foundation 5, Thoughtbot's Refills, and Bootstrap. For Bootstrap use `{{ember-notify messageStyle='bootstrap'}}` and for Refills use `{{ember-notify messageStyle='refills'}}`.
 
 The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/).
 
