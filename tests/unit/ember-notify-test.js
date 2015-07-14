@@ -130,6 +130,25 @@ describeComponent('ember-notify', 'ember-notify', () => {
     expect($message.eq(1).is('.alert.alert-danger')).to.be.true();
   });
 
+  it('supports refills styling', function() {
+    var component = this.subject({
+      messageStyle: 'refills'
+    });
+    component.show({
+      message: 'Hello world'
+    });
+    component.show({
+      message: 'Hello again',
+      type: 'alert'
+    });
+    this.render();
+
+    var $el = component.$();
+    var $message = messages($el);
+    expect($message.eq(0).is('.flash-notice')).to.be.true();
+    expect($message.eq(1).is('.flash-error')).to.be.true();
+  });
+
   it('supports being provided an element', function() {
     var component = this.subject({});
     component.show({
