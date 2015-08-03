@@ -1,0 +1,26 @@
+<form class='row'>
+  <div class='column'>
+    <fieldset>
+      <legend>ember-notify demo</legend>
+      <div class='message'>
+        <label>Message</label>
+        {{input value=model.message name='message'}}
+      </div>
+      <div class='level'>
+        <button {{action 'info' model}}>info</button>
+        <button {{action 'success' model}}>success</button>
+        <button {{action 'warning' model}}>warning</button>
+        <button {{action 'alert' model}}>alert</button>
+      </div>
+      <div class='settings'>
+        <div class='close-after'>
+          <label>Close after (empty to disable)</label>
+          {{input value=model.closeAfter name='closeAfter'}}
+        </div>
+        <div class='type'>
+          <label>{{input type='checkbox' name='raw' checked=raw}} Unescaped HTML</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>

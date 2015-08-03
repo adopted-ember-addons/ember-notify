@@ -9,6 +9,8 @@ module.exports = {
     var options = objectAssign({
       importCss: true
     }, app.options.emberNotify);
-    if (options.importCss) app.import('vendor/ember-notify.css');
+    if (options.importCss) {
+      app.import('vendor/ember-notify.css');
+    }
   }
 };

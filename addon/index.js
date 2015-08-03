@@ -7,7 +7,7 @@ function aliasToShow(type) {
   };
 }
 
-var Notify = Ember.Object.extend({
+var Notify = Ember.Service.extend({
 
   info: aliasToShow('info'),
   success: aliasToShow('success'),
@@ -64,8 +64,7 @@ var Notify = Ember.Object.extend({
   })
 
 }).reopenClass({
-  // set to true to disable testing optimizations that are enabled when
-  // Ember.testing is true
+  // set to true to disable testing optimizations that are enabled when Ember.testing is true
   testing: false
 });
 
@@ -92,7 +91,7 @@ export default Notify.extend({
     }
   })
 
-}).create();
+});
 
 var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin, {
   set: function(key, val) {

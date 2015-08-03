@@ -1,2 +1,2 @@
-import Notify from 'ember-notify/components/ember-notify';
-export default Notify;
+import Component from 'ember-notify/components/ember-notify';
+export default Component;

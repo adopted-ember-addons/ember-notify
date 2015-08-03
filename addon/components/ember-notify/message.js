@@ -1,0 +1,97 @@
+import Ember from 'ember';
+import layout from '../../templates/components/ember-notify/message';
+import Notify from 'ember-notify';
+
+export default Ember.Component.extend({
+  layout: layout,
+  message: null,
+  closeAfter: null,
+
+  classNameBindings: [
+    'message.visible:ember-notify-show:ember-notify-hide', 'radius::', 'themeClassNames'
+  ],
+  attributeBindings: ['data-alert'],
+  'data-alert': '',
+
+  run: null,
+
+  init: function() {
+    this._super();
+    this.run = Runner.create({
+      // disable all the scheduling in tests
+      disabled: Ember.testing && !Notify.testing
+    });
+  },
+  didInsertElement: function() {
+    var element = this.get('message.element');
+    if (element) {
+      this.$('.message').append(element);
+    }
+    var closeAfter = this.get('message.closeAfter');
+    if (closeAfter === undefined) closeAfter = this.get('closeAfter');
+    if (closeAfter) {
+      this.run.later(this, function() {
+        if (this.get('isDestroyed')) return;
+        this.send('close');
+      }, closeAfter);
+    }
+  },
+  themeClassNames: Ember.computed('theme', 'message.type', function() {
+    var theme = this.get('theme');
+    return theme ? theme.classNamesFor(this.get('message')) : '';
+  }),
+  visibleObserver: Ember.observer('message.visible', function() {
+    if (!this.get('message.visible')) {
+      this.send('close');
+    }
+  }),
+
+  actions: {
+    close: function() {
+      if (!this.get('message.visible')) {
+        return;
+      }
+      this.set('message.visible', false);
+      var removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
+      if (removeAfter) {
+        this.run.later(this, remove, removeAfter);
+      }
+      else {
+        remove();
+      }
+      function remove() {
+        /* debug */ return;
+        var parentView = this.get('parentView');
+        if (this.get('isDestroyed') || !parentView) return;
+        parentView.get('messages').removeObject(this.get('message'));
+      }
+    }
+  }
+}).reopenClass({
+  removeAfter: 250 // allow time for the close animation to finish
+});
+
+// getting the run loop to do what we want is difficult, hence the Runner...
+var Runner = Ember.Object.extend({
+  init: function() {
+    if (!this.disabled) {
+      // this is horrible but this avoids delays from the run loop
+      this.next = function(ctx, fn) {
+        var args = arguments;
+        setTimeout(function() {
+          Ember.run(function() {
+            fn.apply(ctx, args);
+          });
+        }, 0);
+      };
+      this.later = function() {
+        Ember.run.later.apply(Ember.run, arguments);
+      };
+    }
+    else {
+      this.next = this.later = function zalkoBegone(ctx, fn) {
+        Ember.run.next(ctx, fn);
+      };
+    }
+  }
+});

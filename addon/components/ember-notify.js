@@ -1,9 +1,12 @@
 import Ember from 'ember';
-import Notify from 'ember-notify';
+import layout from '../templates/components/ember-notify';
 import Message from 'ember-notify/message';
 
 export default Ember.Component.extend({
-  source: null,
+  layout: layout,
+
+  notify: Ember.inject.service(),
+  source: Ember.computed.oneWay('notify'),
   messages: null,
   closeAfter: 2500,
 
@@ -13,22 +16,25 @@ export default Ember.Component.extend({
   init: function() {
     this._super();
     this.set('messages', Ember.A());
-
-    if (Ember.isNone(this.get('source'))) this.set('source', Notify);
-
-    var style = this.get('messageStyle'), klass;
-    if (style) {
-      if ('foundation' === style) klass = FoundationView;
-      else if ('bootstrap' === style) klass = BootstrapView;
-      else if ('refills' === style) klass = RefillsView;
-      else throw new Error(
-        `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
-      );
-    }
-    this.set('messageClass', klass || this.constructor.defaultViewClass);
-  },
-  didInsertElement: function() {
     this.set('source.target', this);
+
+    var style = this.get('messageStyle'), theme;
+    switch (style) {
+      case 'foundation':
+        theme = FoundationTheme.create();
+        break;
+      case 'bootstrap':
+        theme = BootstrapTheme.create();
+        break;
+      case 'refills':
+        theme = RefillsTheme.create();
+        break;
+      default:
+        throw new Error(
+          `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
+        );
+    }
+    this.set('theme', theme);
   },
   willDestroyElement: function() {
     this.set('source.target', null);
@@ -43,135 +49,40 @@ export default Ember.Component.extend({
   }
 });
 
-export var MessageView = Ember.View.extend({
-  message: null,
-  closeAfter: null,
-
-  classNames: ['ember-notify'],
-  classNameBindings: ['typeCss', 'message.visible:ember-notify-show:ember-notify-hidden'],
-  attributeBindings: ['data-alert'],
-  'data-alert': '',
-
-  run: null,
-
-  init: function() {
-    this._super();
-    this.run = Runner.create({
-      // disable all the scheduling in tests
-      disabled: Ember.testing && !Notify.testing
-    });
-  },
-  didInsertElement: function() {
-    var element = this.get('message.element');
-    if (element) {
-      this.$('.message').append(element);
-    }
-    if (Ember.isNone(this.get('message.visible'))) {
-      // the element is added to the DOM in its hidden state, so that
-      // adding the 'ember-notify-show' class triggers the CSS transition
-      this.run.next(this, function() {
-        if (this.get('isDestroyed')) return;
-        this.set('message.visible', true);
-      });
-    }
-    var closeAfter = this.get('message.closeAfter');
-    if (closeAfter === undefined) closeAfter = this.get('closeAfter');
-    if (closeAfter) {
-      this.run.later(this, function() {
-        if (this.get('isDestroyed')) return;
-        this.send('close');
-      }, closeAfter);
-    }
-  },
-  typeCss: Ember.computed('message.type', function() {
-    var cssClass = this.get('message.type');
-    if (cssClass === 'error') cssClass = 'alert error';
-    return cssClass;
-  }),
-  visibleObserver: Ember.observer('message.visible', function() {
-    if (!this.get('message.visible')) {
-      this.send('close');
-    }
-  }),
-
-  actions: {
-    close: function() {
-      var that = this;
-      var removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
-      if (this.get('message.visible')) {
-        this.set('message.visible', false);
-      }
-      if (removeAfter) {
-        this.run.later(this, remove, removeAfter);
-      }
-      else {
-        remove();
-      }
-      function remove() {
-        if (this.get('isDestroyed')) return;
-        var parentView = that.get('parentView');
-        if (parentView) {
-          parentView.get('messages').removeObject(that.get('message'));
-          that.set('message.visible', null);
-        }
-      }
-    }
+export var Theme = Ember.Object.extend({
+  classNamesFor(message) {
+    return message.get('type');
   }
-}).reopenClass({
-  removeAfter: 250 // allow time for the close animation to finish
 });
 
-export var FoundationView = MessageView.extend({
-  classNames: ['alert-box'],
-  classNameBindings: ['radius::']
+export var FoundationTheme = Theme.extend({
+  classNamesFor(message) {
+    var type = message.get('type');
+    var classNames = ['alert-box', type];
+    if (type === 'error') classNames.push('alert');
+    return classNames.join(' ');
+  }
 });
 
-export var BootstrapView = MessageView.extend({
-  classNames: ['alert'],
-  typeCss: Ember.computed('type', function() {
-    var type = this.get('message.type');
-    if (type === 'alert' || type === 'error') type = 'danger';
-    return 'alert-' + type;
-  })
+export var BootstrapTheme = Theme.extend({
+  classNamesFor(message) {
+    var type = message.get('type');
+    var classNames = ['alert', type];
+    if (type === 'alert' || type === 'error') classNames.push('danger');
+    return classNames.join(' ');
+  }
 });
 
-export var RefillsView = MessageView.extend({
+export var RefillsTheme = Theme.extend({
   typeCss: Ember.computed('type', function() {
     var type = this.get('message.type');
     var typeMapping = {
-      'success': 'success',
-      'alert': 'error',
-      'error': 'error',
-      'info': 'notice',
-      'warning': 'alert'
+      success: 'success',
+      alert: 'error',
+      error: 'error',
+      info: 'notice',
+      warning: 'alert'
     };
-
     return 'flash-' + typeMapping[type];
   })
 });
-
-// getting the run loop to do what we want is difficult, hence the Runner...
-var Runner = Ember.Object.extend({
-  init: function() {
-    if (!this.disabled) {
-      // this is horrible but this avoids delays from the run loop
-      this.next = function(ctx, fn) {
-        var args = arguments;
-        setTimeout(function() {
-          Ember.run(function() {
-            fn.apply(ctx, args);
-          });
-        }, 0);
-      };
-      this.later = function() {
-        Ember.run.later.apply(Ember.run, arguments);
-      };
-    }
-    else {
-      this.next = this.later = function zalkoBegone(ctx, fn) {
-        Ember.run.next(ctx, fn);
-      };
-    }
-  }
-});
-
