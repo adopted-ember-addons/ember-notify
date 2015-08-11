@@ -8,24 +8,34 @@ import {
 } from '../helpers';
 import Notify from 'ember-notify';
 
+var helper;
 describeComponent('multiple-components', 'multiple sources', {
-  needs: ['component:ember-notify', 'template:components/ember-notify']
+  needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
+  setup() {
+    helper = this.container.lookup('service:notify');
+  }
 }, () => {
   beforeEach(() => Notify.testing = true);
-  it('source property allows multiple {{ember-notify}} components', function() {
+  it('source property allows multiple {{ember-notify}} components', function(done) {
     var secondarySource = Notify.create();
     var component = this.subject({
-      notify: secondarySource
+      secondary: secondarySource
     });
+    helper.info('Hello world');
     this.render();
-    Ember.run(() => Notify.info('Hello world'));
+
     var $primary = component.$('.primary');
     var $secondary = component.$('.secondary');
-    expect(messages($primary).length).to.equal(1);
-    expect(messages($secondary).length).to.equal(0);
+    Ember.run.next(() => {
+      expect(messages($primary).length).to.equal(1);
+      expect(messages($secondary).length).to.equal(0);
+      secondarySource.info('Hello again');
+    });
 
-    Ember.run(() => secondarySource.info('Hello again'));
-    expect(messages($secondary).length).to.equal(1);
+    Ember.run.next(() => Ember.run.next(() => {
+      expect(messages($secondary).length).to.equal(1);
+      done();
+    }));
 
     var propertyTest = Ember.Object.extend({
       property: Notify.property()
@@ -33,6 +43,7 @@ describeComponent('multiple-components', 'multiple sources', {
     expect(propertyTest.get('property')).to.respondTo('show',
       'Notify.property provides a Notify instance'
     );
+
   });
 });
 

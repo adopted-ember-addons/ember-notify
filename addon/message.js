@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend({
-  message: null,
-  raw: '',
+  text: null,
+  html: '',
   type: 'info',
   closeAfter: undefined,
-  visible: true,
+  visible: undefined,
   classNames: []
 });

@@ -41,15 +41,13 @@ Or you can control when each message is closed:
 var message = Notify.alert('You can control how long it\'s displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
-message.set('visible', false); // and you can hide messages programmatically.
+message.set('visible', false); // and you can hide messages programatically.
 ```
-
-The Notify methods (`info`, `success`, `warning`, `alert` and `error`) all return a Promise for an instance of `Message`. You can use this object to change the `message` property, or to programatically hide the message by setting `visible` to `false`.
 
 You can specify raw HTML:
 
 ```js
-Notify.info({raw: '<div class="my-div">Hooray!</div>'});
+Notify.info({html: '<div class="my-div">Hooray!</div>'});
 ```
 
 Rounded corners, if that's your thing:

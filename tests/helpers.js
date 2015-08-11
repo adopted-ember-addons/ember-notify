@@ -22,9 +22,7 @@ export function observeSequence(obj, prop, seq) {
         if (observed.length === seq.length) resolve(observed);
       });
     })
-    .finally(function() {
-      obj.removeObserver(prop, observer);
-    });
+    .finally(() => obj.removeObserver(prop, observer));
 }
 
 export function timesSince(observed, start) {

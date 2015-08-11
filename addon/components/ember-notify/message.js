@@ -17,6 +17,11 @@ export default Ember.Component.extend({
 
   init: function() {
     this._super();
+    // indicate that the message is now being displayed
+    if (this.get('message.visible') === undefined) {
+      // should really be in didInsertElement but Glimmer doesn't allow this
+      this.set('message.visible', true);
+    }
     this.run = Runner.create({
       // disable all the scheduling in tests
       disabled: Ember.testing && !Notify.testing
@@ -48,9 +53,8 @@ export default Ember.Component.extend({
 
   actions: {
     close: function() {
-      if (!this.get('message.visible')) {
-        return;
-      }
+      if (this.get('message.closed')) return;
+      this.set('message.closed', true);
       this.set('message.visible', false);
       var removeAfter = this.get('message.removeAfter') || this.constructor.removeAfter;
       if (removeAfter) {
@@ -60,10 +64,10 @@ export default Ember.Component.extend({
         remove();
       }
       function remove() {
-        /* debug */ return;
         var parentView = this.get('parentView');
-        if (this.get('isDestroyed') || !parentView) return;
+        if (this.get('isDestroyed') || !parentView || !parentView.get('messages')) return;
         parentView.get('messages').removeObject(this.get('message'));
+        this.set('message.visible', null);
       }
     }
   }

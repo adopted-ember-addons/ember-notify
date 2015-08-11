@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0
+
+- The `notify` property is no longer injected into routes and controllers by default. You should now 
+  use `notify: Ember.inject.service()`
+- The property names have changed from `message` and `raw` to `text` and `html`
+- The `Notify.*` helper methods (`info`, `success`, `warning`, `alert` and `error`) no longer return 
+  a Promise, they return a `Message` instance
+
+
 ## v3.0
 
 v3.0 uses a component + helper architecture that removes several hacks in previous versions.
@@ -9,4 +18,4 @@ v3.0 uses a component + helper architecture that removes several hacks in previo
 - ember-cli is now required for v3.0. Projects that don't use ember-cli will need to stay on the v2.0 branch
 - You now need to add `{{ember-notify}}` to one of your templates, usually in `application.hbs`
 - Bootstrap styling is now selected using the `messageStyle` property on the component: `{{ember-notify messageStyle='bootstrap'}}`
-- If you're using `message.send('close')`, this will need to be changed to `message.set('visible', false)` 
+- If you were using `message.send('close')`, this will need to be changed to `message.set('visible', false)` 

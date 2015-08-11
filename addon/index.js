@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import computed from 'ember-new-computed';
+import Message from './message';
 
 function aliasToShow(type) {
   return function(message, options) {
@@ -15,93 +15,46 @@ var Notify = Ember.Service.extend({
   alert: aliasToShow('alert'),
   error: aliasToShow('error'),
 
-  init: function() {
+  init() {
     this.pending = [];
   },
 
-  show: function(type, message, options) {
-    if (typeof message === 'object') {
-      options = message;
-      message = null;
+  show(type, text, options) {
+    if (typeof text === 'object') {
+      options = text;
+      text = null;
     }
-    message = Ember.merge({
-      message: message,
+    var message = Message.create(Ember.merge({
+      text: text,
       type: type
-    }, options);
+    }, options));
     var target = this.get('target');
-    var promise;
     if (target) {
-      var messageObj = target.show(message);
-      promise = Ember.RSVP.resolve(messageObj);
+      target.show(message);
     }
     else {
-      promise = new Ember.RSVP.Promise(resolve => this.pending.push({
-        message: message,
-        resolve: resolve
-      }));
+      this.pending.push(message);
     }
-    return MessagePromise.create({
-      message: message,
-      promise: promise
-    });
+    return message;
   },
 
-  create: function(component) {
-    return Notify.create({
-      target: component
-    });
-  },
-
-  showPending: Ember.observer('target', function() {
-    var target = this.get('target');
+  setTarget(target) {
+    this.set('target', target);
     if (target) {
-      this.pending.map(function(pending) {
-        var messageObj = target.show(pending.message);
-        pending.resolve(messageObj);
-      });
+      this.pending.map(message => target.show(message));
       this.pending = [];
     }
-  })
+  }
 
 }).reopenClass({
   // set to true to disable testing optimizations that are enabled when Ember.testing is true
   testing: false
 });
 
-export default Notify.extend({
-  property: function() {
+export default Notify.reopenClass({
+  property() {
     return Ember.computed(function() {
       return Notify.create();
     });
-  },
-  create: function() {
-    return Notify.create();
-  },
-  target: computed({
-    get() {
-      return this._target;
-    },
-    set(key, val) {
-      Ember.assert("Only one {{ember-notify}} should be used without a source property. " +
-        "If you want more than one then use {{ember-notify source=someProperty}}",
-        !this._primary || this._primary.get('isDestroyed')
-      );
-      this._target = val;
-      return this._target;
-    }
-  })
-
-});
-
-var MessagePromise = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin, {
-  set: function(key, val) {
-    // if the message hasn't been displayed then set the value on the message hash
-    if (!this.get('content')) {
-      this.message[key] = val;
-      return this;
-    }
-    else {
-      return this._super(key, val);
-    }
   }
 });

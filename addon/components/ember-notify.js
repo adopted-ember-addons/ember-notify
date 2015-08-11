@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   init: function() {
     this._super();
     this.set('messages', Ember.A());
-    this.set('source.target', this);
+    this.get('source').setTarget(this);
 
     var style = this.get('messageStyle'), theme;
     switch (style) {
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
     this.set('theme', theme);
   },
   willDestroyElement: function() {
-    this.set('source.target', null);
+    this.get('source').setTarget(null);
   },
   show: function(message) {
     if (this.get('isDestroyed')) return;
@@ -67,15 +67,15 @@ export var FoundationTheme = Theme.extend({
 export var BootstrapTheme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
-    var classNames = ['alert', type];
-    if (type === 'alert' || type === 'error') classNames.push('danger');
+    if (type === 'alert' || type === 'error') type = 'danger';
+    var classNames = ['alert', `alert-${type}`];
     return classNames.join(' ');
   }
 });
 
 export var RefillsTheme = Theme.extend({
-  typeCss: Ember.computed('type', function() {
-    var type = this.get('message.type');
+  classNamesFor(message) {
+    var type = message.get('type');
     var typeMapping = {
       success: 'success',
       alert: 'error',
@@ -84,5 +84,5 @@ export var RefillsTheme = Theme.extend({
       warning: 'alert'
     };
     return 'flash-' + typeMapping[type];
-  })
+  }
 });

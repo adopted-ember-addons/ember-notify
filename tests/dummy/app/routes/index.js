@@ -4,9 +4,9 @@ export default Ember.Route.extend({
   notify: Ember.inject.service(),
   model() {
     return {
-      message: 'Hello, world!',
+      text: 'Hello, world!',
       closeAfter: 2500,
-      raw: false
+      html: false
     };
   },
   actions: {
@@ -22,7 +22,7 @@ function showLevel(level) {
     var message = {
       closeAfter: Number(model.closeAfter)
     };
-    message[model.raw ? 'raw' : 'message'] = model.message;
+    message[model.html ? 'html' : 'text'] = model.text;
     this.get('notify').show(level, message);
   };
 }

@@ -4,7 +4,7 @@
       <legend>ember-notify demo</legend>
       <div class='message'>
         <label>Message</label>
-        {{input value=model.message name='message'}}
+        {{input value=model.text name='message'}}
       </div>
       <div class='level'>
         <button {{action 'info' model}}>info</button>
@@ -18,7 +18,7 @@
           {{input value=model.closeAfter name='closeAfter'}}
         </div>
         <div class='type'>
-          <label>{{input type='checkbox' name='raw' checked=raw}} Unescaped HTML</label>
+          <label>{{input type='checkbox' name='html' checked=model.html}} Unescaped HTML</label>
         </div>
       </div>
     </fieldset>
