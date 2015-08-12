@@ -17,9 +17,6 @@
     "node": ">= 0.10.0"
   },
   "license": "MIT",
-  "dependencies": {
-    "object-assign": "^2.0.0"
-  },
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
     "ember-cli": "1.13.6",
@@ -41,6 +38,7 @@
     "ember-addon"
   ],
   "dependencies": {
+    "object-assign": "^2.0.0",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-htmlbars": "0.7.9"
   },
