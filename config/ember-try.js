@@ -1,9 +1,6 @@
+/* jshint node:true */
 module.exports = {
   scenarios: [
-    //{
-    //  name: 'default',
-    //  dependencies: { }
-    //},
     {
       name: 'ember-release',
       dependencies: {
@@ -13,23 +10,23 @@ module.exports = {
         'ember': 'release'
       }
     },
-    //{
-    //  name: 'ember-beta',
-    //  dependencies: {
-    //    'ember': 'components/ember#beta'
-    //  },
-    //  resolutions: {
-    //    'ember': 'beta'
-    //  }
-    //},
-    //{
-    //  name: 'ember-canary',
-    //  dependencies: {
-    //    'ember': 'components/ember#canary'
-    //  },
-    //  resolutions: {
-    //    'ember': 'canary'
-    //  }
-    //}
+    {
+      name: 'ember-beta',
+      dependencies: {
+        'ember': 'components/ember#beta'
+      },
+      resolutions: {
+        'ember': 'beta'
+      }
+    },
+    {
+      name: 'ember-canary',
+      dependencies: {
+        'ember': 'components/ember#canary'
+      },
+      resolutions: {
+        'ember': 'canary'
+      }
+    }
   ]
 };

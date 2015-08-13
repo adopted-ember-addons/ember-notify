@@ -4,8 +4,10 @@
 
 - The `notify` property is no longer injected into routes and controllers by default. You should now 
   use `notify: Ember.inject.service()`
+- The `Notify` helper exported from the `ember-notify` package can no longer be used to send messages - 
+  you need to use the service
 - The property names have changed from `message` and `raw` to `text` and `html`
-- The `Notify.*` helper methods (`info`, `success`, `warning`, `alert` and `error`) no longer return 
+- The `info`, `success`, `warning`, `alert` and `error` methods no longer return 
   a Promise, they return a `Message` instance
 
 

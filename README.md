@@ -12,21 +12,25 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ## Usage
 
-1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`.
-2. Use `this.notify` in routes or controllers to display messages: 
+1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`
+2. Inject the `notify` service
+3. Display messages using the `info`, `success`, `warning`, `alert` and `error` methods
+ 
+### Examples
 
 ```js
-this.notify.info('Hello there!');
-this.notify.alert('This is an alert.');
-this.notify.success('It worked.');
-this.notify.warning('Hmmn, that didn\'t work out.');
-```
-
-If you're not in a route or a controller you can use the `Notify` helper: 
-
-```js
-import Notify from 'ember-notify';
-Notify.info('Peace.');
+import {
+  Component,
+  inject
+} from 'ember';
+export default Component.extend({
+  notify: inject.service('notify'),
+  actions: {
+    sayHello() {
+      this.get('notify').info('Hello there!');
+    }
+  }
+});
 ```
 
 By default the notifications close after 2.5 seconds, although you can control this in your template:
@@ -38,22 +42,28 @@ By default the notifications close after 2.5 seconds, although you can control t
 Or you can control when each message is closed:
 
 ```js
-var message = Notify.alert('You can control how long it\'s displayed', {
+var notify = this.get('notify');
+var message = notify.alert('You can control how long it\'s displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
-message.set('visible', false); // and you can hide messages programatically.
+```
+
+...and you can hide messages programatically:
+
+```js
+message.set('visible', false);
 ```
 
 You can specify raw HTML:
 
 ```js
-Notify.info({html: '<div class="my-div">Hooray!</div>'});
+notify.info({html: '<div class="my-div">Hooray!</div>'});
 ```
 
 Rounded corners, if that's your thing:
 
 ```js
-Notify.alert('This one\'s got rounded corners.', {
+notify.alert('This one\'s got rounded corners.', {
   radius: true
 });
 ```
@@ -61,17 +71,15 @@ Notify.alert('This one\'s got rounded corners.', {
 ### Multiple Containers
 
 If you want to have separate notifications and control where they're inserted into the DOM you can 
-have multiple `{{ember-notify}}` components, but only one of them can be accessed using the `Notify` helper. The others you will need to provide a `source` property.
-
-Secondary containers should be used as follows:
+have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
+The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
 {{ember-notify source=someProperty}} 
 ```
 
 ```js
-// in your controller
-export default Ember.Controller.extend({
+export default Ember.Component.extend({
   someProperty: Notify.property(), // or this.set('someProperty', Notify.create())
   actions: {
     clicked: function() {
@@ -83,7 +91,7 @@ export default Ember.Controller.extend({
 
 ## Installation
 
-This module is an ember-cli addon, so all you need to do is:
+This module is an ember-cli addon, so installation is easy as pie.
 
 ```sh
 npm install ember-notify --save-dev
