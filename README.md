@@ -68,6 +68,15 @@ notify.alert('This one\'s got rounded corners.', {
 });
 ```
 
+### Initializer
+
+If you prefer not to call `Ember.inject.service('notify')` you can use an initializer:
+
+```js
+// app/initializers/ember-notify.js
+export {default} from 'ember-notify/initializer';
+```
+
 ### Multiple Containers
 
 If you want to have separate notifications and control where they're inserted into the DOM you can 
