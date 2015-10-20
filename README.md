@@ -6,7 +6,7 @@
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
-The CSS classes are compatible with Zurb Foundation 5, Thoughtbot's Refills, and Bootstrap. For Bootstrap use `{{ember-notify messageStyle='bootstrap'}}` and for Refills use `{{ember-notify messageStyle='refills'}}`.
+The CSS classes are compatible with Zurb Foundation 5, Thoughtbot's Refills, Bootstrap, and Semantic-UI. For Bootstrap use `{{ember-notify messageStyle='bootstrap'}}`, Refills use `{{ember-notify messageStyle='refills'}}`, and for Semantic-UI use `{{ember-notify messageStyle='semantic-ui'}}`.
 
 The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/).
 
@@ -15,7 +15,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`
 2. Inject the `notify` service
 3. Display messages using the `info`, `success`, `warning`, `alert` and `error` methods
- 
+
 ### Examples
 
 ```js
@@ -79,12 +79,12 @@ export {default} from 'ember-notify/initializer';
 
 ### Multiple Containers
 
-If you want to have separate notifications and control where they're inserted into the DOM you can 
+If you want to have separate notifications and control where they're inserted into the DOM you can
 have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
 The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
-{{ember-notify source=someProperty}} 
+{{ember-notify source=someProperty}}
 ```
 
 ```js
