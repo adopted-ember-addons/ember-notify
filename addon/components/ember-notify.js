@@ -29,9 +29,12 @@ export default Ember.Component.extend({
       case 'refills':
         theme = RefillsTheme.create();
         break;
+      case 'semantic-ui':
+        theme = SemanticUiTheme.create();
+        break;
       default:
         throw new Error(
-          `Unknown messageStyle ${style}: options are 'foundation' and 'bootstrap'`
+          `Unknown messageStyle ${style}: options are 'foundation', 'refills', 'bootstrap', and 'semantic-ui'`
         );
     }
     this.set('theme', theme);
@@ -84,5 +87,19 @@ export var RefillsTheme = Theme.extend({
       warning: 'alert'
     };
     return 'flash-' + typeMapping[type];
+  }
+});
+
+export var SemanticUiTheme = Theme.extend({
+  classNamesFor(message){
+    var type = message.get('type');
+    var typeMapping = {
+      success: 'success',
+      alert: 'error',
+      error: 'error',
+      info: 'info',
+      warning: 'warning'
+    };
+    return 'ui message ' + typeMapping[type];
   }
 });

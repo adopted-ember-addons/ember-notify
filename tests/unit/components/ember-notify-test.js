@@ -163,6 +163,25 @@ describeComponent(
       expect($message.eq(1).is('.flash-error')).to.be.true;
     });
 
+    it('supports semantic-ui styling', function() {
+      var component = this.subject({
+        messageStyle: 'semantic-ui'
+      });
+      component.show({
+        text: 'Hello world'
+      });
+      component.show({
+        text: 'Hello again',
+        type: 'alert'
+      });
+      this.render();
+
+      var $el = component.$();
+      var $message = messages($el);
+      expect($message.eq(0).is('.ui.message.info')).to.be.true;
+      expect($message.eq(1).is('.ui.message.error')).to.be.true;
+    });
+
     it('supports being provided an element', function() {
       var component = this.subject({});
       component.show({
