@@ -88,6 +88,21 @@ describeComponent(
       expect($message.is('.' + level)).to.be.true;
     }
 
+    it('can render messages with SafeString', function() {
+      var component = this.subject();
+      component.show({
+        text: new Ember.Handlebars.SafeString('Hello world'),
+        type: 'info'
+      });
+      this.render();
+
+      var $el = component.$();
+      var $message = messages($el);
+      expect($el.length).to.equal(1, 'component is added');
+      expect($message.length).to.equal(1, 'element is added');
+      expect($message.find('.message').text()).to.equal('Hello world');
+    });
+
     it('can be shown manually', function() {
       var component = this.subject();
       var message = component.show({
