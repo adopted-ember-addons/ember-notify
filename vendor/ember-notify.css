@@ -28,7 +28,13 @@
   animation-name: ember-notify-hide;
   -webkit-animation-timing-function: cubic-bezier(0.600, -0.280, 0.735, 0.045);
   animation-timing-function: cubic-bezier(0.600, -0.280, 0.735, 0.045);
-  right: -310px;
+}
+
+.ember-notify-hide:hover {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused; 
+  animation-play-state: paused;
 }
 
 @-webkit-keyframes ember-notify-show {
