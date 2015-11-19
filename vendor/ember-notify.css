@@ -10,6 +10,10 @@
   margin: 10px;
   position: relative;
   width: 300px;
+  /* the following is purely so that it doesn't look broken without Foundation installed */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .ember-notify-show {
@@ -70,12 +74,6 @@
   cursor: pointer;
 }
 
-.ember-notify {
-  /* the following is purely so that it doesn't look broken without Foundation installed */
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
 
 @media only screen and (max-width: 680px) {
   .ember-notify-cn {
