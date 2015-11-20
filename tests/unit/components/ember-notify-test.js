@@ -205,5 +205,23 @@ describeComponent(
       this.render();
       expect(component.$('.message input').length).to.equal(1);
     });
+    it(`defaults to using the 'ember-notify-default' CSS class`, function() {
+      var component = this.subject({
+			});
+      component.show({});
+
+      this.render();
+      expect(component.$().attr('class')).to.contain('ember-notify-default');
+		});
+    it('supports customizing the base CSS class', function() {
+      var component = this.subject({
+				classPrefix: 'foo'
+			});
+      component.show({});
+
+      this.render();
+      expect(component.$().attr('class')).to.contain('foo');
+      expect(component.$().attr('class')).to.not.contain('ember-notify-default');
+    });
   }
 );
