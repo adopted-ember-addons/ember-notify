@@ -55,7 +55,7 @@ var message = notify.alert('You can control how long it\'s displayed', {
 });
 ```
 
-...and you can hide messages programatically:
+...and you can hide messages programmatically:
 
 ```js
 message.set('visible', false);
