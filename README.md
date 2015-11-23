@@ -144,6 +144,6 @@ npm install ember-notify --save-dev
 
 See [the CHANGELOG](https://github.com/aexmachina/ember-notify/blob/master/CHANGELOG.md).
 
-## Compatibility
+## Browser Compatibility
 
 Some users have reported issues with IE8, so this is currently not supported.
