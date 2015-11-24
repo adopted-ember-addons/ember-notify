@@ -114,6 +114,7 @@ To do so, you need to pass a CSS class name using the `classPrefix` option. This
 
 ```
 Then you need to add custom styling for each of the elements within the `ember-notify` structure.
+The following snippet summarizes rules needed for a custom look. For a complete example that you can drop into your project, see [examples/custom-position-animations.css](examples/custom-position-animations.css)
 ```css
 /* main container */
 .custom-notify {
