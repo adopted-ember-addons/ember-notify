@@ -6,7 +6,7 @@
 
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
-### Comatibility
+### Compatibility
  
 ember-notify is compatible with the following presentation frameworks:
 
@@ -15,7 +15,7 @@ ember-notify is compatible with the following presentation frameworks:
 - Twitter Bootstrap: `{{ember-notify messageStyle='bootstrap'}}`
 - Semantic-UI: `{{ember-notify messageStyle='semantic-ui'}}`
 
-The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/).
+The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/). You can also customize the positioning and animations by overriding the default `ember-notify` CSS class. For usage, see the [animations example](#custom-animations).
 
 ## Usage
 
@@ -55,7 +55,7 @@ var message = notify.alert('You can control how long it\'s displayed', {
 });
 ```
 
-...and you can hide messages programatically:
+...and you can hide messages programmatically:
 
 ```js
 message.set('visible', false);
@@ -104,7 +104,35 @@ export default Ember.Component.extend({
   }
 });
 ```
+### Custom Animations 
+By default, the `ember-notify` message window will appear from the bottom right corner of the screen.  You may want to control the postioning or animations.
+To do so, you need to pass a CSS class name using the `classPrefix` option. This will render the top level `ember-notify` element with the class you pass in.
 
+```hbs
+<!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
+{{ember-notify classPrefix="custom-notify"}}
+
+```
+Then you need to add custom styling for each of the elements within the `ember-notify` structure.
+The following snippet summarizes rules needed for a custom look. For a complete example that you can drop into your project, see [examples/custom-position-animations.css](examples/custom-position-animations.css)
+```css
+/* main container */
+.custom-notify {
+	position: fixed;
+	top: 10px;
+	right: 0;
+	left: 0;
+}
+/* message box */
+.custom-notify .alert-box {
+	position: relative;
+	overflow: hidden;
+}
+/* classes applied for animating in/out */
+.custom-notify .ember-notify-show {}
+.custom-notify .ember-notify-hide {}
+
+```
 ## Installation
 
 This module is an ember-cli addon, so installation is easy as pie.
@@ -117,6 +145,6 @@ npm install ember-notify --save-dev
 
 See [the CHANGELOG](https://github.com/aexmachina/ember-notify/blob/master/CHANGELOG.md).
 
-## Compatibility
+## Browser Compatibility
 
 Some users have reported issues with IE8, so this is currently not supported.
