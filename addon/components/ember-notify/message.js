@@ -2,6 +2,10 @@ import Ember from 'ember';
 import layout from '../../templates/components/ember-notify/message';
 import Notify from 'ember-notify';
 
+function checkSendCloseIntent() {
+  if (this.get('isDestroyed')) return;
+  this.send('closeIntent');
+}
 export default Ember.Component.extend({
   layout: layout,
   message: null,
@@ -35,10 +39,7 @@ export default Ember.Component.extend({
     var closeAfter = this.get('message.closeAfter');
     if (closeAfter === undefined) closeAfter = this.get('closeAfter');
     if (closeAfter) {
-      this.run.later(this, function() {
-        if (this.get('isDestroyed')) return;
-        this.send('closeIntent');
-      }, closeAfter);
+      this.run.later(this, checkSendCloseIntent, closeAfter);
     }
   },
   themeClassNames: Ember.computed('theme', 'message.type', function() {
@@ -58,9 +59,7 @@ export default Ember.Component.extend({
   	// alias to close action so we can poll whether hover state is active
   	closeIntent: function() {
     	if (this.isHovering()) {
-    		return this.run.later(() => {
-    			this.send('closeIntent');
-    		}, 100);
+    		return this.run.later(this, checkSendCloseIntent, 100);
     	}
     	// when :hover no longer applies, close as normal
 	    this.send('close');
@@ -80,7 +79,6 @@ export default Ember.Component.extend({
         var parentView = this.get('parentView');
         if (this.get('isDestroyed') || !parentView || !parentView.get('messages')) return;
         parentView.get('messages').removeObject(this.get('message'));
-        this.set('message.visible', null);
       }
     }
   }
