@@ -79,6 +79,7 @@ export default Ember.Component.extend({
         var parentView = this.get('parentView');
         if (this.get('isDestroyed') || !parentView || !parentView.get('messages')) return;
         parentView.get('messages').removeObject(this.get('message'));
+      	this.set('message.visible', null);
       }
     }
   }
