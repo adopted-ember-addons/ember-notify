@@ -131,15 +131,13 @@ describeComponent(
 
       var $el = component.$();
       expect(messages($el).length).to.equal(1, 'element is added');
-      Ember.run(() => {
-				message.set('visible', false);
-			});
+      Ember.run(() => message.set('visible', false) );
       observeSequence(message, 'visible', [null])
         .then(observed => Ember.run.next(() => {
           expect(messages($el).length).to.equal(0, 'element is removed from DOM');
           var times = timesSince(observed, start);
           expect(times[0]).to.be.greaterThan(100);
-					done();
+          done();
         }));
     });
 
@@ -209,17 +207,16 @@ describeComponent(
       expect(component.$('.message input').length).to.equal(1);
     });
     it(`defaults to using the 'ember-notify-default' CSS class`, function() {
-      var component = this.subject({
-			});
+      var component = this.subject({});
       component.show({});
 
       this.render();
       expect(component.$().attr('class')).to.contain('ember-notify-default');
-		});
+    });
     it('supports customizing the base CSS class', function() {
       var component = this.subject({
-				classPrefix: 'foo'
-			});
+        classPrefix: 'foo'
+      });
       component.show({});
 
       this.render();
