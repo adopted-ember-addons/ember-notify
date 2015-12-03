@@ -56,11 +56,7 @@ export default Ember.Component.extend({
   	closeIntent: function() {
       if (this.get('isDestroyed')) return;
     	if (this.isHovering()) {
-<<<<<<< Updated upstream
-    		return this.run.later(this, checkSendCloseIntent, 100);
-=======
     		return this.run.later(() => { this.send('closeIntent'); }, 100);
->>>>>>> Stashed changes
     	}
     	// when :hover no longer applies, close as normal
 	    this.send('close');
