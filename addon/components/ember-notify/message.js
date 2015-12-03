@@ -48,7 +48,7 @@ export default Ember.Component.extend({
     }
   }),
   isHovering: function() {
-  	return this.$().is(':hover');
+    return this.$().is(':hover');
   },
 
   actions: {
