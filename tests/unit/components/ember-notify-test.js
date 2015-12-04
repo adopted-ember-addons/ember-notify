@@ -47,7 +47,7 @@ describeComponent(
       expect($message.is('.info')).to.be.true;
       expect($message.find('.message').text()).to.equal('Hello world');
 
-      return observeSequence(message, 'visible', [false, null])
+      return observeSequence(message, 'visible', [false])
         .then(observed => Ember.run.next(() => {
           expect(messages($el).length).to.equal(0, 'element is removed from DOM');
           var times = timesSince(observed, start);
@@ -119,7 +119,7 @@ describeComponent(
       expect($message.is('.ember-notify-show')).to.equal(true, 'message is shown');
     });
 
-    it('can be hidden manually', function() {
+    it('can be hidden manually', function(done) {
       var start = new Date();
       var component = this.subject();
       var message = component.show({
@@ -131,12 +131,13 @@ describeComponent(
 
       var $el = component.$();
       expect(messages($el).length).to.equal(1, 'element is added');
-      message.set('visible', false);
-      return observeSequence(message, 'visible', [null])
+      Ember.run(() => message.set('visible', false) );
+      observeSequence(message, 'visible', [null])
         .then(observed => Ember.run.next(() => {
           expect(messages($el).length).to.equal(0, 'element is removed from DOM');
           var times = timesSince(observed, start);
           expect(times[0]).to.be.greaterThan(100);
+          done();
         }));
     });
 
@@ -204,6 +205,23 @@ describeComponent(
       });
       this.render();
       expect(component.$('.message input').length).to.equal(1);
+    });
+    it(`defaults to using the 'ember-notify-default' CSS class`, function() {
+      var component = this.subject({});
+      component.show({});
+
+      this.render();
+      expect(component.$().attr('class')).to.contain('ember-notify-default');
+    });
+    it('supports customizing the base CSS class', function() {
+      var component = this.subject({
+        classPrefix: 'foo'
+      });
+      component.show({});
+
+      this.render();
+      expect(component.$().attr('class')).to.contain('foo');
+      expect(component.$().attr('class')).to.not.contain('ember-notify-default');
     });
   }
 );

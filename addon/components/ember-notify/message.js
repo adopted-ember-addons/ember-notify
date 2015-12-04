@@ -35,10 +35,7 @@ export default Ember.Component.extend({
     var closeAfter = this.get('message.closeAfter');
     if (closeAfter === undefined) closeAfter = this.get('closeAfter');
     if (closeAfter) {
-      this.run.later(this, function() {
-        if (this.get('isDestroyed')) return;
-        this.send('close');
-      }, closeAfter);
+      this.run.later(() => this.send('closeIntent'), closeAfter);
     }
   },
   themeClassNames: Ember.computed('theme', 'message.type', function() {
@@ -47,11 +44,23 @@ export default Ember.Component.extend({
   }),
   visibleObserver: Ember.observer('message.visible', function() {
     if (!this.get('message.visible')) {
-      this.send('close');
+      this.send('closeIntent');
     }
   }),
+  isHovering: function() {
+    return this.$().is(':hover');
+  },
 
   actions: {
+    // alias to close action so we can poll whether hover state is active
+    closeIntent: function() {
+      if (this.get('isDestroyed')) return;
+      if (this.isHovering()) {
+        return this.run.later(() => this.send('closeIntent'), 100);
+      }
+      // when :hover no longer applies, close as normal
+      this.send('close');
+    },
     close: function() {
       if (this.get('message.closed')) return;
       this.set('message.closed', true);

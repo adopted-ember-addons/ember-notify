@@ -10,7 +10,11 @@ export default Ember.Component.extend({
   messages: null,
   closeAfter: 2500,
 
+  classPrefix: Ember.computed(function() {
+    return this.get('defaultClass') || 'ember-notify-default';
+  }),
   classNames: ['ember-notify-cn'],
+  classNameBindings: ['classPrefix'],
   messageStyle: 'foundation',
 
   init: function() {
