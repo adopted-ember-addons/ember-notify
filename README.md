@@ -7,7 +7,7 @@
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
 ### Compatibility
- 
+
 ember-notify is compatible with the following presentation frameworks:
 
 - Zurb Foundation (default)
@@ -22,7 +22,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`
 2. Inject the `notify` service
 3. Display messages using the `info`, `success`, `warning`, `alert` and `error` methods
- 
+
 ### Examples
 
 ```js
@@ -86,12 +86,12 @@ export {default} from 'ember-notify/initializer';
 
 ### Multiple Containers
 
-If you want to have separate notifications and control where they're inserted into the DOM you can 
+If you want to have separate notifications and control where they're inserted into the DOM you can
 have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
 The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
-{{ember-notify source=someProperty}} 
+{{ember-notify source=someProperty}}
 ```
 
 ```js
@@ -104,7 +104,19 @@ export default Ember.Component.extend({
   }
 });
 ```
-### Custom Animations 
+### Custom message template
+You can pass a block with template you wanna be used for each message (instead of using the default one). It may look like this:
+```hbs
+  {{#ember-notify as |message close|}}
+    <a {{action close}} class='close'>close from block</a>
+    <span class='message-from-block'>{{message.text}}</span>
+  {{/ember-notify}}
+```
+Two arguments are passed to the block: `message` object, and `close` action. Make sure
+you are using *Closure Actions* syntax passing the action (e. g. `<a {{action close}}` or
+`{{your-component close=(action close)`.
+
+### Custom Animations
 By default, the `ember-notify` message window will appear from the bottom right corner of the screen.  You may want to control the postioning or animations.
 To do so, you need to pass a CSS class name using the `classPrefix` option. This will render the top level `ember-notify` element with the class you pass in.
 
