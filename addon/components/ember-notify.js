@@ -65,7 +65,7 @@ export var Theme = Ember.Object.extend({
 export var FoundationTheme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
-    var classNames = ['alert-box', type];
+    var classNames = ['callout', type];
     if (type === 'error') classNames.push('alert');
     return classNames.join(' ');
   }
