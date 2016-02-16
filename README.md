@@ -10,7 +10,8 @@
 
 ember-notify is compatible with the following presentation frameworks:
 
-- Zurb Foundation (default)
+- Zurb Foundation 6 (default)
+- Zurb Foundation 5: `{{ember-notify messageStyle='foundation-5'}}`
 - Thoughtbot Refills: `{{ember-notify messageStyle='refills'}}`
 - Twitter Bootstrap: `{{ember-notify messageStyle='bootstrap'}}`
 - Semantic-UI: `{{ember-notify messageStyle='semantic-ui'}}`
@@ -117,8 +118,11 @@ you are using *Closure Actions* syntax passing the action (e. g. `<a {{action cl
 `{{your-component close=(action close)`.
 
 ### Custom Animations
-By default, the `ember-notify` message window will appear from the bottom right corner of the screen.  You may want to control the postioning or animations.
-To do so, you need to pass a CSS class name using the `classPrefix` option. This will render the top level `ember-notify` element with the class you pass in.
+
+By default, the `ember-notify` message window will appear from the bottom right corner of the
+screen.  You may want to control the postioning or animations. To do so, you need to pass a CSS
+class name using the `classPrefix` option. This will render the top level `ember-notify` element
+with the class you pass in.
 
 ```hbs
 <!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
@@ -136,7 +140,7 @@ The following snippet summarizes rules needed for a custom look. For a complete 
 	left: 0;
 }
 /* message box */
-.custom-notify .alert-box {
+.custom-notify .callout {
 	position: relative;
 	overflow: hidden;
 }

@@ -1,9 +1,9 @@
-/* 
+/*
  * Given an ember-notify instance {{ember-notify classPrefix="custom-notify"}}
  * the following styles will position the notify box in the top center of the screen.
  * They also include custom animations for bouncing in and out.
  * These styles were shamelessly copied from https://github.com/Blooie/ember-cli-notifications/tree/master/addon/styles
- */ 
+ */
 .custom-notify {
   position: fixed;
   top: 10px;
@@ -14,7 +14,7 @@
   max-width: 400px;
   margin: auto;
 }
-.custom-notify .alert-box {
+.custom-notify .callout {
   font: 14px Helvetica, sans-serif;
   position: relative;
   overflow: hidden;
