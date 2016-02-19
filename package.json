@@ -43,7 +43,6 @@
     "ember-cli-htmlbars": "0.7.9"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "demoURL": "http://aexmachina.info/assets/ember-demos/#/ember-notify"
+    "configPath": "tests/dummy/config"
   }
 }
