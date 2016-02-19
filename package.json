@@ -44,6 +44,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "http://aexmachina.info/assets/ember-demos/#/ember-notify"
+    "demoURL": "http://simonwade.me/assets/ember-demos/#/ember-notify"
   }
 }
