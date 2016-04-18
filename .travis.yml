@@ -1,5 +1,7 @@
 ---
 language: node_js
+node_js:
+  - "5.10"
 
 cache:
   directories:
@@ -17,6 +19,7 @@ matrix:
 
 install:
   - npm install -g bower
+  - bower install
   - npm install
 
 script:
