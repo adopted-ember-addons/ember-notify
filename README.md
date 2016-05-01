@@ -147,8 +147,18 @@ The following snippet summarizes rules needed for a custom look. For a complete 
 /* classes applied for animating in/out */
 .custom-notify .ember-notify-show {}
 .custom-notify .ember-notify-hide {}
-
 ```
+
+### Usage in Tests
+
+The scheduler that shows and hides the messages is disabled by default when Ember is running tests
+to avoid slowing down the tests. You can override this behaviour by setting `Notify.testing = true`.
+
+```js
+import Notify from 'ember-notify';
+Notify.testing = true;
+```
+
 ## Installation
 
 This module is an ember-cli addon, so installation is easy as pie.
