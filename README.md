@@ -32,7 +32,7 @@ import {
   inject
 } from 'ember';
 export default Component.extend({
-  notify: inject.service('notify'),
+  notify: Ember.inject.service('notify'),
   actions: {
     sayHello() {
       this.get('notify').info('Hello there!');
