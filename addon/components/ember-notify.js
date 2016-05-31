@@ -27,6 +27,9 @@ export default Ember.Component.extend({
       case 'foundation':
         theme = FoundationTheme.create();
         break;
+      case 'uikit':
+          theme = UIkitTheme.create();
+          break;  
       case 'foundation-5':
         theme = Foundation5Theme.create();
         break;
@@ -117,5 +120,19 @@ export var SemanticUiTheme = Theme.extend({
       warning: 'warning'
     };
     return 'ui message ' + typeMapping[type];
+  }
+});
+
+export var UIkitTheme = Theme.extend({
+  classNamesFor(message){
+    var type = message.get('type');
+    var typeMapping = {
+      success: 'success',
+      alert: 'warning',
+      error: 'danger',
+      info: 'info',
+      warning: 'warning'
+    };
+    return 'uk-notify-message uk-notify-message-' + typeMapping[type];
   }
 });
