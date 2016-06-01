@@ -1,6 +1,6 @@
 {
   "name": "ember-notify",
-  "version": "5.0.4",
+  "version": "5.1.0",
   "description": "Displays wee little notification messages down the bottom of your Ember.js app.",
   "directories": {
     "doc": "doc",
