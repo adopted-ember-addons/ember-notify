@@ -15,6 +15,7 @@ ember-notify is compatible with the following presentation frameworks:
 - Thoughtbot Refills: `{{ember-notify messageStyle='refills'}}`
 - Twitter Bootstrap: `{{ember-notify messageStyle='bootstrap'}}`
 - Semantic-UI: `{{ember-notify messageStyle='semantic-ui'}}`
+- UIKit: `{{ember-notify messageStyle='uikit'}}`
 
 The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/). You can also customize the positioning and animations by overriding the default `ember-notify` CSS class. For usage, see the [animations example](#custom-animations).
 
