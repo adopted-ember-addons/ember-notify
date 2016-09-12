@@ -91,7 +91,7 @@ describeComponent(
     it('can render messages with SafeString', function() {
       var component = this.subject();
       component.show({
-        text: new Ember.Handlebars.SafeString('Hello world'),
+        text: new Ember.String.htmlSafe('Hello world'),
         type: 'info'
       });
       this.render();
