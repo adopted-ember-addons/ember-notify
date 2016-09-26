@@ -1,6 +1,6 @@
 {
   "name": "ember-notify",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",
