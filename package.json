@@ -1,49 +1,51 @@
 {
   "name": "ember-notify",
   "version": "5.1.1",
-  "description": "Displays wee little notification messages down the bottom of your Ember.js app.",
+  "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
     "build": "ember build",
-    "test": "ember try:testall"
+    "start": "ember server",
+    "test": "ember try:each"
   },
-  "repository": "https://github.com/aexmachina/ember-notify.git",
-  "author": "@aexmachina",
+  "repository": "",
   "engines": {
     "node": ">= 0.10.0"
   },
+  "author": "",
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.0.2",
-    "ember-cli": "1.13.6",
-    "ember-cli-app-version": "0.4.0",
-    "ember-cli-dependency-checker": "^1.0.0",
-    "ember-cli-htmlbars-inline-precompile": "^0.1.1",
-    "ember-cli-ic-ajax": "0.2.1",
-    "ember-cli-inject-live-reload": "^1.3.0",
-    "ember-cli-mocha": "0.9.1",
-    "ember-cli-release": "0.2.3",
-    "ember-cli-uglify": "^1.0.1",
-    "ember-devtools": "^4.4.0",
-    "ember-disable-prototype-extensions": "^1.0.0",
-    "ember-disable-proxy-controllers": "^1.0.0",
-    "ember-export-application-global": "^1.0.2",
-    "ember-try": "0.0.6"
+    "broccoli-asset-rev": "^2.4.2",
+    "ember-ajax": "^2.0.1",
+    "ember-cli": "2.8.0",
+    "ember-cli-app-version": "^1.0.0",
+    "ember-cli-dependency-checker": "^1.2.0",
+    "ember-cli-eslint": "3.0.0",
+    "ember-cli-htmlbars-inline-precompile": "^0.3.1",
+    "ember-cli-inject-live-reload": "^1.4.0",
+    "ember-cli-mocha": "0.10.4",
+    "ember-cli-release": "^0.2.9",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-test-loader": "^1.1.0",
+    "ember-cli-uglify": "^1.2.0",
+    "ember-data": "^2.8.0",
+    "ember-disable-prototype-extensions": "^1.1.0",
+    "ember-export-application-global": "^1.0.5",
+    "ember-load-initializers": "^0.5.1",
+    "ember-resolver": "^2.0.3",
+    "loader.js": "^4.0.1"
   },
   "keywords": [
     "ember-addon"
   ],
   "dependencies": {
-    "object-assign": "^2.0.0",
-    "ember-cli-babel": "^5.0.0",
+    "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "demoURL": "http://simonwade.me/assets/ember-demos/#/ember-notify"
+    "configPath": "tests/dummy/config"
   }
 }

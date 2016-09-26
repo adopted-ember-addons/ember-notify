@@ -4,7 +4,7 @@ import Notify from 'ember-notify';
 
 export default Ember.Component.extend({
   layout: layout,
-  message: null,
+  message: {},
   closeAfter: null,
 
   classNameBindings: [

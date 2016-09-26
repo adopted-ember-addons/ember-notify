@@ -1,10 +1,6 @@
-/* jshint node:true */
+/*jshint node:true*/
+'use strict';
 
-module.exports = function(environment) {
-  return {
-    'ember-devtools': {
-      global: true,
-      enabled: environment === 'development'
-    }
-  };
+module.exports = function(/* environment, appConfig */) {
+  return { };
 };

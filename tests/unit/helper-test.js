@@ -1,11 +1,9 @@
-import Ember from 'ember';
 import {
   describeComponent,
   it
 } from 'ember-mocha';
 import {
-  messages,
-  observeSequence
+  messages
 } from '../helpers';
 import Notify from 'ember-notify';
 
@@ -36,7 +34,7 @@ describeComponent(
     });
 
     it('will queue pending messages if the component isn\'t rendered', function() {
-      var message = helper.info('Hello world');
+      helper.info('Hello world');
       expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
 
       var component = this.subject();

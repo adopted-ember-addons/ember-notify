@@ -5,7 +5,6 @@ import {
   it
 } from 'ember-mocha';
 import {
-  messages,
   observeSequence,
   timesSince
 } from '../../../helpers';
