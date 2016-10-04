@@ -97,6 +97,8 @@ The others you will need to provide a `source` property, so secondary containers
 ```
 
 ```js
+import Notify from 'ember-notify';
+
 export default Ember.Component.extend({
   someProperty: Notify.property(), // or this.set('someProperty', Notify.create())
   actions: {
