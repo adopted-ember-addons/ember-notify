@@ -23,7 +23,7 @@ var Notify = Ember.Service.extend({
     var assign = Ember.assign || Ember.merge;
 
     // If the text passed is `SafeString`, convert it
-    if (text instanceof Ember.String.htmlSafe) {
+    if (Ember.String.isHTMLSafe(text)) {
       text = text.toString();
     }
     if (typeof text === 'object') {
