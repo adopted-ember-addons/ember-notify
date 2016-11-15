@@ -1,11 +1,12 @@
 /* jshint node: true */
 'use strict';
+var assign = require('object-assign');
 
 module.exports = {
   name: 'ember-notify',
   included: function(app) {
     this._super.included.apply(this, arguments);
-    var options = Object.assign({
+    var options = assign({
       importCss: true
     }, app.options.emberNotify);
     if (options.importCss) {
