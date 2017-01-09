@@ -77,6 +77,14 @@ notify.alert('This one\'s got rounded corners.', {
 });
 ```
 
+Include custom `classNames` on your message:
+
+```js
+notify.alert('Custom CSS class', {
+  classNames: ['my-class']
+})
+```
+
 ### Initializer
 
 If you prefer not to call `Ember.inject.service('notify')` you can use an initializer:

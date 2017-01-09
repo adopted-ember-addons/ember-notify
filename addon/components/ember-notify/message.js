@@ -8,7 +8,8 @@ export default Ember.Component.extend({
   closeAfter: null,
 
   classNameBindings: [
-    'message.visible:ember-notify-show:ember-notify-hide', 'radius::', 'themeClassNames'
+    'message.visible:ember-notify-show:ember-notify-hide', 'radius::', 'themeClassNames',
+    'message.classNames'
   ],
   attributeBindings: ['data-alert'],
   'data-alert': '',

@@ -38,5 +38,17 @@ describeComponent(
       this.$().find('.close-from-block').click();
       expect(dummyMessage.get('visible')).to.be.false;
     });
+
+    it('includes classNames', function() {
+      this.set('message', {
+        text: 'dummy text',
+        visible: true,
+        classNames: ['my-class']
+      });
+      this.render(hbs`
+        {{ember-notify/message message=message}}
+      `);
+      expect(this.$().find('.my-class .message').text()).to.equal('dummy text');
+    });
   }
 );
