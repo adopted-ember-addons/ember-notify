@@ -29,7 +29,7 @@ export default Ember.Component.extend({
         break;
       case 'uikit':
           theme = UIkitTheme.create();
-          break;  
+          break;
       case 'foundation-5':
         theme = Foundation5Theme.create();
         break;
@@ -54,6 +54,10 @@ export default Ember.Component.extend({
   },
   show: function(message) {
     if (this.get('isDestroyed')) return;
+    const uid = Ember.get(message, 'uid');
+    if (uid && this.get('messages').findBy('uid', uid)) {
+      return;
+    }
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }
