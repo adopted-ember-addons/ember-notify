@@ -74,6 +74,9 @@ export default Ember.Component.extend({
         remove();
       }
       function remove() {
+        if (this.get('message.didRemove')) {
+          this.get('message.didRemove')()
+        }
         var parentView = this.get('parentView');
         if (this.get('isDestroyed') || !parentView || !parentView.get('messages')) return;
         parentView.get('messages').removeObject(this.get('message'));
