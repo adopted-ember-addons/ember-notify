@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Message from './message';
-import isHTMLSafe from 'ember-string-ishtmlsafe-polyfill';
 
 function aliasToShow(type) {
   return function(message, options) {
@@ -24,7 +23,7 @@ var Notify = Ember.Service.extend({
     var assign = Ember.assign || Ember.merge;
 
     // If the text passed is `SafeString`, convert it
-    if (isHTMLSafe(text)) {
+    if (Ember.String.isHTMLSafe(text)) {
       text = text.toString();
     }
     if (typeof text === 'object') {
