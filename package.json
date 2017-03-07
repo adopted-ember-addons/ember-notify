@@ -48,6 +48,7 @@
     "object-assign": "^4.1.0"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "http://aexmachina.info/assets/ember-demos/#/ember-notify"
   }
 }
