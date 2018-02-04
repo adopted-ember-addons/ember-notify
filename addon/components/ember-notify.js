@@ -1,25 +1,29 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import EmberObject, { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
 import Message from 'ember-notify/message';
 
-export default Ember.Component.extend({
-  layout: layout,
+export default Component.extend({
+  layout,
 
-  notify: Ember.inject.service(),
-  source: Ember.computed.oneWay('notify'),
+  notify: service(),
+  source: oneWay('notify'),
   messages: null,
   closeAfter: 2500,
 
-  classPrefix: Ember.computed(function() {
+  classPrefix: computed(function() {
     return this.get('defaultClass') || 'ember-notify-default';
   }),
   classNames: ['ember-notify-cn'],
   classNameBindings: ['classPrefix'],
   messageStyle: 'foundation',
 
-  init: function() {
+  init() {
     this._super();
-    this.set('messages', Ember.A());
+    this.set('messages', A());
     this.get('source').setTarget(this);
 
     var style = this.get('messageStyle'), theme;
@@ -28,8 +32,8 @@ export default Ember.Component.extend({
         theme = FoundationTheme.create();
         break;
       case 'uikit':
-          theme = UIkitTheme.create();
-          break;  
+        theme = UIkitTheme.create();
+        break;
       case 'foundation-5':
         theme = Foundation5Theme.create();
         break;
@@ -47,12 +51,15 @@ export default Ember.Component.extend({
           `Unknown messageStyle ${style}: options are 'foundation', 'refills', 'bootstrap', and 'semantic-ui'`
         );
     }
+
     this.set('theme', theme);
   },
-  willDestroyElement: function() {
+
+  willDestroyElement() {
     this.get('source').setTarget(null);
   },
-  show: function(message) {
+
+  show(message) {
     if (this.get('isDestroyed')) return;
     if (!(message instanceof Message)) {
       message = Message.create(message);
@@ -62,13 +69,13 @@ export default Ember.Component.extend({
   }
 });
 
-export var Theme = Ember.Object.extend({
+export const Theme = EmberObject.extend({
   classNamesFor(message) {
     return message.get('type');
   }
 });
 
-export var FoundationTheme = Theme.extend({
+export const FoundationTheme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
     var classNames = ['callout', type];
@@ -77,7 +84,7 @@ export var FoundationTheme = Theme.extend({
   }
 });
 
-export var Foundation5Theme = Theme.extend({
+export const Foundation5Theme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
     var classNames = ['alert-box', type];
@@ -86,7 +93,7 @@ export var Foundation5Theme = Theme.extend({
   }
 });
 
-export var BootstrapTheme = Theme.extend({
+export const BootstrapTheme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
     if (type === 'alert' || type === 'error') type = 'danger';
@@ -95,7 +102,7 @@ export var BootstrapTheme = Theme.extend({
   }
 });
 
-export var RefillsTheme = Theme.extend({
+export const RefillsTheme = Theme.extend({
   classNamesFor(message) {
     var type = message.get('type');
     var typeMapping = {
@@ -109,7 +116,7 @@ export var RefillsTheme = Theme.extend({
   }
 });
 
-export var SemanticUiTheme = Theme.extend({
+export const SemanticUiTheme = Theme.extend({
   classNamesFor(message){
     var type = message.get('type');
     var typeMapping = {
@@ -123,7 +130,7 @@ export var SemanticUiTheme = Theme.extend({
   }
 });
 
-export var UIkitTheme = Theme.extend({
+export const UIkitTheme = Theme.extend({
   classNamesFor(message){
     var type = message.get('type');
     var typeMapping = {

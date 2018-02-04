@@ -1,5 +1,5 @@
 /* jshint expr:true */
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import {
   describeComponent,
   it
@@ -18,7 +18,7 @@ describeComponent(
     after(() => Notify.testing = false);
 
     it('renders block version', function() {
-      const dummyMessage = Ember.Object.create({
+      const dummyMessage = EmberObject.create({
         text: 'dummy text',
         visible: true
       });

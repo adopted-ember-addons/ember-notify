@@ -1,5 +1,7 @@
 /* jshint expr:true */
-import Ember from 'ember';
+import { htmlSafe } from '@ember/string';
+
+import { next, run } from '@ember/runloop';
 import {
   describeComponent,
   it
@@ -48,7 +50,7 @@ describeComponent(
       expect($message.find('.message').text()).to.equal('Hello world');
 
       return observeSequence(message, 'visible', [false])
-        .then(observed => Ember.run.next(() => {
+        .then(observed => next(() => {
           expect(messages($el).length).to.equal(0, 'element is removed from DOM');
           var times = timesSince(observed, start);
           expect(times[0]).to.be.greaterThan(500);
@@ -91,7 +93,7 @@ describeComponent(
     it('can render messages with SafeString', function() {
       var component = this.subject();
       component.show({
-        text: new Ember.String.htmlSafe('Hello world'),
+        text: new htmlSafe('Hello world'),
         type: 'info'
       });
       this.render();
@@ -115,7 +117,7 @@ describeComponent(
       var $message = messages($el);
       expect($message.length).to.equal(1, 'element is added');
       expect($message.is('.ember-notify-hide')).to.equal(true, 'message is hidden');
-      Ember.run(() => message.set('visible', true));
+      run(() => message.set('visible', true));
       expect($message.is('.ember-notify-show')).to.equal(true, 'message is shown');
     });
 
@@ -131,9 +133,9 @@ describeComponent(
 
       var $el = component.$();
       expect(messages($el).length).to.equal(1, 'element is added');
-      Ember.run(() => message.set('visible', false) );
+      run(() => message.set('visible', false) );
       observeSequence(message, 'visible', [null])
-        .then(observed => Ember.run.next(() => {
+        .then(observed => next(() => {
           expect(messages($el).length).to.equal(0, 'element is removed from DOM');
           var times = timesSince(observed, start);
           expect(times[0]).to.be.greaterThan(100);

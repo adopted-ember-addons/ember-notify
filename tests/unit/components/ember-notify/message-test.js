@@ -1,5 +1,5 @@
 /* jshint expr:true */
-import Ember from 'ember';
+import { next } from '@ember/runloop';
 import {
   describeComponent,
   it
@@ -82,7 +82,7 @@ describeComponent(
       expect($el.hasClass('ember-notify-show')).to.equal(true, 'message has show class');
 
       return observeSequence(message, 'visible', [false])
-        .then(observed => Ember.run.next(() => {
+        .then(observed => next(() => {
           expect(message.visible).to.equal(false, 'message no longer visible');
           expect($el.hasClass('ember-notify-show')).to.equal(false, 'message does not have show class');
           var times = timesSince(observed, start);

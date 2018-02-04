@@ -1,5 +1,5 @@
 /* jshint expr:true */
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import {
   describeComponent,
   it
@@ -25,7 +25,7 @@ describeComponent(
         {{/ember-notify}}
       `);
 
-      const dummyMessage = Ember.Object.create({text: 'dummy text', visible: true, type: 'alert'});
+      const dummyMessage = EmberObject.create({text: 'dummy text', visible: true, type: 'alert'});
       this.set('messages', [ dummyMessage ]);
 
       // ensure block is yielded

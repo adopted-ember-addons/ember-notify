@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { Promise as EmberPromise } from 'rsvp';
 
 export function messages($el) {
   return $el.find('.ember-notify');
@@ -7,7 +8,7 @@ export function messages($el) {
 export function observeSequence(obj, prop, seq) {
   var observed = [];
   var observer;
-  return new Ember.RSVP.Promise(
+  return new EmberPromise(
     function(resolve, reject) {
       obj.addObserver(prop, observer = function() {
         var expected = seq[observed.length];
@@ -17,7 +18,7 @@ export function observeSequence(obj, prop, seq) {
           time: new Date()
         });
         if (expected !== val) {
-          reject(new Error('Expected ' + seq + ' and got ' + Ember.A(observed).mapBy('value')));
+          reject(new Error('Expected ' + seq + ' and got ' + A(observed).mapBy('value')));
         }
         if (observed.length === seq.length) resolve(observed);
       });
@@ -26,7 +27,7 @@ export function observeSequence(obj, prop, seq) {
 }
 
 export function timesSince(observed, start) {
-  return Ember.A(observed).mapBy('time').map(function(date) {
+  return A(observed).mapBy('time').map(function(date) {
     return date.getTime() - start.getTime();
   });
 }

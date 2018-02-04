@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { next } from '@ember/runloop';
 import {
   describeComponent,
   it
@@ -26,18 +27,18 @@ describeComponent('multiple-components', 'multiple sources', {
 
     var $primary = component.$('.primary');
     var $secondary = component.$('.secondary');
-    Ember.run.next(() => {
+    next(() => {
       expect(messages($primary).length).to.equal(1);
       expect(messages($secondary).length).to.equal(0);
       secondarySource.info('Hello again');
     });
 
-    Ember.run.next(() => Ember.run.next(() => {
+    next(() => next(() => {
       expect(messages($secondary).length).to.equal(1);
       done();
     }));
 
-    var propertyTest = Ember.Object.extend({
+    var propertyTest = EmberObject.extend({
       property: Notify.property()
     }).create();
     expect(propertyTest.get('property')).to.respondTo('show',
