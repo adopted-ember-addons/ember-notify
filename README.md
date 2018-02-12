@@ -2,8 +2,6 @@
 
 # ember-notify
 
-#### [Visit project page and demo](http://simonwade.me/ember-notify)
-
 `ember-notify` displays wee little notification messages down the bottom of your Ember.js app.
 
 ### Compatibility
