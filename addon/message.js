@@ -6,5 +6,6 @@ export default Ember.Object.extend({
   type: 'info',
   closeAfter: undefined,
   visible: undefined,
+  ignoreHover: undefined,
   classNames: []
 });
