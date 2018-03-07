@@ -56,7 +56,7 @@ export default Ember.Component.extend({
     // alias to close action so we can poll whether hover state is active
     closeIntent: function() {
       if (this.get('isDestroyed')) return;
-      if (this.isHovering()) {
+      if (!this.get('message.ignoreHover') && this.isHovering()) {
         return this.run.later(() => this.send('closeIntent'), 100);
       }
       // when :hover no longer applies, close as normal
