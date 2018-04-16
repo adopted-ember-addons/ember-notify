@@ -1,10 +1,15 @@
+import { run, later, next } from '@ember/runloop';
+import EmberObject, { computed, observer } from '@ember/object';
+import Component from '@ember/component';
 import Ember from 'ember';
 import layout from '../../templates/components/ember-notify/message';
 import Notify from 'ember-notify';
 
-export default Ember.Component.extend({
+const DEFAULT_MESSAGE = {};
+
+export default Component.extend({
   layout: layout,
-  message: {},
+  message: DEFAULT_MESSAGE,
   closeAfter: null,
 
   classNameBindings: [
@@ -39,11 +44,11 @@ export default Ember.Component.extend({
       this.run.later(() => this.send('closeIntent'), closeAfter);
     }
   },
-  themeClassNames: Ember.computed('theme', 'message.type', function() {
+  themeClassNames: computed('theme', 'message.type', function() {
     var theme = this.get('theme');
     return theme ? theme.classNamesFor(this.get('message')) : '';
   }),
-  visibleObserver: Ember.observer('message.visible', function() {
+  visibleObserver: observer('message.visible', function() {
     if (!this.get('message.visible')) {
       this.send('closeIntent');
     }
@@ -86,25 +91,27 @@ export default Ember.Component.extend({
 });
 
 // getting the run loop to do what we want is difficult, hence the Runner...
-var Runner = Ember.Object.extend({
+var Runner = EmberObject.extend({
   init: function() {
+    this._super(...arguments);
+
     if (!this.disabled) {
       // this is horrible but this avoids delays from the run loop
       this.next = function(ctx, fn) {
         var args = arguments;
         setTimeout(function() {
-          Ember.run(function() {
+          run(function() {
             fn.apply(ctx, args);
           });
         }, 0);
       };
       this.later = function() {
-        Ember.run.later.apply(Ember.run, arguments);
+        later.apply(run, arguments);
       };
     }
     else {
       this.next = this.later = function zalkoBegone(ctx, fn) {
-        Ember.run.next(ctx, fn);
+        next(ctx, fn);
       };
     }
   }

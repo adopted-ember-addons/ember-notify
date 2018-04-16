@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
-export default Ember.Object.extend({
+const EMPTY_ARRAY = [];
+
+export default EmberObject.extend({
   text: null,
   html: '',
   type: 'info',
   closeAfter: undefined,
   visible: undefined,
-  classNames: []
+  classNames: EMPTY_ARRAY
 });

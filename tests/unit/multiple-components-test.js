@@ -1,20 +1,21 @@
-import Ember from 'ember';
-import {
-  describeComponent,
-  it
-} from 'ember-mocha';
+import EmberObject from '@ember/object';
+import { next } from '@ember/runloop';
+import { it, describe } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
 import {
   messages
 } from '../helpers';
 import Notify from 'ember-notify';
 
 var helper;
-describeComponent('multiple-components', 'multiple sources', {
-  needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
-  setup() {
-    helper = this.container.lookup('service:notify');
-  }
-}, () => {
+describe('multiple sources', () => {
+  setupComponentTest('multiple-components', {
+    needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
+    setup() {
+      helper = this.container.lookup('service:notify');
+    }
+  });
+
   beforeEach(() => Notify.testing = true);
   it('source property allows multiple {{ember-notify}} components', function(done) {
     var secondarySource = Notify.create();
@@ -26,18 +27,18 @@ describeComponent('multiple-components', 'multiple sources', {
 
     var $primary = component.$('.primary');
     var $secondary = component.$('.secondary');
-    Ember.run.next(() => {
+    next(() => {
       expect(messages($primary).length).to.equal(1);
       expect(messages($secondary).length).to.equal(0);
       secondarySource.info('Hello again');
     });
 
-    Ember.run.next(() => Ember.run.next(() => {
+    next(() => next(() => {
       expect(messages($secondary).length).to.equal(1);
       done();
     }));
 
-    var propertyTest = Ember.Object.extend({
+    var propertyTest = EmberObject.extend({
       property: Notify.property()
     }).create();
     expect(propertyTest.get('property')).to.respondTo('show',
