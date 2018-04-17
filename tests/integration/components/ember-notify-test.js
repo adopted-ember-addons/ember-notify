@@ -1,7 +1,9 @@
 /* jshint expr:true */
+import { A } from '@ember/array';
 import EmberObject from '@ember/object';
-import { it, describe } from 'mocha';
+import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
+import { find, click } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -22,12 +24,13 @@ describe('EmberNotifyComponent | Integration', function() {
     `);
 
     const dummyMessage = EmberObject.create({text: 'dummy text', visible: true, type: 'alert'});
-    this.set('messages', [ dummyMessage ]);
+    this.set('messages', A([ dummyMessage ]));
 
     // ensure block is yielded
-    expect(this.$().find('.message-from-block').text()).to.equal('dummy text');
+    expect(find('.message-from-block').textContent).to.equal('dummy text');
+
     // close action is passed
-    this.$().find('.close-from-block').click();
+    click('.close-from-block');
     expect(dummyMessage.get('visible')).to.be.false;
   });
 });

@@ -1,7 +1,8 @@
 /* jshint expr:true */
 import EmberObject from '@ember/object';
-import { it, describe } from 'mocha';
+import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
+import { find, click } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -29,9 +30,9 @@ describe('EmberNotifyMessageComponent | Integration', function() {
     `);
 
     // ensure block is yielded
-    expect(this.$().find('.message-from-block').text()).to.equal('dummy text');
+    expect(find('.message-from-block').textContent).to.equal('dummy text');
     // close action is passed
-    this.$().find('.close-from-block').click();
+    click('.close-from-block');
     expect(dummyMessage.get('visible')).to.be.false;
   });
 
@@ -44,6 +45,6 @@ describe('EmberNotifyMessageComponent | Integration', function() {
     this.render(hbs`
       {{ember-notify/message message=message}}
     `);
-    expect(this.$().find('.my-class .message').text()).to.equal('dummy text');
+    expect(find('.my-class .message').textContent).to.equal('dummy text');
   });
 });

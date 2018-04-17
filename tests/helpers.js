@@ -1,10 +1,6 @@
 import { A } from '@ember/array';
 import { Promise as EmberPromise } from 'rsvp';
 
-export function messages($el) {
-  return $el.find('.ember-notify');
-}
-
 export function observeSequence(obj, prop, seq) {
   var observed = [];
   var observer;

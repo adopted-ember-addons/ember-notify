@@ -2,11 +2,11 @@
 import { htmlSafe } from '@ember/string';
 
 import { next, run } from '@ember/runloop';
-import { it, describe } from 'mocha';
+import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
+import { find, findAll } from 'ember-native-dom-helpers';
 import $ from 'jquery';
 import {
-  messages,
   observeSequence,
   timesSince
 } from '../../helpers';
@@ -39,16 +39,14 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($el.length).to.equal(1, 'component is added');
-    expect($message.length).to.equal(1, 'element is in DOM');
-    expect($message.is('.info')).to.be.true;
-    expect($message.find('.message').text()).to.equal('Hello world');
+    var notify = find('.ember-notify');
+    expect(notify).to.exist;
+    expect(notify.matches('.info')).to.be.true;
+    expect(find('.message', notify).textContent).to.equal('Hello world');
 
     return observeSequence(message, 'visible', [false, null])
       .then(observed => next(() => {
-        expect(messages($el).length).to.equal(0, 'element is removed from DOM');
+        expect(find('.ember-notify')).to.not.exist;
         var times = timesSince(observed, start);
         expect(times[0]).to.be.greaterThan(500);
         expect(times[1]).to.be.greaterThan(1000);
@@ -79,12 +77,10 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($el.length).to.equal(1, 'component is added');
-    expect($message.length).to.equal(1, 'element is added');
-    expect($message.find('.message').text()).to.equal('Hello world');
-    expect($message.is('.' + level)).to.be.true;
+    var notify = find('.ember-notify');
+    expect(notify).to.exist;
+    expect(find('.message', notify).textContent).to.equal('Hello world');
+    expect(notify.matches('.' + level)).to.be.true;
   }
 
   it('can render messages with SafeString', function() {
@@ -95,11 +91,9 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($el.length).to.equal(1, 'component is added');
-    expect($message.length).to.equal(1, 'element is added');
-    expect($message.find('.message').text()).to.equal('Hello world');
+    var notify = find('.ember-notify');
+    expect(notify).to.exist;
+    expect(find('.message', notify).textContent).to.equal('Hello world');
   });
 
   it('can be shown manually', function() {
@@ -110,12 +104,11 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($message.length).to.equal(1, 'element is added');
-    expect($message.is('.ember-notify-hide')).to.equal(true, 'message is hidden');
+    var notify = find('.ember-notify');
+    expect(notify).to.exist;
+    expect(notify.matches('.ember-notify-hide')).to.equal(true, 'message is hidden');
     run(() => message.set('visible', true));
-    expect($message.is('.ember-notify-show')).to.equal(true, 'message is shown');
+    expect(notify.matches('.ember-notify-show')).to.equal(true, 'message is shown');
   });
 
   it('can be hidden manually', function(done) {
@@ -128,12 +121,12 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    expect(messages($el).length).to.equal(1, 'element is added');
+    var notify = find('.ember-notify');
+    expect(notify).to.exist;
     run(() => message.set('visible', false) );
     observeSequence(message, 'visible', [null])
       .then(observed => next(() => {
-        expect(messages($el).length).to.equal(0, 'element is removed from DOM');
+        expect(find('.ember-notify')).to.not.exist;
         var times = timesSince(observed, start);
         expect(times[0]).to.be.greaterThan(100);
         done();
@@ -153,10 +146,10 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($message.eq(0).is('.alert.alert-info')).to.be.true;
-    expect($message.eq(1).is('.alert.alert-danger')).to.be.true;
+    var notify = findAll('.ember-notify');
+    expect(notify.length).to.equal(2);
+    expect(notify[0].matches('.alert.alert-info')).to.be.true;
+    expect(notify[1].matches('.alert.alert-danger')).to.be.true;
   });
 
   it('supports refills styling', function() {
@@ -172,10 +165,10 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($message.eq(0).is('.flash-notice')).to.be.true;
-    expect($message.eq(1).is('.flash-error')).to.be.true;
+    var notify = findAll('.ember-notify');
+    expect(notify.length).to.equal(2);
+    expect(notify[0].matches('.flash-notice')).to.be.true;
+    expect(notify[1].matches('.flash-error')).to.be.true;
   });
 
   it('supports semantic-ui styling', function() {
@@ -191,26 +184,36 @@ describe('EmberNotifyComponent', function() {
     });
     this.render();
 
-    var $el = component.$();
-    var $message = messages($el);
-    expect($message.eq(0).is('.ui.message.info')).to.be.true;
-    expect($message.eq(1).is('.ui.message.error')).to.be.true;
+    var notify = findAll('.ember-notify');
+    expect(notify.length).to.equal(2);
+    expect(notify[0].matches('.ui.message.info')).to.be.true;
+    expect(notify[1].matches('.ui.message.error')).to.be.true;
   });
 
   it('supports being provided an element', function() {
     var component = this.subject({});
     component.show({
-      element: $('<input>')
+      element: document.createElement('input')
     });
     this.render();
-    expect(component.$('.message input').length).to.equal(1);
+    expect(find('.message input', component.get('element'))).to.exist;
   });
+  if ($) {
+    it('supports being provided a jquery element', function () {
+      var component = this.subject({});
+      component.show({
+        element: $('<input>')    // eslint-disable-line ember/no-jquery
+      });
+      this.render();
+      expect(find('.message input', component.get('element'))).to.exist;
+    });
+  }
   it(`defaults to using the 'ember-notify-default' CSS class`, function() {
     var component = this.subject({});
     component.show({});
 
     this.render();
-    expect(component.$().attr('class')).to.contain('ember-notify-default');
+    expect(component.get('element').className).to.contain('ember-notify-default');
   });
   it('supports customizing the base CSS class', function() {
     var component = this.subject({
@@ -219,7 +222,7 @@ describe('EmberNotifyComponent', function() {
     component.show({});
 
     this.render();
-    expect(component.$().attr('class')).to.contain('foo');
-    expect(component.$().attr('class')).to.not.contain('ember-notify-default');
+    expect(component.get('element').className).to.contain('foo');
+    expect(component.get('element').className).to.not.contain('ember-notify-default');
   });
 });

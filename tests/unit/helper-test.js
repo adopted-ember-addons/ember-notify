@@ -1,9 +1,6 @@
-import { it, describe } from 'mocha';
+import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
-import $ from 'jquery';
-import {
-  messages
-} from '../helpers';
+import { find } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 
 var helper;
@@ -25,19 +22,20 @@ describe('Notify helper', function() {
     var component = this.subject();
     this.render();
 
-    var $messages = messages(component.$());
-    expect($messages.length).to.equal(1, 'element is shown');
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
     expect(message.get('visible')).to.equal(true, 'message is visible');
   });
 
   it('will queue pending messages if the component isn\'t rendered', function() {
     helper.info('Hello world');
-    expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
+    expect(find('.ember-notify')).to.not.exist;
 
     var component = this.subject();
     this.render();
 
-    expect(messages(component.$()).length).to.equal(1, '1 element is shown');
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
   });
 
   it('handles calling set on a queued message', function() {
@@ -47,7 +45,10 @@ describe('Notify helper', function() {
     var component = this.subject();
     this.render();
 
-    expect(messages(component.$()).find('.message').text())
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
+
+    expect(find('.message', notify).textContent)
       .to.equal('Frank Zappa', 'message is updated');
   });
 });

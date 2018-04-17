@@ -1,10 +1,8 @@
 import EmberObject from '@ember/object';
 import { next } from '@ember/runloop';
-import { it, describe } from 'mocha';
+import { it, describe, beforeEach } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
-import {
-  messages
-} from '../helpers';
+import { find } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 
 var helper;
@@ -25,16 +23,16 @@ describe('multiple sources', () => {
     helper.info('Hello world');
     this.render();
 
-    var $primary = component.$('.primary');
-    var $secondary = component.$('.secondary');
+    var primary = find('.primary', component.get('element'));
+    var secondary = find('.secondary', component.get('element'));
     next(() => {
-      expect(messages($primary).length).to.equal(1);
-      expect(messages($secondary).length).to.equal(0);
+      expect(find('.ember-notify', primary)).to.exist;
+      expect(find('.ember-notify', secondary)).to.not.exist;
       secondarySource.info('Hello again');
     });
 
     next(() => next(() => {
-      expect(messages($secondary).length).to.equal(1);
+      expect(find('.ember-notify', secondary)).to.exist;
       done();
     }));
 

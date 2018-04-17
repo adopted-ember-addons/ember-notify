@@ -1,6 +1,7 @@
 import { run, later, next } from '@ember/runloop';
 import EmberObject, { computed, observer } from '@ember/object';
 import Component from '@ember/component';
+import { isArray } from '@ember/array';
 import Ember from 'ember';
 import layout from '../../templates/components/ember-notify/message';
 import Notify from 'ember-notify';
@@ -36,7 +37,11 @@ export default Component.extend({
   didInsertElement: function() {
     var element = this.get('message.element');
     if (element) {
-      this.$('.message').append(element);
+      if (isArray(element)) {
+        this.$('.message').append(element);    // eslint-disable-line ember/no-jquery
+      } else {
+        this.get('element').querySelector('.message').appendChild(element);
+      }
     }
     var closeAfter = this.get('message.closeAfter');
     if (closeAfter === undefined) closeAfter = this.get('closeAfter');
@@ -54,7 +59,7 @@ export default Component.extend({
     }
   }),
   isHovering: function() {
-    return this.$().is(':hover');
+    return this.get('element').matches(':hover');
   },
 
   actions: {
