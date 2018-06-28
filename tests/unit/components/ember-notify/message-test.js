@@ -84,7 +84,7 @@ describe('MessageComponent', function() {
         expect(message.visible).to.equal(false, 'message no longer visible');
         expect(el.classList.contains('ember-notify-show')).to.equal(false, 'message does not have show class');
         var times = timesSince(observed, start);
-        expect(times[0]).to.be.greaterThan(500);
+        expect(times[0]).to.be.at.least(500);
       }));
   });
 
@@ -124,6 +124,6 @@ describe('MessageComponent', function() {
         expect(el.classList.contains('ember-notify-hide')).to.equal(true, 'message has hide class');
         done();
       }, 100);
-    }, 500);
+    }, 490);
   });
 });

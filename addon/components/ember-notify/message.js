@@ -46,7 +46,10 @@ export default Component.extend({
     var closeAfter = this.get('message.closeAfter');
     if (closeAfter === undefined) closeAfter = this.get('closeAfter');
     if (closeAfter) {
-      this.run.later(() => this.send('closeIntent'), closeAfter);
+      this.run.later(() => {
+        if (this.get('isDestroyed')) return;
+        this.send('closeIntent');
+      }, closeAfter);
     }
   },
   themeClassNames: computed('theme', 'message.type', function() {
