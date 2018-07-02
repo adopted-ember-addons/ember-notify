@@ -1,2 +1,2 @@
-import Ember from 'ember';
-export default Ember.Component;
+import Component from '@ember/component';
+export default Component;

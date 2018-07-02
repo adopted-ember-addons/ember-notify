@@ -1,38 +1,36 @@
 /* jshint expr:true */
-import Ember from 'ember';
-import {
-  describeComponent,
-  it
-} from 'ember-mocha';
+import { A } from '@ember/array';
+import EmberObject from '@ember/object';
+import { it, describe, before, after } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
+import { find, click } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 import hbs from 'htmlbars-inline-precompile';
 
-describeComponent(
-  'ember-notify',
-  'EmberNotifyComponent | Integration',
-  {
+describe('EmberNotifyComponent | Integration', function() {
+  setupComponentTest('ember-notify', {
     integration: true
-  },
-  function() {
-    before(() => Notify.testing = true);
-    after(() => Notify.testing = false);
+  });
 
-    it('renders block version', function() {
-      this.render(hbs`
-        {{#ember-notify messages=messages as |message close|}}
-          <a {{action close}} class='close-from-block'>CLOSE</a>
-          <span class='message-from-block'>{{message.text}}</span>
-        {{/ember-notify}}
-      `);
+  before(() => Notify.testing = true);
+  after(() => Notify.testing = false);
 
-      const dummyMessage = Ember.Object.create({text: 'dummy text', visible: true, type: 'alert'});
-      this.set('messages', [ dummyMessage ]);
+  it('renders block version', function() {
+    this.render(hbs`
+      {{#ember-notify messages=messages as |message close|}}
+        <a {{action close}} class='close-from-block'>CLOSE</a>
+        <span class='message-from-block'>{{message.text}}</span>
+      {{/ember-notify}}
+    `);
 
-      // ensure block is yielded
-      expect(this.$().find('.message-from-block').text()).to.equal('dummy text');
-      // close action is passed
-      this.$().find('.close-from-block').click();
-      expect(dummyMessage.get('visible')).to.be.false;
-    });
-  }
-);
+    const dummyMessage = EmberObject.create({text: 'dummy text', visible: true, type: 'alert'});
+    this.set('messages', A([ dummyMessage ]));
+
+    // ensure block is yielded
+    expect(find('.message-from-block').textContent).to.equal('dummy text');
+
+    // close action is passed
+    click('.close-from-block');
+    expect(dummyMessage.get('visible')).to.be.false;
+  });
+});

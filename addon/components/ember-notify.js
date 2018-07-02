@@ -1,16 +1,20 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import EmberObject, { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
 import Message from 'ember-notify/message';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout: layout,
 
-  notify: Ember.inject.service(),
-  source: Ember.computed.oneWay('notify'),
+  notify: service(),
+  source: oneWay('notify'),
   messages: null,
   closeAfter: 2500,
 
-  classPrefix: Ember.computed(function() {
+  classPrefix: computed(function() {
     return this.get('defaultClass') || 'ember-notify-default';
   }),
   classNames: ['ember-notify-cn'],
@@ -19,7 +23,7 @@ export default Ember.Component.extend({
 
   init: function() {
     this._super();
-    this.set('messages', Ember.A());
+    this.set('messages', A());
     this.get('source').setTarget(this);
 
     var style = this.get('messageStyle'), theme;
@@ -62,7 +66,7 @@ export default Ember.Component.extend({
   }
 });
 
-export var Theme = Ember.Object.extend({
+export var Theme = EmberObject.extend({
   classNamesFor(message) {
     return message.get('type');
   }

@@ -1,57 +1,54 @@
-import {
-  describeComponent,
-  it
-} from 'ember-mocha';
-import {
-  messages
-} from '../helpers';
+import { it, describe, before, after } from 'mocha';
+import { setupComponentTest } from 'ember-mocha';
+import { find } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 
 var helper;
-describeComponent(
-  'ember-notify',
-  'Notify helper',
-  {
+describe('Notify helper', function() {
+  setupComponentTest('ember-notify', {
     setup() {
       helper = this.container.lookup('service:notify');
     },
     needs: ['service:notify', 'component:ember-notify/message']
-  },
-  function() {
-    before(() => Notify.testing = true);
-    after(() => Notify.testing = false);
+  });
 
-    it('can be used to show messages', function() {
-      var message = helper.info('Hello world');
-      expect(message.get('visible')).to.equal(undefined, 'message is not visible');
+  before(() => Notify.testing = true);
+  after(() => Notify.testing = false);
 
-      var component = this.subject();
-      this.render();
+  it('can be used to show messages', function() {
+    var message = helper.info('Hello world');
+    expect(message.get('visible')).to.equal(undefined, 'message is not visible');
 
-      var $messages = messages(component.$());
-      expect($messages.length).to.equal(1, 'element is shown');
-      expect(message.get('visible')).to.equal(true, 'message is visible');
-    });
+    var component = this.subject();
+    this.render();
 
-    it('will queue pending messages if the component isn\'t rendered', function() {
-      helper.info('Hello world');
-      expect($('.ember-notify').length).to.equal(0, 'component is not yet shown');
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
+    expect(message.get('visible')).to.equal(true, 'message is visible');
+  });
 
-      var component = this.subject();
-      this.render();
+  it('will queue pending messages if the component isn\'t rendered', function() {
+    helper.info('Hello world');
+    expect(find('.ember-notify')).to.not.exist;
 
-      expect(messages(component.$()).length).to.equal(1, '1 element is shown');
-    });
+    var component = this.subject();
+    this.render();
 
-    it('handles calling set on a queued message', function() {
-      var message = helper.info('Hello world');
-      message.set('text', 'Frank Zappa');
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
+  });
 
-      var component = this.subject();
-      this.render();
+  it('handles calling set on a queued message', function() {
+    var message = helper.info('Hello world');
+    message.set('text', 'Frank Zappa');
 
-      expect(messages(component.$()).find('.message').text())
-        .to.equal('Frank Zappa', 'message is updated');
-    });
-  }
-);
+    var component = this.subject();
+    this.render();
+
+    var notify = find('.ember-notify', component.get('element'));
+    expect(notify).to.exist;
+
+    expect(find('.message', notify).textContent)
+      .to.equal('Frank Zappa', 'message is updated');
+  });
+});
