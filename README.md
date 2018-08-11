@@ -158,6 +158,19 @@ The following snippet summarizes rules needed for a custom look. For a complete 
 .custom-notify .ember-notify-hide {}
 ```
 
+### Turn off loading CSS
+
+If you want to use the addon without loading the CSS themes (because you have your own CSS) add this to 
+your `ember-cli-build.js` file:
+
+```
+var app = new EmberApp({
+  emberNotify: {
+    importCss: false
+  }
+});
+```
+
 ### Usage in Tests
 
 The scheduler that shows and hides the messages is disabled by default when Ember is running tests
