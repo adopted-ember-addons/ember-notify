@@ -26,12 +26,11 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 ### Examples
 
 ```js
-import {
-  Component,
-  inject
-} from 'ember';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+
 export default Component.extend({
-  notify: inject.service('notify'),
+  notify: service('notify'),
   actions: {
     sayHello() {
       this.get('notify').info('Hello there!');
