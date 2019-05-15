@@ -1,17 +1,17 @@
 {
   "name": "ember-notify",
   "version": "5.2.1",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Easy, wee little notifications",
   "keywords": [
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Simon Wade",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/adopted-ember-addons/ember-notify",
   "scripts": {
     "build": "ember build",
     "lint:js": "eslint ./*.js addon addon-test-support app blueprints config lib server test-support tests",
