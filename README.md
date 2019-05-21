@@ -1,4 +1,4 @@
-[<img align='right' alt='Build Status' src='https://travis-ci.org/aexmachina/ember-notify.png'>](https://travis-ci.org/aexmachina/ember-notify)
+[<img align='right' alt='Build Status' src='https://travis-ci.org/adopted-ember-addons/ember-notify.png'>](https://travis-ci.org/adopted-ember-addons/ember-notify)
 
 # ember-notify
 
@@ -178,7 +178,7 @@ npm install ember-notify --save-dev
 
 ### Upgrading from a previous version
 
-See [the CHANGELOG](https://github.com/aexmachina/ember-notify/blob/master/CHANGELOG.md).
+See [the CHANGELOG](https://github.com/adopted-ember-addons/ember-notify/blob/master/CHANGELOG.md).
 
 ## Browser Compatibility
 
