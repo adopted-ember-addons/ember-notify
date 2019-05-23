@@ -62,7 +62,10 @@ export default Component.extend({
     }
   }),
   isHovering: function() {
-    return this.get('element').matches(':hover');
+    let element = this.get('element');
+    return element.matches
+      ? element.matches(':hover')
+      : element.msMatchesSelector(':hover');
   },
 
   actions: {
