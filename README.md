@@ -1,4 +1,4 @@
-[<img align='right' alt='Build Status' src='https://travis-ci.org/adopted-ember-addons/ember-notify.png'>](https://travis-ci.org/adopted-ember-addons/ember-notify)
+[<img align='right' alt='Build Status' src='https://travis-ci.org/adopted-ember-addons/ember-notify.svg'>](https://travis-ci.org/adopted-ember-addons/ember-notify)
 
 # ember-notify
 
