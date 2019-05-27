@@ -246,8 +246,9 @@ describe('EmberNotifyComponent', function() {
   });
   it('supports customizing the base CSS class', function() {
     var component = this.subject({
-      classPrefix: 'foo'
+      defaultClass: 'foo'
     });
+
     component.show({});
 
     this.render();
