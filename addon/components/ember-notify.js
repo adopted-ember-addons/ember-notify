@@ -69,6 +69,11 @@ export default Component.extend({
       return;
     }
 
+    let id = message.id;
+    if (id && this.get('messages').find(x => x.id === id)) {
+      return;
+    }
+
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }

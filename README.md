@@ -79,7 +79,13 @@ Include custom `classNames` on your message:
 ```js
 notify.alert('Custom CSS class', {
   classNames: ['my-class']
-})
+});
+```
+
+Include an identifier to avoid duplicate messages being displayed:
+
+```js
+notify.alert('Unique Message', { id: 'some-unique-identifier' });
 ```
 
 ### Initializer
@@ -159,7 +165,7 @@ The following snippet summarizes rules needed for a custom look. For a complete 
 
 ### Turn off loading CSS
 
-If you want to use the addon without loading the CSS themes (because you have your own CSS) add this to 
+If you want to use the addon without loading the CSS themes (because you have your own CSS) add this to
 your `ember-cli-build.js` file:
 
 ```

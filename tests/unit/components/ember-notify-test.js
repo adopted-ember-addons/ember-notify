@@ -29,6 +29,35 @@ describe('EmberNotifyComponent', function() {
     this.render();
     expect(component._state).to.equal('inDOM');
   });
+
+  it ('only renders one message with unique id', function() {
+    let component = this.subject();
+    component.show({
+      id: 'unique-id',
+      text: 'First',
+      type: 'success'
+    });
+
+    component.show({
+      id: 'other-id',
+      text: 'Second',
+      type: 'success'
+    });
+
+    component.show({
+      id: 'unique-id',
+      text: 'Third',
+      type: 'success'
+    });
+
+    this.render();
+
+    let notify = find('.ember-notify');
+    expect(notify).to.exist;
+    expect(find('.message', notify).textContent).to.equal('First');
+    expect(findAll('.message').length).to.equal(2);
+  });
+
   it('shows and hides messages with animations', function() {
     var component = this.subject();
     var start = new Date();
