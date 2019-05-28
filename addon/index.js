@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 import { isHTMLSafe } from '@ember/string';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import Service from '@ember/service';
 import Message from './message';
 
@@ -24,8 +24,6 @@ var Notify = Service.extend({
   },
 
   show(type, text, options) {
-    var assign = assign || merge;
-
     // If the text passed is `SafeString`, convert it
     if (isHTMLSafe(text)) {
       text = text.toString();

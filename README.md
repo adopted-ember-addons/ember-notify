@@ -135,12 +135,12 @@ you are using *Closure Actions* syntax passing the action (e. g. `<a {{action cl
 
 By default, the `ember-notify` message window will appear from the bottom right corner of the
 screen.  You may want to control the postioning or animations. To do so, you need to pass a CSS
-class name using the `classPrefix` option. This will render the top level `ember-notify` element
+class name using the `defaultClass` option. This will render the top level `ember-notify` element
 with the class you pass in.
 
 ```hbs
 <!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
-{{ember-notify classPrefix="custom-notify"}}
+{{ember-notify defaultClass="custom-notify"}}
 
 ```
 Then you need to add custom styling for each of the elements within the `ember-notify` structure.

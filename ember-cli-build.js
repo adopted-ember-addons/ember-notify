@@ -3,7 +3,7 @@
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
-  let app = new EmberAddon(defaults, (process.env.USE_JQUERY) ? {} : {
+  let app = new EmberAddon(defaults, {
     // Add options here
     vendorFiles: { 'jquery.js': null }
   });
