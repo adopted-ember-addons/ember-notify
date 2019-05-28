@@ -15,10 +15,11 @@ describe('EmberNotifyMessageComponent | Integration', function() {
   after(() => Notify.testing = false);
 
   it('renders block version', function() {
-    const dummyMessage = EmberObject.create({
+    let dummyMessage = EmberObject.create({
       text: 'dummy text',
       visible: true
     });
+
     this.set('message', dummyMessage);
 
     // Template block usage:
@@ -29,11 +30,12 @@ describe('EmberNotifyMessageComponent | Integration', function() {
       {{/ember-notify/message}}
     `);
 
-    // ensure block is yielded
+    // Eensure block is yielded
     expect(find('.message-from-block').textContent).to.equal('dummy text');
-    // close action is passed
+
+    // Close action is passed
     click('.close-from-block');
-    expect(dummyMessage.get('visible')).to.be.false;
+    expect(dummyMessage.visible).to.be.false;
   });
 
   it('includes classNames', function() {
@@ -42,9 +44,11 @@ describe('EmberNotifyMessageComponent | Integration', function() {
       visible: true,
       classNames: ['my-class']
     });
+
     this.render(hbs`
       {{ember-notify/message message=message}}
     `);
+
     expect(find('.my-class .message').textContent).to.equal('dummy text');
   });
 });

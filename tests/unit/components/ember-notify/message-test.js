@@ -3,15 +3,10 @@ import { next } from '@ember/runloop';
 import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find } from 'ember-native-dom-helpers';
-import {
-  observeSequence,
-  timesSince
-} from '../../../helpers';
+import { observeSequence, timesSince } from '../../../helpers';
 import Notify from 'ember-notify';
 import Message from 'ember-notify/message';
-import {
-  Theme
-} from 'ember-notify/components/ember-notify';
+import { Theme } from 'ember-notify/components/ember-notify';
 
 describe('MessageComponent', function() {
   setupComponentTest('ember-notify/message', {
@@ -23,7 +18,7 @@ describe('MessageComponent', function() {
 
   it('renders the message component', function() {
     // creates the component instance
-    var component = this.subject();
+    let component = this.subject();
     expect(component._state).to.equal('preRender');
 
     // renders the component on the page
@@ -32,23 +27,23 @@ describe('MessageComponent', function() {
   });
 
   it('renders the DOM element', function() {
-    var theme = Theme.create();
-    var message = Message.create({
-      visible    : true,
-      text       : 'Hello world',
-      closeAfter : 500,
+    let message = Message.create({
+      visible: true,
+      text: 'Hello world',
+      closeAfter: 500,
       removeAfter: 500
     });
-    var component = this.subject({
+
+    let component = this.subject({
       message: message,
-      theme: theme,
+      theme: Theme,
       class: 'ember-notify clearfix'
-     });
+    });
 
     this.render();
 
-    var el = component.get('element');
-    var span = find('span.message', el);
+    let el = component.get('element');
+    let span = find('span.message', el);
 
     expect(el).to.exist;
     expect(el.matches('.info')).to.be.true;
@@ -57,23 +52,23 @@ describe('MessageComponent', function() {
   });
 
   it('closes on its own', function() {
-    var theme = Theme.create();
-    var message = Message.create({
-      visible   : true,
-      text      : 'Hello world',
+    let message = Message.create({
+      visible: true,
+      text: 'Hello world',
       closeAfter: 500
     });
-    var component = this.subject({
+
+    let component = this.subject({
       message: message,
-      theme: theme,
+      theme: Theme,
       class: 'ember-notify clearfix'
-     });
+    });
 
     this.render();
 
-    var start = new Date();
+    let start = new Date();
 
-    var el = component.get('element');
+    let el = component.get('element');
     el.classList.add('ember-notify');
 
     expect(message.visible).to.equal(true, 'message is visible');
@@ -83,30 +78,29 @@ describe('MessageComponent', function() {
       .then(observed => next(() => {
         expect(message.visible).to.equal(false, 'message no longer visible');
         expect(el.classList.contains('ember-notify-show')).to.equal(false, 'message does not have show class');
-        var times = timesSince(observed, start);
+        let times = timesSince(observed, start);
         expect(times[0]).to.be.at.least(500);
       }));
   });
 
   it('does not close when hovered', function(done) {
-    var isHovering = true;
-    var theme = Theme.create();
-    var message = Message.create({
-      visible   : true,
-      text      : 'Hello world',
+    let isHovering = true;
+    let message = Message.create({
+      visible: true,
+      text: 'Hello world',
       closeAfter: 500
     });
-    var component = this.subject({
+
+    let component = this.subject({
       message: message,
-      theme  : theme,
-      class  : 'ember-notify clearfix'
-     }).reopen({
-       isHovering: () => isHovering
-     });
+      theme: Theme,
+      class: 'ember-notify clearfix'
+     })
+     .reopen({ isHovering: () => isHovering });
 
     this.render();
-    
-    var el = component.get('element');
+
+    let el = component.get('element');
     el.classList.add('ember-notify');
 
     expect(message.visible).to.equal(true, 'message is visible');

@@ -1,6 +1,5 @@
 import { A } from '@ember/array';
-import EmberObject, { computed } from '@ember/object';
-import { oneWay } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
@@ -10,49 +9,49 @@ export default Component.extend({
   layout,
 
   notify: service(),
-  source: oneWay('notify'),
-  messages: null,
-  closeAfter: 2500,
 
   classNames: ['ember-notify-cn'],
   classNameBindings: ['classPrefix'],
   messageStyle: 'foundation',
 
+  closeAfter: 2500,
+  messages: null,
+
+  source: computed.oneWay('notify'),
+
   classPrefix: computed(function() {
-    return this.get('defaultClass') || 'ember-notify-default';
+    return this.defaultClass || 'ember-notify-default';
   }),
 
   init() {
     this._super(...arguments);
 
     this.set('messages', A());
-    this.get('source').setTarget(this);
-
-    let style = this.get('messageStyle');
+    this.source.setTarget(this);
     let theme;
 
-    switch (style) {
+    switch (this.messageStyle) {
       case 'foundation':
-        theme = FoundationTheme.create();
+        theme = FoundationTheme;
         break;
       case 'uikit':
-          theme = UIkitTheme.create();
-          break;
+        theme = UIkitTheme;
+        break;
       case 'foundation-5':
-        theme = Foundation5Theme.create();
+        theme = Foundation5Theme;
         break;
       case 'bootstrap':
-        theme = BootstrapTheme.create();
+        theme = BootstrapTheme;
         break;
       case 'refills':
-        theme = RefillsTheme.create();
+        theme = RefillsTheme;
         break;
       case 'semantic-ui':
-        theme = SemanticUiTheme.create();
+        theme = SemanticUiTheme;
         break;
       default:
         throw new Error(
-          `Unknown messageStyle ${style}.
+          `Unknown messageStyle ${this.messageStyle}.
           Options are 'foundation', 'foundation-5', 'uikit', 'refills', 'bootstrap', and 'semantic-ui'.`
         );
     }
@@ -61,16 +60,18 @@ export default Component.extend({
   },
 
   willDestroyElement() {
-    this.get('source').setTarget(null);
+    this._super(...arguments);
+
+    this.source.setTarget(null);
   },
 
   show(message) {
-    if (this.get('isDestroyed')) {
+    if (this.isDestroyed) {
       return;
     }
 
     let id = message.id;
-    if (id && this.get('messages').find(x => x.id === id)) {
+    if (id && this.messages.find(x => x.id === id)) {
       return;
     }
 
@@ -78,45 +79,43 @@ export default Component.extend({
       message = Message.create(message);
     }
 
-    this.get('messages').pushObject(message);
+    this.messages.pushObject(message);
 
     return message;
   }
 });
 
-export const Theme = EmberObject.extend({
+export const Theme = {
   classNamesFor(message) {
-    return message.get('type');
+    return message.type;
   }
-});
+};
 
-export const FoundationTheme = Theme.extend({
+export const FoundationTheme = {
   classNamesFor(message) {
-    let type = message.get('type');
-    let classNames = ['callout', type];
-    if (type === 'error') {
+    let classNames = ['callout', message.type];
+    if (message.type === 'error') {
       classNames.push('alert');
     }
 
     return classNames.join(' ');
   }
-});
+};
 
-export const Foundation5Theme = Theme.extend({
+export const Foundation5Theme = {
   classNamesFor(message) {
-    let type = message.get('type');
-    let classNames = ['alert-box', type];
-    if (type === 'error') {
+    let classNames = ['alert-box', message.type];
+    if (message.type === 'error') {
       classNames.push('alert');
     }
 
     return classNames.join(' ');
   }
-});
+};
 
-export const BootstrapTheme = Theme.extend({
+export const BootstrapTheme = {
   classNamesFor(message) {
-    let type = message.get('type');
+    let { type } = message;
     if (type === 'alert' || type === 'error') {
       type = 'danger';
     }
@@ -125,11 +124,10 @@ export const BootstrapTheme = Theme.extend({
 
     return classNames.join(' ');
   }
-});
+};
 
-export const RefillsTheme = Theme.extend({
+export const RefillsTheme = {
   classNamesFor(message) {
-    let type = message.get('type');
     let typeMapping = {
       success: 'success',
       alert: 'error',
@@ -138,13 +136,12 @@ export const RefillsTheme = Theme.extend({
       warning: 'alert'
     };
 
-    return `flash-${typeMapping[type]}`;
+    return `flash-${typeMapping[message.type]}`;
   }
-});
+};
 
-export const SemanticUiTheme = Theme.extend({
+export const SemanticUiTheme = {
   classNamesFor(message){
-    let type = message.get('type');
     let typeMapping = {
       success: 'success',
       alert: 'error',
@@ -153,13 +150,12 @@ export const SemanticUiTheme = Theme.extend({
       warning: 'warning'
     };
 
-    return `ui message ${typeMapping[type]}`;
+    return `ui message ${typeMapping[message.type]}`;
   }
-});
+};
 
-export const UIkitTheme = Theme.extend({
+export const UIkitTheme = {
   classNamesFor(message){
-    let type = message.get('type');
     let typeMapping = {
       success: 'success',
       alert: 'warning',
@@ -168,6 +164,6 @@ export const UIkitTheme = Theme.extend({
       warning: 'warning'
     };
 
-    return `uk-notify-message uk-notify-message-${typeMapping[type]}`;
+    return `uk-notify-message uk-notify-message-${typeMapping[message.type]}`;
   }
-});
+};
