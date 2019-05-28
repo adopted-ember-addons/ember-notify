@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   notify: service(),
+
   model() {
     return {
       text: 'Hello, world!',
@@ -10,6 +11,7 @@ export default Route.extend({
       html: false
     };
   },
+
   actions: {
     info: showLevel('info'),
     alert: showLevel('alert'),
@@ -20,10 +22,11 @@ export default Route.extend({
 
 function showLevel(level) {
   return function(model) {
-    var message = {
+    let message = {
       closeAfter: Number(model.closeAfter)
     };
+
     message[model.html ? 'html' : 'text'] = model.text;
-    this.get('notify').show(level, message);
+    this.notify.show(level, message);
   };
 }
