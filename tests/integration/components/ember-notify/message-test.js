@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import EmberObject from '@ember/object';
 import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';

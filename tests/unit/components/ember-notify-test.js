@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { htmlSafe } from '@ember/string';
 import { next, run } from '@ember/runloop';
 import { it, describe, before, after } from 'mocha';

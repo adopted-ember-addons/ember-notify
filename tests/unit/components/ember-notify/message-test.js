@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { next } from '@ember/runloop';
 import { it, describe, before, after } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';

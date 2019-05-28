@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';
 import { it, describe, before, after } from 'mocha';
