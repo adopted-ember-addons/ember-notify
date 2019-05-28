@@ -1,3 +1,4 @@
+import { isArray } from '@ember/array';
 import { run, later, next } from '@ember/runloop';
 import EmberObject, { computed, observer } from '@ember/object';
 import Component from '@ember/component';
@@ -37,7 +38,7 @@ export default Component.extend({
 
     let { closeAfter, element } = this.message;
     if (element) {
-      if (Array.isArray(element)) {
+      if (isArray(element)) {
         // eslint-disable-line ember/no-jquery
         this.$('.message').append(element);
       } else {
