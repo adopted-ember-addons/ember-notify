@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { run, later, next } from '@ember/runloop';
-import EmberObject, { computed, observer } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
 import Notify from 'ember-notify';
@@ -36,7 +36,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    let { closeAfter, element } = this.message;
+    let { closeAfter = this.closeAfter, element } = this.message;
     if (element) {
       if (isArray(element)) {
         // eslint-disable-line ember/no-jquery
@@ -48,18 +48,8 @@ export default Component.extend({
       }
     }
 
-    if (closeAfter === undefined) {
-      closeAfter = this.closeAfter;
-    }
-
     if (closeAfter) {
-      this.run.later(() => {
-        if (this.isDestroyed) {
-          return;
-        }
-
-        this.send('closeIntent');
-      }, closeAfter);
+      this.run.later(() => this.selfClose(), closeAfter);
     }
   },
 
@@ -67,33 +57,7 @@ export default Component.extend({
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
-  visibleObserver: observer('message.visible', function() {
-    if (!this.message.visible) {
-      this.send('closeIntent');
-    }
-  }),
-
-  isHovering() {
-    return this.element.matches
-      ? this.element.matches(':hover')
-      : this.element.msMatchesSelector(':hover');
-  },
-
   actions: {
-    // Alias to close action so we can poll whether hover state is active
-    closeIntent() {
-      if (this.isDestroyed) {
-        return;
-      }
-
-      if (this.isHovering()) {
-        return this.run.later(() => this.send('closeIntent'), 100);
-      }
-
-      // When :hover no longer applies, close as normal
-      this.send('close');
-    },
-
     close() {
       if (this.message.closed) {
         return;
@@ -118,6 +82,25 @@ export default Component.extend({
         this.set('message.visible', null);
       }
     }
+  },
+
+  isHovering() {
+    return this.element.matches
+      ? this.element.matches(':hover')
+      : this.element.msMatchesSelector(':hover');
+  },
+
+  selfClose() {
+    if (this.isDestroyed) {
+      return;
+    }
+
+    if (this.isHovering()) {
+      return this.run.later(() => this.selfClose(), 100);
+    }
+
+    // When :hover no longer applies, close as normal
+    this.send('close');
   }
 }).reopenClass({
   removeAfter: 250 // Allow time for the close animation to finish
