@@ -3,7 +3,15 @@
   "version": "6.0.0",
   "description": "Easy, wee little notifications",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember",
+    "ember-cli",
+    "flash messages",
+    "flash",
+    "growl",
+    "toastr",
+    "notifications",
+    "notify"
   ],
   "repository": "https://github.com/adopted-ember-addons/ember-notify",
   "license": "MIT",
