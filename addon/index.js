@@ -55,9 +55,6 @@ let Notify = Service.extend({
       this.pending = [];
     }
   }
-}).reopenClass({
-  // set to true to disable testing optimizations that are enabled when Ember.testing is true
-  testing: false
 });
 
 export default Notify.reopenClass({
