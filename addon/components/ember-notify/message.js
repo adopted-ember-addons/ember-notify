@@ -1,9 +1,8 @@
 import { isArray } from '@ember/array';
-import { run, later, next } from '@ember/runloop';
-import EmberObject, { computed } from '@ember/object';
+import { run } from '@ember/runloop';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
-import Notify from 'ember-notify';
 
 const DEFAULT_MESSAGE = {};
 
@@ -29,8 +28,6 @@ export default Component.extend({
       // Should really be in didInsertElement but Glimmer doesn't allow this
       this.set('message.visible', true);
     }
-
-    this.run = Runner.create({ disabled: !Notify.testing });
   },
 
   didInsertElement() {
@@ -49,7 +46,7 @@ export default Component.extend({
     }
 
     if (closeAfter) {
-      this.run.later(() => this.selfClose(), closeAfter);
+      run.later(() => this.selfClose(), closeAfter);
     }
   },
 
@@ -68,7 +65,7 @@ export default Component.extend({
 
       let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
       if (removeAfter) {
-        this.run.later(this, remove, removeAfter);
+        run.later(this, remove, removeAfter);
       } else {
         remove();
       }
@@ -96,7 +93,7 @@ export default Component.extend({
     }
 
     if (this.isHovering()) {
-      return this.run.later(() => this.selfClose(), 100);
+      return run.later(() => this.selfClose(), 100);
     }
 
     // When :hover no longer applies, close as normal
@@ -104,25 +101,4 @@ export default Component.extend({
   }
 }).reopenClass({
   removeAfter: 250 // Allow time for the close animation to finish
-});
-
-// Getting the run loop to do what we want is difficult, hence the Runner...
-const Runner = EmberObject.extend({
-  init() {
-    this._super(...arguments);
-
-    if (this.disabled) {
-      this.next = this.later = (ctx, fn) => next(ctx, fn);
-    } else {
-      // This is horrible but this avoids delays from the run loop
-      this.next = (ctx, fn) => {
-        let args = arguments;
-        setTimeout(() => run(() => fn.apply(ctx, args)), 0);
-      };
-
-      this.later = function() {
-        later.apply(run, arguments);
-      };
-    }
-  }
 });

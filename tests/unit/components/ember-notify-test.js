@@ -1,19 +1,15 @@
 import { htmlSafe } from '@ember/string';
 import { next, run } from '@ember/runloop';
-import { it, describe, before, after } from 'mocha';
+import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find, findAll } from 'ember-native-dom-helpers';
 import $ from 'jquery';
 import { observeSequence, timesSince } from '../../helpers';
-import Notify from 'ember-notify';
 
 describe('EmberNotifyComponent', function() {
   setupComponentTest('ember-notify', {
     needs: ['service:notify', 'component:ember-notify/message']
   });
-
-  before(() => Notify.testing = true);
-  after(() => Notify.testing = false);
 
   it('renders', function() {
     // creates the component instance

@@ -1,17 +1,13 @@
 import EmberObject from '@ember/object';
-import { it, describe, before, after } from 'mocha';
+import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find, click } from 'ember-native-dom-helpers';
-import Notify from 'ember-notify';
 import hbs from 'htmlbars-inline-precompile';
 
 describe('EmberNotifyMessageComponent | Integration', function() {
   setupComponentTest('ember-notify/message', {
     integration: true
   });
-
-  before(() => Notify.testing = true);
-  after(() => Notify.testing = false);
 
   it('renders block version', function() {
     let dummyMessage = EmberObject.create({

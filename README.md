@@ -175,16 +175,6 @@ let app = new EmberApp({
 });
 ```
 
-### Usage in Tests
-
-The scheduler that shows and hides the messages is disabled by default when Ember is running tests to avoid slowing down the tests. You can override this behaviour by setting `Notify.testing = true`.
-
-```js
-import Notify from 'ember-notify';
-
-Notify.testing = true;
-```
-
 ## Installation
 
 This module is an ember-cli addon, so installation is easy as pie.
