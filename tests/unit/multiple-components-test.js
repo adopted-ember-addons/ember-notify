@@ -5,7 +5,8 @@ import { setupComponentTest } from 'ember-mocha';
 import { find } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
 
-var helper;
+let helper;
+
 describe('multiple sources', () => {
   setupComponentTest('multiple-components', {
     needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
@@ -15,16 +16,16 @@ describe('multiple sources', () => {
   });
 
   beforeEach(() => Notify.testing = true);
+
   it('source property allows multiple {{ember-notify}} components', function(done) {
-    var secondarySource = Notify.create();
-    var component = this.subject({
-      secondary: secondarySource
-    });
+    let secondarySource = Notify.create();
+    let component = this.subject({ secondary: secondarySource });
     helper.info('Hello world');
     this.render();
 
-    var primary = find('.primary', component.get('element'));
-    var secondary = find('.secondary', component.get('element'));
+    let primary = find('.primary', component.element);
+    let secondary = find('.secondary', component.element);
+
     next(() => {
       expect(find('.ember-notify', primary)).to.exist;
       expect(find('.ember-notify', secondary)).to.not.exist;
@@ -36,13 +37,13 @@ describe('multiple sources', () => {
       done();
     }));
 
-    var propertyTest = EmberObject.extend({
+    let propertyTest = EmberObject.extend({
       property: Notify.property()
     }).create();
-    expect(propertyTest.get('property')).to.respondTo('show',
+
+    expect(propertyTest.property).to.respondTo('show',
       'Notify.property provides a Notify instance'
     );
-
   });
 });
 

@@ -1,142 +1,169 @@
 import { A } from '@ember/array';
-import EmberObject, { computed } from '@ember/object';
-import { oneWay } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
 import Message from 'ember-notify/message';
 
 export default Component.extend({
-  layout: layout,
+  layout,
 
   notify: service(),
-  source: oneWay('notify'),
-  messages: null,
-  closeAfter: 2500,
 
-  classPrefix: computed(function() {
-    return this.get('defaultClass') || 'ember-notify-default';
-  }),
   classNames: ['ember-notify-cn'],
   classNameBindings: ['classPrefix'],
   messageStyle: 'foundation',
 
-  init: function() {
-    this._super();
-    this.set('messages', A());
-    this.get('source').setTarget(this);
+  closeAfter: 2500,
+  messages: null,
 
-    var style = this.get('messageStyle'), theme;
-    switch (style) {
+  source: computed.oneWay('notify'),
+
+  classPrefix: computed(function() {
+    return this.defaultClass || 'ember-notify-default';
+  }),
+
+  init() {
+    this._super(...arguments);
+
+    this.set('messages', A());
+    this.source.setTarget(this);
+    let theme;
+
+    switch (this.messageStyle) {
       case 'foundation':
-        theme = FoundationTheme.create();
+        theme = FoundationTheme;
         break;
       case 'uikit':
-          theme = UIkitTheme.create();
-          break;  
+        theme = UIkitTheme;
+        break;
       case 'foundation-5':
-        theme = Foundation5Theme.create();
+        theme = Foundation5Theme;
         break;
       case 'bootstrap':
-        theme = BootstrapTheme.create();
+        theme = BootstrapTheme;
         break;
       case 'refills':
-        theme = RefillsTheme.create();
+        theme = RefillsTheme;
         break;
       case 'semantic-ui':
-        theme = SemanticUiTheme.create();
+        theme = SemanticUiTheme;
         break;
       default:
         throw new Error(
-          `Unknown messageStyle ${style}: options are 'foundation', 'refills', 'bootstrap', and 'semantic-ui'`
+          `Unknown messageStyle ${this.messageStyle}.
+          Options are 'foundation', 'foundation-5', 'uikit', 'refills', 'bootstrap', and 'semantic-ui'.`
         );
     }
+
     this.set('theme', theme);
   },
-  willDestroyElement: function() {
-    this.get('source').setTarget(null);
+
+  willDestroyElement() {
+    this._super(...arguments);
+
+    this.source.setTarget(null);
   },
-  show: function(message) {
-    if (this.get('isDestroyed')) return;
+
+  show(message) {
+    if (this.isDestroyed) {
+      return;
+    }
+
+    let id = message.id;
+    if (id && this.messages.find(x => x.id === id)) {
+      return;
+    }
+
     if (!(message instanceof Message)) {
       message = Message.create(message);
     }
-    this.get('messages').pushObject(message);
+
+    this.messages.pushObject(message);
+
     return message;
   }
 });
 
-export var Theme = EmberObject.extend({
+export const Theme = {
   classNamesFor(message) {
-    return message.get('type');
+    return message.type;
   }
-});
+};
 
-export var FoundationTheme = Theme.extend({
+export const FoundationTheme = {
   classNamesFor(message) {
-    var type = message.get('type');
-    var classNames = ['callout', type];
-    if (type === 'error') classNames.push('alert');
+    let classNames = ['callout', message.type];
+    if (message.type === 'error') {
+      classNames.push('alert');
+    }
+
     return classNames.join(' ');
   }
-});
+};
 
-export var Foundation5Theme = Theme.extend({
+export const Foundation5Theme = {
   classNamesFor(message) {
-    var type = message.get('type');
-    var classNames = ['alert-box', type];
-    if (type === 'error') classNames.push('alert');
+    let classNames = ['alert-box', message.type];
+    if (message.type === 'error') {
+      classNames.push('alert');
+    }
+
     return classNames.join(' ');
   }
-});
+};
 
-export var BootstrapTheme = Theme.extend({
+export const BootstrapTheme = {
   classNamesFor(message) {
-    var type = message.get('type');
-    if (type === 'alert' || type === 'error') type = 'danger';
-    var classNames = ['alert', `alert-${type}`];
+    let { type } = message;
+    if (type === 'alert' || type === 'error') {
+      type = 'danger';
+    }
+
+    let classNames = ['alert', `alert-${type}`];
+
     return classNames.join(' ');
   }
-});
+};
 
-export var RefillsTheme = Theme.extend({
+export const RefillsTheme = {
   classNamesFor(message) {
-    var type = message.get('type');
-    var typeMapping = {
+    let typeMapping = {
       success: 'success',
       alert: 'error',
       error: 'error',
       info: 'notice',
       warning: 'alert'
     };
-    return 'flash-' + typeMapping[type];
-  }
-});
 
-export var SemanticUiTheme = Theme.extend({
+    return `flash-${typeMapping[message.type]}`;
+  }
+};
+
+export const SemanticUiTheme = {
   classNamesFor(message){
-    var type = message.get('type');
-    var typeMapping = {
+    let typeMapping = {
       success: 'success',
       alert: 'error',
       error: 'error',
       info: 'info',
       warning: 'warning'
     };
-    return 'ui message ' + typeMapping[type];
-  }
-});
 
-export var UIkitTheme = Theme.extend({
+    return `ui message ${typeMapping[message.type]}`;
+  }
+};
+
+export const UIkitTheme = {
   classNamesFor(message){
-    var type = message.get('type');
-    var typeMapping = {
+    let typeMapping = {
       success: 'success',
       alert: 'warning',
       error: 'danger',
       info: 'info',
       warning: 'warning'
     };
-    return 'uk-notify-message uk-notify-message-' + typeMapping[type];
+
+    return `uk-notify-message uk-notify-message-${typeMapping[message.type]}`;
   }
-});
+};

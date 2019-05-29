@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';
 import { it, describe, before, after } from 'mocha';
@@ -23,14 +22,19 @@ describe('EmberNotifyComponent | Integration', function() {
       {{/ember-notify}}
     `);
 
-    const dummyMessage = EmberObject.create({text: 'dummy text', visible: true, type: 'alert'});
-    this.set('messages', A([ dummyMessage ]));
+    let dummyMessage = EmberObject.create({
+      text: 'dummy text',
+      visible: true,
+      type: 'alert'
+    });
 
-    // ensure block is yielded
+    this.set('messages', A([dummyMessage]));
+
+    // Ensure block is yielded
     expect(find('.message-from-block').textContent).to.equal('dummy text');
 
-    // close action is passed
+    // Close action is passed
     click('.close-from-block');
-    expect(dummyMessage.get('visible')).to.be.false;
+    expect(dummyMessage.visible).to.be.false;
   });
 });

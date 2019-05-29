@@ -1,4 +1,4 @@
-[<img align='right' alt='Build Status' src='https://travis-ci.org/aexmachina/ember-notify.png'>](https://travis-ci.org/aexmachina/ember-notify)
+[<img align="right" alt="Build Status" src="https://travis-ci.org/adopted-ember-addons/ember-notify.svg">](https://travis-ci.org/adopted-ember-addons/ember-notify)
 
 # ember-notify
 
@@ -6,7 +6,7 @@
 
 ### Compatibility
 
-ember-notify is compatible with the following presentation frameworks:
+`ember-notify` is compatible with the following presentation frameworks:
 
 - Zurb Foundation 6 (default)
 - Zurb Foundation 5: `{{ember-notify messageStyle='foundation-5'}}`
@@ -26,15 +26,15 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 ### Examples
 
 ```js
-import {
-  Component,
-  inject
-} from 'ember';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+
 export default Component.extend({
-  notify: inject.service('notify'),
+  notify: service(),
+
   actions: {
     sayHello() {
-      this.get('notify').info('Hello there!');
+      this.notify.info('Hello there!');
     }
   }
 });
@@ -55,8 +55,7 @@ Using angle bracket invocation, available in Ember 3.4+
 Or you can control when each message is closed:
 
 ```js
-var notify = this.get('notify');
-var message = notify.alert('You can control how long it\'s displayed', {
+let message = this.notify.alert('You can control how long it\'s displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 ```
@@ -70,13 +69,13 @@ message.set('visible', false);
 You can specify raw HTML:
 
 ```js
-notify.info({html: '<div class="my-div">Hooray!</div>'});
+this.notify.info({ html: '<div class="my-div">Hooray!</div>' });
 ```
 
 Rounded corners, if that's your thing:
 
 ```js
-notify.alert('This one\'s got rounded corners.', {
+this.notify.alert('This one\'s got rounded corners.', {
   radius: true
 });
 ```
@@ -84,24 +83,20 @@ notify.alert('This one\'s got rounded corners.', {
 Include custom `classNames` on your message:
 
 ```js
-notify.alert('Custom CSS class', {
+this.notify.alert('Custom CSS class', {
   classNames: ['my-class']
-})
+});
 ```
 
-### Initializer
-
-If you prefer not to call `Ember.inject.service('notify')` you can use an initializer:
+Include an identifier to avoid duplicate messages being displayed:
 
 ```js
-// app/initializers/ember-notify.js
-export {default} from 'ember-notify/initializer';
+this.notify.alert('Unique Message', { id: 'some-unique-identifier' });
 ```
 
 ### Multiple Containers
 
-If you want to have separate notifications and control where they're inserted into the DOM you can
-have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
+If you want to have separate notifications and control where they're inserted into the DOM you can have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
 The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
@@ -115,23 +110,30 @@ Using angle bracket invocation
 ```
 
 ```js
+import Component from '@ember/component';
 import Notify from 'ember-notify';
 
-export default Ember.Component.extend({
-  someProperty: Notify.property(), // or this.set('someProperty', Notify.create())
+export default Component.extend({
+  alternativeNotify: Notify.property(),
+
   actions: {
-    clicked: function() {
-      this.get('someProperty').success('Hello from the controller');
+    clicked() {
+      this.alternativeNotify.success('Hello from the controller');
     }
   }
 });
 ```
+
 ### Custom message template
-You can pass a block with template you wanna be used for each message (instead of using the default one). It may look like this:
+You can pass a block with template you want to use for each message (instead of using the default one). It may look like this:
 ```hbs
   {{#ember-notify as |message close|}}
-    <a {{action close}} class='close'>close from block</a>
-    <span class='message-from-block'>{{message.text}}</span>
+    <a {{action close}} class="close">
+      close from block
+    </a>
+    <span class="message-from-block">
+      {{message.text}}
+    </span>
   {{/ember-notify}}
 ```
 
@@ -139,25 +141,26 @@ Using angle bracket invocation
 
 ```hbs
   <EmberNotify as |message close|>
-    <a {{action close}} class='close'>close from block</a>
-    <span class='message-from-block'>{{message.text}}</span>
+    <a {{action close}} class='close'>
+      close from block
+    </a>
+    <span class='message-from-block'>
+      {{message.text}}
+    </span>
   </EmberNotify>
 ```
 
 Two arguments are passed to the block: `message` object, and `close` action. Make sure
 you are using *Closure Actions* syntax passing the action (e. g. `<a {{action close}}` or
-`{{your-component close=(action close)`.
+`{{your-component close=(action close)}}`.
 
 ### Custom Animations
 
-By default, the `ember-notify` message window will appear from the bottom right corner of the
-screen.  You may want to control the postioning or animations. To do so, you need to pass a CSS
-class name using the `classPrefix` option. This will render the top level `ember-notify` element
-with the class you pass in.
+By default, the `ember-notify` message will appear in the bottom right corner of the screen. You may want to control the positioning or the animation. To do so, you need to pass a CSS class using the `defaultClass` option. This will render the top level `ember-notify` element with the class you pass in.
 
 ```hbs
-<!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
-{{ember-notify classPrefix="custom-notify"}}
+<!-- gives class="ember-notify-cn custom-notify"> to top level element-->
+{{ember-notify defaultClass="custom-notify"}}
 
 ```
 
@@ -171,31 +174,47 @@ Using angle bracket invocation
 
 Then you need to add custom styling for each of the elements within the `ember-notify` structure.
 The following snippet summarizes rules needed for a custom look. For a complete example that you can drop into your project, see [examples/custom-position-animations.css](examples/custom-position-animations.css)
+
 ```css
-/* main container */
+/* Main container */
 .custom-notify {
-	position: fixed;
-	top: 10px;
-	right: 0;
-	left: 0;
+  position: fixed;
+  top: 10px;
+  right: 0;
+  left: 0;
 }
-/* message box */
+
+/* Message box */
 .custom-notify .callout {
-	position: relative;
-	overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
-/* classes applied for animating in/out */
+
+/* Classes applied for animating in/out */
 .custom-notify .ember-notify-show {}
 .custom-notify .ember-notify-hide {}
 ```
 
+### Turn off loading CSS
+
+If you want to use the addon without loading the CSS themes (because you have your own CSS) add this to
+your `ember-cli-build.js` file:
+
+```
+let app = new EmberApp({
+  emberNotify: {
+    importCss: false
+  }
+});
+```
+
 ### Usage in Tests
 
-The scheduler that shows and hides the messages is disabled by default when Ember is running tests
-to avoid slowing down the tests. You can override this behaviour by setting `Notify.testing = true`.
+The scheduler that shows and hides the messages is disabled by default when Ember is running tests to avoid slowing down the tests. You can override this behaviour by setting `Notify.testing = true`.
 
 ```js
 import Notify from 'ember-notify';
+
 Notify.testing = true;
 ```
 
@@ -204,13 +223,9 @@ Notify.testing = true;
 This module is an ember-cli addon, so installation is easy as pie.
 
 ```sh
-npm install ember-notify --save-dev
+ember install ember-notify
 ```
 
 ### Upgrading from a previous version
 
-See [the CHANGELOG](https://github.com/aexmachina/ember-notify/blob/master/CHANGELOG.md).
-
-## Browser Compatibility
-
-Some users have reported issues with IE8, so this is currently not supported.
+See [the CHANGELOG](https://github.com/adopted-ember-addons/ember-notify/blob/master/CHANGELOG.md).

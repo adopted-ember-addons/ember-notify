@@ -1,13 +1,11 @@
 'use strict';
-var assign = require('object-assign');
 
 module.exports = {
-  name: 'ember-notify',
-  included: function(app) {
+  name: require('./package').name,
+
+  included(app) {
     this._super.included.apply(this, arguments);
-    var options = assign({
-      importCss: true
-    }, app.options.emberNotify);
+    let options = Object.assign({ importCss: true }, app.options.emberNotify);
     if (options.importCss) {
       app.import('vendor/ember-notify.css');
     }

@@ -1,24 +1,27 @@
-<form class='row'>
-  <div class='column'>
+<form class="row">
+  <div class="column">
     <fieldset>
       <legend>ember-notify demo</legend>
-      <div class='message'>
+      <div class="message">
         <label>Message</label>
-        {{input value=model.text name='message'}}
+        {{input value=model.text name="message"}}
       </div>
-      <div class='level'>
-        <button {{action 'info' model}}>info</button>
-        <button {{action 'success' model}}>success</button>
-        <button {{action 'warning' model}}>warning</button>
-        <button {{action 'alert' model}}>alert</button>
+      <div class="level">
+        <button {{action "info" model}}>info</button>
+        <button {{action "success" model}}>success</button>
+        <button {{action "warning" model}}>warning</button>
+        <button {{action "alert" model}}>alert</button>
       </div>
-      <div class='settings'>
-        <div class='close-after'>
+      <div class="settings">
+        <div class="close-after">
           <label>Close after (empty to disable)</label>
-          {{input value=model.closeAfter name='closeAfter'}}
+          {{input value=model.closeAfter name="closeAfter"}}
         </div>
-        <div class='type'>
-          <label>{{input type='checkbox' name='html' checked=model.html}} Unescaped HTML</label>
+        <div class="type">
+          <label>
+            {{input type="checkbox" name="html" checked=model.html}}
+            Unescaped HTML
+          </label>
         </div>
       </div>
     </fieldset>
