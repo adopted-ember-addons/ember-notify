@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 import { next } from '@ember/runloop';
-import { it, describe, beforeEach } from 'mocha';
+import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find } from 'ember-native-dom-helpers';
 import Notify from 'ember-notify';
@@ -14,8 +14,6 @@ describe('multiple sources', () => {
       helper = this.container.lookup('service:notify');
     }
   });
-
-  beforeEach(() => Notify.testing = true);
 
   it('source property allows multiple {{ember-notify}} components', function(done) {
     let secondarySource = Notify.create();

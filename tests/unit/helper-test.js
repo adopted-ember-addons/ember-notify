@@ -1,7 +1,6 @@
-import { it, describe, before, after } from 'mocha';
+import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find } from 'ember-native-dom-helpers';
-import Notify from 'ember-notify';
 
 let helper;
 
@@ -12,9 +11,6 @@ describe('Notify helper', function() {
     },
     needs: ['service:notify', 'component:ember-notify/message']
   });
-
-  before(() => Notify.testing = true);
-  after(() => Notify.testing = false);
 
   it('can be used to show messages', function() {
     let message = helper.info('Hello world');

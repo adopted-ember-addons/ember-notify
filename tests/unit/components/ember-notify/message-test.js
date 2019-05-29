@@ -1,9 +1,8 @@
 import { next } from '@ember/runloop';
-import { it, describe, before, after } from 'mocha';
+import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find } from 'ember-native-dom-helpers';
 import { observeSequence, timesSince } from '../../../helpers';
-import Notify from 'ember-notify';
 import Message from 'ember-notify/message';
 import { Theme } from 'ember-notify/components/ember-notify';
 
@@ -11,9 +10,6 @@ describe('MessageComponent', function() {
   setupComponentTest('ember-notify/message', {
     needs: ['service:notify']
   });
-
-  before(() => Notify.testing = true);
-  after(() => Notify.testing = false);
 
   it('renders the message component', function() {
     // creates the component instance
