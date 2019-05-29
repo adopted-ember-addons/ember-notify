@@ -1,5 +1,24 @@
 # Changelog
 
+## v6.0
+ - Don't require jquery #119
+ - Document `importCss` #124
+ - Document angle bracket invocations #128
+ - Transfer addon to `adopted-ember-addons` #130
+ - Fix notifications in IE #125
+ - Use SVG for the badge #118
+ - Update modules to new style of import #131
+ - Update README with new `inject` import #126
+ - Cleanup code #132
+ - Add support for unique identifier #132
+ - Update `ember` blueprints to `3.10` #133
+ - Drop support for `ember` < `3.4` #133
+ - Lint templates, fix deprecations #133
+ - Cleanup code and update documentation #134
+ - Refactor to avoid using `observer` #135
+ - Remove `Notify.testing` and custom `Runner` #135
+ - Update changelog, release `6.0.0` #136
+
 ## v5.0
 
 - The default theme is now compatible with Foundation 6. If you want to use Foundation 5 then use `{{ember-notify messageStyle='foundation-5'}}`
