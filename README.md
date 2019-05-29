@@ -46,6 +46,12 @@ By default the notifications close after 2.5 seconds, although you can control t
 {{ember-notify closeAfter=4000}}
 ```
 
+Using angle bracket invocation, available in Ember 3.4+
+
+```handlebars
+<EmberNotify @closeAfter={{4000}} />
+```
+
 Or you can control when each message is closed:
 
 ```js
@@ -97,6 +103,12 @@ The others you will need to provide a `source` property, so secondary containers
 {{ember-notify source=someProperty}}
 ```
 
+Using angle bracket invocation
+
+```hbs
+<EmberNotify @source={{someProperty}} />
+```
+
 ```js
 import Component from '@ember/component';
 import Notify from 'ember-notify';
@@ -125,6 +137,19 @@ You can pass a block with template you want to use for each message (instead of 
   {{/ember-notify}}
 ```
 
+Using angle bracket invocation
+
+```hbs
+  <EmberNotify as |message close|>
+    <a {{action close}} class='close'>
+      close from block
+    </a>
+    <span class='message-from-block'>
+      {{message.text}}
+    </span>
+  </EmberNotify>
+```
+
 Two arguments are passed to the block: `message` object, and `close` action. Make sure
 you are using *Closure Actions* syntax passing the action (e. g. `<a {{action close}}` or
 `{{your-component close=(action close)}}`.
@@ -136,6 +161,14 @@ By default, the `ember-notify` message will appear in the bottom right corner of
 ```hbs
 <!-- gives class="ember-notify-cn custom-notify"> to top level element-->
 {{ember-notify defaultClass="custom-notify"}}
+
+```
+
+Using angle bracket invocation
+
+```hbs
+<!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
+<EmberNotify @classPrefix={{"custom-notify"}} />
 
 ```
 
