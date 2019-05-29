@@ -55,7 +55,7 @@ Using angle bracket invocation, available in Ember 3.4+
 Or you can control when each message is closed:
 
 ```js
-let message = this.notify.alert('You can control how long it\'s displayed', {
+let message = this.notify.alert(`You can control how long it's displayed`, {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 ```
@@ -75,7 +75,7 @@ this.notify.info({ html: '<div class="my-div">Hooray!</div>' });
 Rounded corners, if that's your thing:
 
 ```js
-this.notify.alert('This one\'s got rounded corners.', {
+this.notify.alert(`This one's got rounded corners.`, {
   radius: true
 });
 ```
@@ -103,7 +103,7 @@ The others you will need to provide a `source` property, so secondary containers
 {{ember-notify source=someProperty}}
 ```
 
-Using angle bracket invocation
+Using angle bracket invocation:
 
 ```hbs
 <EmberNotify @source={{someProperty}} />
@@ -137,14 +137,14 @@ You can pass a block with template you want to use for each message (instead of 
   {{/ember-notify}}
 ```
 
-Using angle bracket invocation
+Using angle bracket invocation:
 
 ```hbs
   <EmberNotify as |message close|>
-    <a {{action close}} class='close'>
+    <a {{action close}} class="close">
       close from block
     </a>
-    <span class='message-from-block'>
+    <span class="message-from-block">
       {{message.text}}
     </span>
   </EmberNotify>
@@ -159,16 +159,16 @@ you are using *Closure Actions* syntax passing the action (e. g. `<a {{action cl
 By default, the `ember-notify` message will appear in the bottom right corner of the screen. You may want to control the positioning or the animation. To do so, you need to pass a CSS class using the `defaultClass` option. This will render the top level `ember-notify` element with the class you pass in.
 
 ```hbs
-<!-- gives class="ember-notify-cn custom-notify"> to top level element-->
+<!-- Gives class="custom-notify"> to top level element -->
 {{ember-notify defaultClass="custom-notify"}}
 
 ```
 
-Using angle bracket invocation
+Using angle bracket invocation:
 
 ```hbs
-<!-- gives class="ember-view ember-notify-cn custom-notify"> to top level element-->
-<EmberNotify @classPrefix={{"custom-notify"}} />
+<!-- Gives class="custom-notify"> to top level element -->
+<EmberNotify @defaultClass="custom-notify" />
 
 ```
 
