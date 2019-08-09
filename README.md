@@ -57,7 +57,7 @@ let message = this.notify.alert('You can control how long it is displayed', {
 ...and you can hide messages programmatically:
 
 ```js
-message.set('visible', false);
+message.close();
 ```
 
 You can specify raw HTML:

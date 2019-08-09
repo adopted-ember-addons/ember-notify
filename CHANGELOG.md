@@ -1,5 +1,9 @@
 # Changelog
 
+## UNRELEASED
+### BREAKING CHANGES
+  - Messages can be programmatically closed by doing `message.close()`. Changing the `visible` property was broken.
+
 ## v6.0
  - Don't require jquery #119
  - Document `importCss` #124

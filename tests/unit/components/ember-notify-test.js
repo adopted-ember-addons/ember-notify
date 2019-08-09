@@ -144,7 +144,7 @@ describe('EmberNotifyComponent', function() {
 
     let notify = find('.ember-notify');
     expect(notify).to.exist;
-    run(() => message.set('visible', false) );
+    run(() => message.close() );
     observeSequence(message, 'visible', [null])
       .then(observed => next(() => {
         expect(find('.ember-notify')).to.not.exist;
