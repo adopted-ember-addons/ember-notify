@@ -137,9 +137,7 @@ describe('EmberNotifyComponent', function() {
     let start = new Date();
     let component = this.subject();
     let message = component.show({
-      text: 'Hello world',
-      closeAfter: 500,
-      removeAfter: 100
+      text: 'Hello world'
     });
 
     this.render();
