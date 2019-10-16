@@ -49,7 +49,7 @@ By default the notifications close after 2.5 seconds, although you can control t
 Or you can control when each message is closed:
 
 ```js
-let message = this.notify.alert('You can control how long it's displayed', {
+let message = this.notify.alert('You can control how long it is displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 ```
