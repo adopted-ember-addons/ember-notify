@@ -94,7 +94,7 @@ If you want to have separate notifications and control where they're inserted in
 The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
-<EmberNotify @source={{someProperty}} />
+ <EmberNotify @source={{this.alternativeNotify}} />
 ```
 
 ```js
