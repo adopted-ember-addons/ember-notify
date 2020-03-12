@@ -9,44 +9,38 @@
 `ember-notify` is compatible with the following presentation frameworks:
 
 - Zurb Foundation 6 (default)
-- Zurb Foundation 5: `{{ember-notify messageStyle='foundation-5'}}`
-- Thoughtbot Refills: `{{ember-notify messageStyle='refills'}}`
-- Twitter Bootstrap: `{{ember-notify messageStyle='bootstrap'}}`
-- Semantic-UI: `{{ember-notify messageStyle='semantic-ui'}}`
-- UIKit: `{{ember-notify messageStyle='uikit'}}`
+- Zurb Foundation 5: `<EmberNotify @messageStyle="foundation-5" />`
+- Thoughtbot Refills: `<EmberNotify @messageStyle="refills" />`
+- Twitter Bootstrap: `<EmberNotify @messageStyle="bootstrap" />`
+- Semantic-UI: `<EmberNotify @messageStyle="semantic-ui" />`
+- UIKit: `<EmberNotify @messageStyle="uikit" />`
 
 The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github.io/alertify.js/). You can also customize the positioning and animations by overriding the default `ember-notify` CSS class. For usage, see the [animations example](#custom-animations).
 
 ## Usage
 
-1. Add `{{ember-notify}}` to one of your templates, usually in `application.hbs`
+1. Add `<EmberNotify />` to one of your templates, usually in `application.hbs`
 2. Inject the `notify` service
 3. Display messages using the `info`, `success`, `warning`, `alert` and `error` methods
 
 ### Examples
 
 ```js
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  notify: service(),
+export default class MyComponent extends Component {
+  @service notify;
 
-  actions: {
-    sayHello() {
-      this.notify.info('Hello there!');
-    }
+  @action
+  sayHello() {
+    this.notify.info('Hello there!');
   }
-});
+}
 ```
 
 By default the notifications close after 2.5 seconds, although you can control this in your template:
-
-```handlebars
-{{ember-notify closeAfter=4000}}
-```
-
-Using angle bracket invocation, available in Ember 3.4+
 
 ```handlebars
 <EmberNotify @closeAfter={{4000}} />
@@ -55,7 +49,7 @@ Using angle bracket invocation, available in Ember 3.4+
 Or you can control when each message is closed:
 
 ```js
-let message = this.notify.alert(`You can control how long it's displayed`, {
+let message = this.notify.alert('You can control how long it is displayed', {
   closeAfter: 10000 // or set to null to disable auto-hiding
 });
 ```
@@ -96,52 +90,33 @@ this.notify.alert('Unique Message', { id: 'some-unique-identifier' });
 
 ### Multiple Containers
 
-If you want to have separate notifications and control where they're inserted into the DOM you can have multiple `{{ember-notify}}` components, but only one of them can be accessed using the injected service.
+If you want to have separate notifications and control where they're inserted into the DOM you can have multiple `<EmberNotify />` components, but only one of them can be accessed using the injected service.
 The others you will need to provide a `source` property, so secondary containers should be used as follows:
 
 ```hbs
-{{ember-notify source=someProperty}}
-```
-
-Using angle bracket invocation:
-
-```hbs
-<EmberNotify @source={{someProperty}} />
+ <EmberNotify @source={{this.alternativeNotify}} />
 ```
 
 ```js
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import Notify from 'ember-notify';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  alternativeNotify: Notify.property(),
+export default class MyComponent extends Component {
+  alternativeNotify = Notify.property();
 
-  actions: {
-    clicked() {
-      this.alternativeNotify.success('Hello from the controller');
-    }
+  @action
+  clicked() {
+    this.alternativeNotify.success('Hello from the controller');
   }
-});
+}
 ```
 
 ### Custom message template
 You can pass a block with template you want to use for each message (instead of using the default one). It may look like this:
 ```hbs
-  {{#ember-notify as |message close|}}
-    <a {{action close}} class="close">
-      close from block
-    </a>
-    <span class="message-from-block">
-      {{message.text}}
-    </span>
-  {{/ember-notify}}
-```
-
-Using angle bracket invocation:
-
-```hbs
   <EmberNotify as |message close|>
-    <a {{action close}} class="close">
+    <a {{on "click" (action close)}} class="close">
       close from block
     </a>
     <span class="message-from-block">
@@ -152,7 +127,7 @@ Using angle bracket invocation:
 
 Two arguments are passed to the block: `message` object, and `close` action. Make sure
 you are using *Closure Actions* syntax passing the action (e. g. `<a {{action close}}` or
-`{{your-component close=(action close)}}`.
+`<YourComponent @close={{action close}} />`.
 
 ### Custom Animations
 
@@ -160,16 +135,7 @@ By default, the `ember-notify` message will appear in the bottom right corner of
 
 ```hbs
 <!-- Gives class="custom-notify"> to top level element -->
-{{ember-notify defaultClass="custom-notify"}}
-
-```
-
-Using angle bracket invocation:
-
-```hbs
-<!-- Gives class="custom-notify"> to top level element -->
 <EmberNotify @defaultClass="custom-notify" />
-
 ```
 
 Then you need to add custom styling for each of the elements within the `ember-notify` structure.
