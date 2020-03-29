@@ -36,13 +36,11 @@ export default Component.extend({
 
     let { closeAfter = this.closeAfter, element } = this.message;
     if (element) {
+      let parent = this.element.querySelector('.message');
       if (isArray(element)) {
-        // eslint-disable-line ember/no-jquery
-        this.$('.message').append(element);
+        element.map(parent.appendElement);
       } else {
-        this.element
-          .querySelector('.message')
-          .appendChild(element);
+        parent.appendChild(element);
       }
     }
 

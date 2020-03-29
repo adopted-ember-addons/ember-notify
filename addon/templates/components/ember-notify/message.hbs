@@ -1,7 +1,7 @@
 {{#if hasBlock}}
-  {{yield message (action "close")}}
+  {{yield this.message (action "close")}}
 {{else}}
-  <a {{action "close"}} class="close" role="button">&times;</a>
+  <a href {{action "close"}} class="close" role="button">&times;</a>
   {{!-- template-lint-disable no-triple-curlies --}}
-  <span class="message">{{message.text}}{{{message.html}}}</span>
+  <span class="message">{{this.message.text}}{{{this.message.html}}}</span>
 {{/if}}

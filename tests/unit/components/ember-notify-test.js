@@ -3,10 +3,10 @@ import { next, run } from '@ember/runloop';
 import { it, describe } from 'mocha';
 import { setupComponentTest } from 'ember-mocha';
 import { find, findAll } from 'ember-native-dom-helpers';
-import $ from 'jquery';
 import { observeSequence, timesSince } from '../../helpers';
 
 describe('EmberNotifyComponent', function() {
+  // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('ember-notify', {
     needs: ['service:notify', 'component:ember-notify/message']
   });
@@ -209,18 +209,6 @@ describe('EmberNotifyComponent', function() {
     this.render();
     expect(find('.message input', component.get('element'))).to.exist;
   });
-
-  if ($) {
-    it('supports being provided a jquery element', function () {
-      let component = this.subject({});
-
-      // eslint-disable-line ember/no-jquery
-      component.show({ element: $('<input>') });
-
-      this.render();
-      expect(find('.message input', component.get('element'))).to.exist;
-    });
-  }
 
   it(`defaults to using the 'ember-notify-default' CSS class`, function() {
     let component = this.subject({ });
