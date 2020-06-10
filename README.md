@@ -103,7 +103,7 @@ import Notify from 'ember-notify';
 import { action } from '@ember/object';
 
 export default class MyComponent extends Component {
-  alternativeNotify = Notify.property();
+  alternativeNotify = Notify.create();
 
   @action
   clicked() {
