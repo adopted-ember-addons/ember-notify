@@ -137,16 +137,14 @@ describe('EmberNotifyComponent', function() {
     let start = new Date();
     let component = this.subject();
     let message = component.show({
-      text: 'Hello world',
-      closeAfter: 500,
-      removeAfter: 100
+      text: 'Hello world'
     });
 
     this.render();
 
     let notify = find('.ember-notify');
     expect(notify).to.exist;
-    run(() => message.set('visible', false) );
+    run(() => message.close() );
     observeSequence(message, 'visible', [null])
       .then(observed => next(() => {
         expect(find('.ember-notify')).to.not.exist;

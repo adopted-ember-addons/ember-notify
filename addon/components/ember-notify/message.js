@@ -28,6 +28,7 @@ export default Component.extend({
       // Should really be in didInsertElement but Glimmer doesn't allow this
       this.set('message.visible', true);
     }
+    this.set('message.container', this);
   },
 
   didInsertElement() {
