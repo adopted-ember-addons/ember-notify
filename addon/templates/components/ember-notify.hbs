@@ -1,5 +1,5 @@
 {{#each this.messages as |message|}}
-  {{#if hasBlock}}
+  {{#if (has-block)}}
     <EmberNotify::Message
       @message={{message}}
       @theme={{this.theme}}
