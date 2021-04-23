@@ -5,6 +5,7 @@ export function observeSequence(obj, prop, seq) {
   let observer;
 
   return new RSVP.Promise((resolve, reject) => {
+    // eslint-disable-next-line ember/no-observers
     obj.addObserver(prop, observer = function() {
       let expected = seq[observed.length];
       let val = obj.get(prop);

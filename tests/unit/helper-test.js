@@ -5,6 +5,7 @@ import { find } from 'ember-native-dom-helpers';
 let helper;
 
 describe('Notify helper', function() {
+  // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('ember-notify', {
     setup() {
       helper = this.container.lookup('service:notify');

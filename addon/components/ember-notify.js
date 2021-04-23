@@ -19,7 +19,7 @@ export default Component.extend({
 
   source: computed.oneWay('notify'),
 
-  classPrefix: computed(function() {
+  classPrefix: computed('defaultClass', function() {
     return this.defaultClass || 'ember-notify-default';
   }),
 

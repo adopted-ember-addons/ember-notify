@@ -7,6 +7,7 @@ import Message from 'ember-notify/message';
 import { Theme } from 'ember-notify/components/ember-notify';
 
 describe('MessageComponent', function() {
+  // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('ember-notify/message', {
     needs: ['service:notify']
   });

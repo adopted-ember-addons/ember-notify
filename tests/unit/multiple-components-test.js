@@ -8,6 +8,7 @@ import Notify from 'ember-notify';
 let helper;
 
 describe('multiple sources', () => {
+  // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('multiple-components', {
     needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
     setup() {
