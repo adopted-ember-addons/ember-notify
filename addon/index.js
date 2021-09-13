@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import { isHTMLSafe } from '@ember/string';
+import { isHTMLSafe } from '@ember/template';
 import { assign } from '@ember/polyfills';
 import Service from '@ember/service';
 import Message from './message';
