@@ -1,5 +1,6 @@
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
+import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
@@ -17,7 +18,7 @@ export default Component.extend({
   closeAfter: 2500,
   messages: null,
 
-  source: computed.oneWay('notify'),
+  source: oneWay('notify'),
 
   classPrefix: computed('defaultClass', function() {
     return this.defaultClass || 'ember-notify-default';
