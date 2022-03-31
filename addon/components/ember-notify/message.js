@@ -1,5 +1,5 @@
 import { isArray } from '@ember/array';
-import { run } from '@ember/runloop';
+import { later } from '@ember/runloop';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
@@ -45,7 +45,7 @@ export default Component.extend({
     }
 
     if (closeAfter) {
-      run.later(() => this.selfClose(), closeAfter);
+      later(() => this.selfClose(), closeAfter);
     }
   },
 
@@ -64,7 +64,7 @@ export default Component.extend({
 
       let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
       if (removeAfter) {
-        run.later(this, remove, removeAfter);
+        later(this, remove, removeAfter);
       } else {
         remove();
       }
@@ -92,7 +92,7 @@ export default Component.extend({
     }
 
     if (this.isHovering()) {
-      return run.later(() => this.selfClose(), 100);
+      return later(() => this.selfClose(), 100);
     }
 
     // When :hover no longer applies, close as normal
