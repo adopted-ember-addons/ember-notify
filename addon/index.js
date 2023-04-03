@@ -1,6 +1,5 @@
 import { computed } from '@ember/object';
 import { isHTMLSafe } from '@ember/template';
-import { assign } from '@ember/polyfills';
 import Service from '@ember/service';
 import Message from './message';
 
@@ -33,7 +32,7 @@ let Notify = Service.extend({
       text = null;
     }
 
-    let message = Message.create(assign({
+    let message = Message.create(Object.assign({
       text: text,
       type: type
     }, options));
