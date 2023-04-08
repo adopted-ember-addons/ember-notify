@@ -6,13 +6,13 @@ import { observeSequence, timesSince } from '../../../helpers';
 import Message from 'ember-notify/message';
 import { Theme } from 'ember-notify/components/ember-notify';
 
-describe('MessageComponent', function() {
+describe('MessageComponent', function () {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('ember-notify/message', {
-    needs: ['service:notify']
+    needs: ['service:notify'],
   });
 
-  it('renders the message component', function() {
+  it('renders the message component', function () {
     // creates the component instance
     let component = this.subject();
     expect(component._state).to.equal('preRender');
@@ -22,18 +22,18 @@ describe('MessageComponent', function() {
     expect(component._state).to.equal('inDOM');
   });
 
-  it('renders the DOM element', function() {
+  it('renders the DOM element', function () {
     let message = Message.create({
       visible: true,
       text: 'Hello world',
       closeAfter: 500,
-      removeAfter: 500
+      removeAfter: 500,
     });
 
     let component = this.subject({
       message: message,
       theme: Theme,
-      class: 'ember-notify clearfix'
+      class: 'ember-notify clearfix',
     });
 
     this.render();
@@ -47,17 +47,17 @@ describe('MessageComponent', function() {
     expect(span.textContent).to.equal('Hello world');
   });
 
-  it('closes on its own', function() {
+  it('closes on its own', function () {
     let message = Message.create({
       visible: true,
       text: 'Hello world',
-      closeAfter: 500
+      closeAfter: 500,
     });
 
     let component = this.subject({
       message: message,
       theme: Theme,
-      class: 'ember-notify clearfix'
+      class: 'ember-notify clearfix',
     });
 
     this.render();
@@ -68,31 +68,37 @@ describe('MessageComponent', function() {
     el.classList.add('ember-notify');
 
     expect(message.visible).to.equal(true, 'message is visible');
-    expect(el.classList.contains('ember-notify-show')).to.equal(true, 'message has show class');
+    expect(el.classList.contains('ember-notify-show')).to.equal(
+      true,
+      'message has show class'
+    );
 
-    return observeSequence(message, 'visible', [false])
-      .then(observed => next(() => {
+    return observeSequence(message, 'visible', [false]).then((observed) =>
+      next(() => {
         expect(message.visible).to.equal(false, 'message no longer visible');
-        expect(el.classList.contains('ember-notify-show')).to.equal(false, 'message does not have show class');
+        expect(el.classList.contains('ember-notify-show')).to.equal(
+          false,
+          'message does not have show class'
+        );
         let times = timesSince(observed, start);
         expect(times[0]).to.be.at.least(500);
-      }));
+      })
+    );
   });
 
-  it('does not close when hovered', function(done) {
+  it('does not close when hovered', function (done) {
     let isHovering = true;
     let message = Message.create({
       visible: true,
       text: 'Hello world',
-      closeAfter: 500
+      closeAfter: 500,
     });
 
     let component = this.subject({
       message: message,
       theme: Theme,
-      class: 'ember-notify clearfix'
-     })
-     .reopen({ isHovering: () => isHovering });
+      class: 'ember-notify clearfix',
+    }).reopen({ isHovering: () => isHovering });
 
     this.render();
 
@@ -100,18 +106,30 @@ describe('MessageComponent', function() {
     el.classList.add('ember-notify');
 
     expect(message.visible).to.equal(true, 'message is visible');
-    expect(el.classList.contains('ember-notify-show')).to.equal(true, 'message has show class');
+    expect(el.classList.contains('ember-notify-show')).to.equal(
+      true,
+      'message has show class'
+    );
 
     setTimeout(() => {
       expect(message.visible).to.equal(true, 'message remains visible');
-      expect(el.classList.contains('ember-notify-show')).to.equal(true, 'message continues to have show class');
+      expect(el.classList.contains('ember-notify-show')).to.equal(
+        true,
+        'message continues to have show class'
+      );
 
       isHovering = false;
 
       setTimeout(() => {
         expect(message.visible).to.equal(false, 'message no longer visible');
-        expect(el.classList.contains('ember-notify-show')).to.equal(false, 'message does not have show class');
-        expect(el.classList.contains('ember-notify-hide')).to.equal(true, 'message has hide class');
+        expect(el.classList.contains('ember-notify-show')).to.equal(
+          false,
+          'message does not have show class'
+        );
+        expect(el.classList.contains('ember-notify-hide')).to.equal(
+          true,
+          'message has hide class'
+        );
         done();
       }, 100);
     }, 490);

@@ -4,15 +4,15 @@ import { setupComponentTest } from 'ember-mocha';
 import { find, click } from 'ember-native-dom-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-describe('EmberNotifyMessageComponent | Integration', function() {
+describe('EmberNotifyMessageComponent | Integration', function () {
   setupComponentTest('ember-notify/message', {
-    integration: true
+    integration: true,
   });
 
-  it('renders block version', function() {
+  it('renders block version', function () {
     let dummyMessage = EmberObject.create({
       text: 'dummy text',
-      visible: true
+      visible: true,
     });
 
     this.set('message', dummyMessage);
@@ -33,11 +33,11 @@ describe('EmberNotifyMessageComponent | Integration', function() {
     expect(dummyMessage.visible).to.be.false;
   });
 
-  it('includes classNames', function() {
+  it('includes classNames', function () {
     this.set('message', {
       text: 'dummy text',
       visible: true,
-      classNames: ['my-class']
+      classNames: ['my-class'],
     });
 
     this.render(hbs`

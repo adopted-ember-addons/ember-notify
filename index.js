@@ -9,5 +9,5 @@ module.exports = {
     if (options.importCss) {
       app.import('vendor/ember-notify.css');
     }
-  }
+  },
 };

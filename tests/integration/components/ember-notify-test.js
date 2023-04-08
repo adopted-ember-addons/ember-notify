@@ -5,12 +5,12 @@ import { setupComponentTest } from 'ember-mocha';
 import { find, click } from 'ember-native-dom-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-describe('EmberNotifyComponent | Integration', function() {
+describe('EmberNotifyComponent | Integration', function () {
   setupComponentTest('ember-notify', {
-    integration: true
+    integration: true,
   });
 
-  it('renders block version', function() {
+  it('renders block version', function () {
     this.render(hbs`
       {{#ember-notify messages=messages as |message close|}}
         <a {{action close}} class='close-from-block'>CLOSE</a>
@@ -21,7 +21,7 @@ describe('EmberNotifyComponent | Integration', function() {
     let dummyMessage = EmberObject.create({
       text: 'dummy text',
       visible: true,
-      type: 'alert'
+      type: 'alert',
     });
 
     this.set('messages', A([dummyMessage]));

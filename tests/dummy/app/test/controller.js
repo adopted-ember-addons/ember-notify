@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   actions: {
-    notifyFromController: function() {
+    notifyFromController: function () {
       this.notify.success('It worked!');
-    }
-  }
+    },
+  },
 });

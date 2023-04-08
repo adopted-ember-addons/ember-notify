@@ -1,8 +1,8 @@
 module.exports = {
   env: {
-    'embertest': true
+    embertest: true,
   },
   globals: {
-    "expect": true
-  }
+    expect: true,
+  },
 };

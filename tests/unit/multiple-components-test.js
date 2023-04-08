@@ -10,13 +10,17 @@ let helper;
 describe('multiple sources', () => {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('multiple-components', {
-    needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
+    needs: [
+      'service:notify',
+      'component:ember-notify',
+      'component:ember-notify/message',
+    ],
     setup() {
       helper = this.container.lookup('service:notify');
-    }
+    },
   });
 
-  it('source property allows multiple {{ember-notify}} components', function(done) {
+  it('source property allows multiple {{ember-notify}} components', function (done) {
     let secondarySource = Notify.create();
     let component = this.subject({ secondary: secondarySource });
     helper.info('Hello world');
@@ -31,18 +35,20 @@ describe('multiple sources', () => {
       secondarySource.info('Hello again');
     });
 
-    next(() => next(() => {
-      expect(find('.ember-notify', secondary)).to.exist;
-      done();
-    }));
+    next(() =>
+      next(() => {
+        expect(find('.ember-notify', secondary)).to.exist;
+        done();
+      })
+    );
 
     let propertyTest = EmberObject.extend({
-      property: Notify.property()
+      property: Notify.property(),
     }).create();
 
-    expect(propertyTest.property).to.respondTo('show',
+    expect(propertyTest.property).to.respondTo(
+      'show',
       'Notify.property provides a Notify instance'
     );
   });
 });
-
