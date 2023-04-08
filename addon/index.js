@@ -4,7 +4,7 @@ import Service from '@ember/service';
 import Message from './message';
 
 function aliasToShow(type) {
-  return function(message, options) {
+  return function (message, options) {
     return this.show(type, message, options);
   };
 }
@@ -32,10 +32,15 @@ let Notify = Service.extend({
       text = null;
     }
 
-    let message = Message.create(Object.assign({
-      text: text,
-      type: type
-    }, options));
+    let message = Message.create(
+      Object.assign(
+        {
+          text: text,
+          type: type,
+        },
+        options
+      )
+    );
 
     if (this.target) {
       this.target.show(message);
@@ -50,16 +55,16 @@ let Notify = Service.extend({
     this.set('target', target);
 
     if (target) {
-      this.pending.map(message => target.show(message));
+      this.pending.map((message) => target.show(message));
       this.pending = [];
     }
-  }
+  },
 });
 
 export default Notify.reopenClass({
   property() {
-    return computed(function() {
+    return computed(function () {
       return Notify.create();
     });
-  }
+  },
 });

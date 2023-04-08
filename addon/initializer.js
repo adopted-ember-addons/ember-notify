@@ -6,5 +6,5 @@ export function initialize() {
 
 export default {
   name: 'inject-notify-service',
-  initialize: initialize
+  initialize: initialize,
 };

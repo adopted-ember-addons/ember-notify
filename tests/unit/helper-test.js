@@ -4,16 +4,16 @@ import { find } from 'ember-native-dom-helpers';
 
 let helper;
 
-describe('Notify helper', function() {
+describe('Notify helper', function () {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupComponentTest('ember-notify', {
     setup() {
       helper = this.container.lookup('service:notify');
     },
-    needs: ['service:notify', 'component:ember-notify/message']
+    needs: ['service:notify', 'component:ember-notify/message'],
   });
 
-  it('can be used to show messages', function() {
+  it('can be used to show messages', function () {
     let message = helper.info('Hello world');
     expect(message.visible).to.equal(undefined, 'message is not visible');
 
@@ -25,7 +25,7 @@ describe('Notify helper', function() {
     expect(message.visible).to.equal(true, 'message is visible');
   });
 
-  it('will queue pending messages if the component isn\'t rendered', function() {
+  it("will queue pending messages if the component isn't rendered", function () {
     helper.info('Hello world');
     expect(find('.ember-notify')).to.not.exist;
 
@@ -36,7 +36,7 @@ describe('Notify helper', function() {
     expect(notify).to.exist;
   });
 
-  it('handles calling set on a queued message', function() {
+  it('handles calling set on a queued message', function () {
     let message = helper.info('Hello world');
     message.set('text', 'Frank Zappa');
 
@@ -46,7 +46,9 @@ describe('Notify helper', function() {
     let notify = find('.ember-notify', component.element);
     expect(notify).to.exist;
 
-    expect(find('.message', notify).textContent)
-      .to.equal('Frank Zappa', 'message is updated');
+    expect(find('.message', notify).textContent).to.equal(
+      'Frank Zappa',
+      'message is updated'
+    );
   });
 });
