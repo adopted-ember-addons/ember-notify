@@ -1,46 +1,38 @@
 import EmberObject from '@ember/object';
-import { next } from '@ember/runloop';
-import { it, describe } from 'mocha';
-import { setupComponentTest } from 'ember-mocha';
-import { find } from 'ember-native-dom-helpers';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, rerender } from '@ember/test-helpers';
 import Notify from 'ember-notify';
 
-let helper;
-
-describe('multiple sources', () => {
+module('multiple sources', hooks => {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
-  setupComponentTest('multiple-components', {
-    needs: ['service:notify', 'component:ember-notify', 'component:ember-notify/message'],
-    setup() {
-      helper = this.container.lookup('service:notify');
-    }
-  });
+  setupRenderingTest(hooks);
 
-  it('source property allows multiple {{ember-notify}} components', function(done) {
+  test('source property allows multiple {{ember-notify}} components', async function(assert) {
+    let helper = this.owner.lookup('service:notify');
+
+    let component = this.owner.lookup('component:ember-notify');
+    component.reopen({defaultClass:'primary'})
+    component.appendTo(this.element);
+
+    let component2 = this.owner.lookup('component:ember-notify');
     let secondarySource = Notify.create();
-    let component = this.subject({ secondary: secondarySource });
+    component2.reopen({secondary: secondarySource});
+    component2.appendTo(this.element);
     helper.info('Hello world');
-    this.render();
+    await rerender();
 
-    let primary = find('.primary', component.element);
-    let secondary = find('.secondary', component.element);
-
-    next(() => {
-      expect(find('.ember-notify', primary)).to.exist;
-      expect(find('.ember-notify', secondary)).to.not.exist;
-      secondarySource.info('Hello again');
-    });
-
-    next(() => next(() => {
-      expect(find('.ember-notify', secondary)).to.exist;
-      done();
-    }));
+    assert.ok(find('.primary'));
+    assert.notOk(find('.secondary'));
+    secondarySource.info('Hello again');
+    await rerender();
+    assert.ok(find('.secondary'));
 
     let propertyTest = EmberObject.extend({
       property: Notify.property()
     }).create();
 
-    expect(propertyTest.property).to.respondTo('show',
+    assert.ok(propertyTest.show,
       'Notify.property provides a Notify instance'
     );
   });

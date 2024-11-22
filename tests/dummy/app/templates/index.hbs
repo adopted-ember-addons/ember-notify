@@ -4,23 +4,23 @@
       <legend>ember-notify demo</legend>
       <div class="message">
         <label>Message</label>
-        {{input value=model.text name="message"}}
+        <Input @value={{this.model.text}} name="message"/>
       </div>
       <div class="level">
-        <button {{action "info" model}} type="button">info</button>
-        <button {{action "success" model}} type="button">success</button>
-        <button {{action "warning" model}} type="button">warning</button>
-        <button {{action "alert" model}} type="button">alert</button>
+        <button {{on "click" (fn this.info this.model)}} type="button">info</button>
+        <button {{on "click" (fn this.success this.model)}} type="button">success</button>
+        <button {{on "click" (fn this.warning this.model)}} type="button">warning</button>
+        <button {{on "click" (fn this.alert this.model)}} type="button">alert</button>
       </div>
       <div class="settings">
         <div class="close-after">
           <label>Close after (empty to disable)</label>
-          {{input value=model.closeAfter name="closeAfter"}}
+          <Input @value={{this.model.closeAfter}} name="closeAfter" />
         </div>
         <div class="type">
           <label>
-            {{input type="checkbox" name="html" checked=model.html}}
-            Unescaped HTML
+            <Input @type="checkbox" name="html" @checked="model.html" {{on "click" this.toggleHtml}} />
+            Escape HTML
           </label>
         </div>
       </div>

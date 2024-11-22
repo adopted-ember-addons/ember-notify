@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { later } from '@ember/runloop';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
 
@@ -53,30 +53,29 @@ export default Component.extend({
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
-  actions: {
-    close() {
-      if (this.message.closed) {
+  @action
+  close() {
+    if (this.message.closed) {
+      return;
+    }
+
+    this.set('message.closed', true);
+    this.set('message.visible', false);
+
+    let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
+    if (removeAfter) {
+      later(this, remove, removeAfter);
+    } else {
+      remove();
+    }
+
+    function remove() {
+      if (this.isDestroyed || !this.parentView || !this.parentView.messages) {
         return;
       }
 
-      this.set('message.closed', true);
-      this.set('message.visible', false);
-
-      let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
-      if (removeAfter) {
-        later(this, remove, removeAfter);
-      } else {
-        remove();
-      }
-
-      function remove() {
-        if (this.isDestroyed || !this.parentView || !this.parentView.messages) {
-          return;
-        }
-
-        this.parentView.messages.removeObject(this.message);
-        this.set('message.visible', null);
-      }
+      this.parentView.messages.removeObject(this.message);
+      this.set('message.visible', null);
     }
   },
 

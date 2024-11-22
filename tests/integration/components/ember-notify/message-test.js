@@ -1,15 +1,13 @@
 import EmberObject from '@ember/object';
-import { it, describe } from 'mocha';
-import { setupComponentTest } from 'ember-mocha';
-import { find, click } from 'ember-native-dom-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, click, render } from '@ember/test-helpers';
+import { hbs } from 'ember-cli-htmlbars';
 
-describe('EmberNotifyMessageComponent | Integration', function() {
-  setupComponentTest('ember-notify/message', {
-    integration: true
-  });
+module('EmberNotifyMessageComponent | Integration', hooks => {
+  setupRenderingTest(hooks);
 
-  it('renders block version', function() {
+  test('renders block version', async function(assert) {
     let dummyMessage = EmberObject.create({
       text: 'dummy text',
       visible: true
@@ -18,32 +16,33 @@ describe('EmberNotifyMessageComponent | Integration', function() {
     this.set('message', dummyMessage);
 
     // Template block usage:
-    this.render(hbs`
-      {{#ember-notify/message message=message as |message close|}}
-        <a {{action close}} class='close-from-block'>CLOSE</a>
+    await render(hbs`
+      <EmberNotify::message @message={{this.message}} as |message close|>
+        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
-      {{/ember-notify/message}}
+      </EmberNotify::message>
     `);
 
     // Eensure block is yielded
-    expect(find('.message-from-block').textContent).to.equal('dummy text');
+    assert.ok(find('.message-from-block').textContent === 'dummy text');
 
     // Close action is passed
-    click('.close-from-block');
-    expect(dummyMessage.visible).to.be.false;
+    await click('.close-from-block');
+    assert.ok(!dummyMessage.visible);
   });
 
-  it('includes classNames', function() {
+  test('includes classNames', async function(assert) {
+
     this.set('message', {
       text: 'dummy text',
       visible: true,
       classNames: ['my-class']
     });
 
-    this.render(hbs`
-      {{ember-notify/message message=message}}
+    await render(hbs`
+      <EmberNotify::message @message={{this.message}} />
     `);
 
-    expect(find('.my-class .message').textContent).to.equal('dummy text');
+    assert.ok(find('.my-class .message').textContent === 'dummy text');
   });
 });

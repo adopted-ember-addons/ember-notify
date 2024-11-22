@@ -1,28 +1,27 @@
-import { htmlSafe } from '@ember/string';
+import { htmlSafe } from '@ember/template';
 import { next, run } from '@ember/runloop';
-import { it, describe } from 'mocha';
-import { setupComponentTest } from 'ember-mocha';
-import { find, findAll } from 'ember-native-dom-helpers';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, findAll,render,pauseTest,waitFor,rerender } from '@ember/test-helpers';
 import { observeSequence, timesSince } from '../../helpers';
+import { hbs } from 'ember-cli-htmlbars';
 
-describe('EmberNotifyComponent', function() {
+module('EmberNotifyComponent', hooks => {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
-  setupComponentTest('ember-notify', {
-    needs: ['service:notify', 'component:ember-notify/message']
-  });
+  setupRenderingTest(hooks);
 
-  it('renders', function() {
+  test('renders', async function(assert) {
     // creates the component instance
-    let component = this.subject();
-    expect(component._state).to.equal('preRender');
+    let component = this.owner.lookup('component:ember-notify');
+    assert.true(component._state === 'preRender');
 
-    // renders the component on the page
-    this.render();
-    expect(component._state).to.equal('inDOM');
+    component.appendTo(this.element);
+    assert.true(component._state === 'inDOM');
   });
 
-  it ('only renders one message with unique id', function() {
-    let component = this.subject();
+  test ('only renders one message with unique id', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
     component.show({
       id: 'unique-id',
       text: 'First',
@@ -40,17 +39,17 @@ describe('EmberNotifyComponent', function() {
       text: 'Third',
       type: 'success'
     });
-
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
-    expect(find('.message', notify).textContent).to.equal('First');
-    expect(findAll('.message').length).to.equal(2);
+    assert.ok(notify, 'notify rendered');
+    assert.true(find('.message').textContent === 'First', 'Has First');
+    assert.true(findAll('.message').length === 2, 'has 2 messages');
   });
 
-  it('shows and hides messages with animations', function() {
-    let component = this.subject();
+  test('shows and hides messages with animations', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
     let start = new Date();
     let message = component.show({
       text: 'Hello world',
@@ -58,173 +57,191 @@ describe('EmberNotifyComponent', function() {
       removeAfter: 500
     });
 
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
-    expect(notify.matches('.info')).to.be.true;
-    expect(find('.message', notify).textContent).to.equal('Hello world');
+    assert.ok(notify);
+    assert.true(notify.matches('.info'));
+    assert.true(find('.message').textContent === 'Hello world');
 
-    return observeSequence(message, 'visible', [false, null])
-      .then(observed => next(() => {
-        expect(find('.ember-notify')).to.not.exist;
+    return await observeSequence(message, 'visible', [false, null])
+      .then(observed => next(async () => {
+        await rerender();
+        assert.notOk(find('.ember-notify'));
         let times = timesSince(observed, start);
-        expect(times[0]).to.be.greaterThan(500);
-        expect(times[1]).to.be.greaterThan(1000);
+        assert.true(times[0] > 500);
+        assert.true(times[1] > 1000);
       }));
   });
 
-  it('shows success messages', function() {
-    testLevelMethod.call(this, 'success');
+  test('shows success messages', async function(assert) {
+    testLevelMethod.call(this, 'success', assert);
   });
 
-  it('shows warning messages', function() {
-    testLevelMethod.call(this, 'warning');
+  test('shows warning messages', async function(assert) {
+    testLevelMethod.call(this, 'warning', assert);
   });
 
-  it('shows alert messages', function() {
-    testLevelMethod.call(this, 'alert');
+  test('shows alert messages', async function(assert) {
+    testLevelMethod.call(this, 'alert', assert);
   });
 
-  it('shows error messages', function() {
-    testLevelMethod.call(this, 'error');
+  test('shows error messages', async function(assert) {
+    testLevelMethod.call(this, 'error', assert);
   });
 
-  function testLevelMethod(level) {
-    this.subject().show({
+  async function testLevelMethod(level, assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
+    component.show({
       text: 'Hello world',
       type: level
     });
 
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
-    expect(find('.message', notify).textContent).to.equal('Hello world');
-    expect(notify.matches('.' + level)).to.be.true;
+    assert.ok(notify);
+    assert.true(find('.message').innerText === 'Hello world');
+    assert.true(notify.matches('.' + level));
   }
 
-  it('can render messages with SafeString', function() {
-    this.subject().show({
+  test('can render messages with SafeString', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
+    component.show({
       text: new htmlSafe('Hello world'),
       type: 'info'
     });
 
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
-    expect(find('.message', notify).textContent).to.equal('Hello world');
+    assert.ok(notify);
+    assert.true(find('.message').textContent === 'Hello world');
   });
 
-  it('can be shown manually', function() {
-    let component = this.subject();
+  test('can be shown manually', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
     let message = component.show({
       text: 'Hello world',
       visible: false
     });
 
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
-    expect(notify.matches('.ember-notify-hide')).to.equal(true, 'message is hidden');
+    assert.ok(notify);
+    assert.true(notify.matches('.ember-notify-hide'), 'message is hidden');
     run(() => message.set('visible', true));
-    expect(notify.matches('.ember-notify-show')).to.equal(true, 'message is shown');
+    await rerender();
+    assert.true(notify.matches('.ember-notify-show'), 'message is shown');
   });
 
-  it('can be hidden manually', function(done) {
+  test('can be hidden manually', async function(assert) {
+    const done = assert.async();
     let start = new Date();
-    let component = this.subject();
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
     let message = component.show({
       text: 'Hello world'
     });
-
-    this.render();
+    await rerender();
 
     let notify = find('.ember-notify');
-    expect(notify).to.exist;
+    assert.ok(notify);
     run(() => message.close() );
     observeSequence(message, 'visible', [null])
-      .then(observed => next(() => {
-        expect(find('.ember-notify')).to.not.exist;
+      .then(observed => next(async () => {
+        await rerender();
+        assert.true(find('.ember-notify') === null);
         let times = timesSince(observed, start);
-        expect(times[0]).to.be.greaterThan(100);
+        assert.true(times[0] > 100);
         done();
       }));
   });
 
-  it('supports Bootstrap styling', function() {
-    let component = this.subject({ messageStyle: 'bootstrap' });
-    component.show({ text: 'Hello world' });
-    component.show({
-      text: 'Hello again',
-      type: 'alert'
-    });
+  test('supports Bootstrap styling', async function(assert) {
+    await render(hbs`
+      <EmberNotify @messageStyle="bootstrap" as |message close|>
+        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <span class='message-from-block'>{{message.text}}</span>
+      </EmberNotify>
+    `);
+    let notifyService = this.owner.lookup('service:notify');
+    notifyService.info('Hello world');
+    notifyService.error('Hello again');
 
-    this.render();
-
-    let notify = findAll('.ember-notify');
-    expect(notify.length).to.equal(2);
-    expect(notify[0].matches('.alert.alert-info')).to.be.true;
-    expect(notify[1].matches('.alert.alert-danger')).to.be.true;
-  });
-
-  it('supports refills styling', function() {
-    let component = this.subject({ messageStyle: 'refills' });
-    component.show({ text: 'Hello world' });
-    component.show({
-      text: 'Hello again',
-      type: 'alert'
-    });
-
-    this.render();
+    await rerender();
 
     let notify = findAll('.ember-notify');
-    expect(notify.length).to.equal(2);
-    expect(notify[0].matches('.flash-notice')).to.be.true;
-    expect(notify[1].matches('.flash-error')).to.be.true;
+    assert.true(notify.length === 2);
+    assert.true(notify[0].matches('.alert.alert-info'));
+    assert.true(notify[1].matches('.alert.alert-danger'));
   });
 
-  it('supports semantic-ui styling', function() {
-    let component = this.subject({ messageStyle: 'semantic-ui' });
-    component.show({ text: 'Hello world' });
-    component.show({
-      text: 'Hello again',
-      type: 'alert'
-    });
+  test('supports refills styling', async function(assert) {
+    await render(hbs`
+      <EmberNotify @messageStyle="refills" as |message close|>
+        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <span class='message-from-block'>{{message.text}}</span>
+      </EmberNotify>
+    `);
+    let notifyService = this.owner.lookup('service:notify');
+    notifyService.info('Hello world');
+    notifyService.error('Hello again');
 
-    this.render();
+    await rerender();
 
     let notify = findAll('.ember-notify');
-    expect(notify.length).to.equal(2);
-    expect(notify[0].matches('.ui.message.info')).to.be.true;
-    expect(notify[1].matches('.ui.message.error')).to.be.true;
+    assert.true(notify.length === 2);
+    assert.true(notify[0].matches('.flash-notice'));
+    assert.true(notify[1].matches('.flash-error'));
   });
 
-  it('supports being provided an element', function() {
-    let component = this.subject({ });
+  test('supports semantic-ui styling', async function(assert) {
+    await render(hbs`
+      <EmberNotify @messageStyle="semantic-ui" as |message close|>
+        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <span class='message-from-block'>{{message.text}}</span>
+      </EmberNotify>
+    `);
+    let notifyService = this.owner.lookup('service:notify');
+    notifyService.info('Hello world');
+    notifyService.error('Hello again');
+
+    await rerender();
+
+    let notify = findAll('.ember-notify');
+    assert.true(notify.length === 2);
+    assert.true(notify[0].matches('.ui.message.info'));
+    assert.true(notify[1].matches('.ui.message.error'));
+  });
+
+  test('supports being provided an element', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
     component.show({ element: document.createElement('input') });
-
-    this.render();
-    expect(find('.message input', component.get('element'))).to.exist;
+    component.appendTo(this.element);
+    await rerender();
+    assert.ok(find('.message input'));
   });
 
-  it(`defaults to using the 'ember-notify-default' CSS class`, function() {
-    let component = this.subject({ });
+  test(`defaults to using the 'ember-notify-default' CSS class`, async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
     component.show({ });
-
-    this.render();
-    expect(component.element.className).to.contain('ember-notify-default');
+    component.appendTo(this.element);
+    await rerender();
+    assert.ok(component.element.matches('.ember-notify-default'));
   });
 
-  it('supports customizing the base CSS class', function() {
-    let component = this.subject({ defaultClass: 'foo' });
-
-    component.show({});
-
-    this.render();
-    expect(component.element.className).to.contain('foo');
-    expect(component.element.className).to.not.contain('ember-notify-default');
+  test('supports customizing the base CSS class', async function(assert) {
+    let component = this.owner.lookup('component:ember-notify');
+    component.defaultClass = 'foo'
+    component.show({ });
+    component.appendTo(this.element);
+    await rerender();
+    assert.true(component.element.matches('.foo'));
+    assert.false(component.element.matches('.ember-notify-default'));
   });
 });
