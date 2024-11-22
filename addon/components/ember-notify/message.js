@@ -13,8 +13,10 @@ export default Component.extend({
   run: null,
 
   classNameBindings: [
-    'message.visible:ember-notify-show:ember-notify-hide', 'radius::', 'themeClassNames',
-    'message.classNames'
+    'message.visible:ember-notify-show:ember-notify-hide',
+    'radius::',
+    'themeClassNames',
+    'message.classNames',
   ],
 
   attributeBindings: ['data-alert'],
@@ -49,7 +51,7 @@ export default Component.extend({
     }
   },
 
-  themeClassNames: computed('theme', 'message.type', function() {
+  themeClassNames: computed('theme', 'message.type', function () {
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
@@ -96,7 +98,7 @@ export default Component.extend({
 
     // When :hover no longer applies, close as normal
     this.send('close');
-  }
+  },
 }).reopenClass({
-  removeAfter: 250 // Allow time for the close animation to finish
+  removeAfter: 250, // Allow time for the close animation to finish
 });

@@ -20,7 +20,7 @@ export default Component.extend({
 
   source: oneWay('notify'),
 
-  classPrefix: computed('defaultClass', function() {
+  classPrefix: computed('defaultClass', function () {
     return this.defaultClass || 'ember-notify-default';
   }),
 
@@ -53,7 +53,7 @@ export default Component.extend({
       default:
         throw new Error(
           `Unknown messageStyle ${this.messageStyle}.
-          Options are 'foundation', 'foundation-5', 'uikit', 'refills', 'bootstrap', and 'semantic-ui'.`
+          Options are 'foundation', 'foundation-5', 'uikit', 'refills', 'bootstrap', and 'semantic-ui'.`,
         );
     }
 
@@ -72,7 +72,7 @@ export default Component.extend({
     }
 
     let id = message.id;
-    if (id && this.messages.find(x => x.id === id)) {
+    if (id && this.messages.find((x) => x.id === id)) {
       return;
     }
 
@@ -83,13 +83,13 @@ export default Component.extend({
     this.messages.pushObject(message);
 
     return message;
-  }
+  },
 });
 
 export const Theme = {
   classNamesFor(message) {
     return message.type;
-  }
+  },
 };
 
 export const FoundationTheme = {
@@ -100,7 +100,7 @@ export const FoundationTheme = {
     }
 
     return classNames.join(' ');
-  }
+  },
 };
 
 export const Foundation5Theme = {
@@ -111,7 +111,7 @@ export const Foundation5Theme = {
     }
 
     return classNames.join(' ');
-  }
+  },
 };
 
 export const BootstrapTheme = {
@@ -124,7 +124,7 @@ export const BootstrapTheme = {
     let classNames = ['alert', `alert-${type}`];
 
     return classNames.join(' ');
-  }
+  },
 };
 
 export const RefillsTheme = {
@@ -134,37 +134,37 @@ export const RefillsTheme = {
       alert: 'error',
       error: 'error',
       info: 'notice',
-      warning: 'alert'
+      warning: 'alert',
     };
 
     return `flash-${typeMapping[message.type]}`;
-  }
+  },
 };
 
 export const SemanticUiTheme = {
-  classNamesFor(message){
+  classNamesFor(message) {
     let typeMapping = {
       success: 'success',
       alert: 'error',
       error: 'error',
       info: 'info',
-      warning: 'warning'
+      warning: 'warning',
     };
 
     return `ui message ${typeMapping[message.type]}`;
-  }
+  },
 };
 
 export const UIkitTheme = {
-  classNamesFor(message){
+  classNamesFor(message) {
     let typeMapping = {
       success: 'success',
       alert: 'warning',
       error: 'danger',
       info: 'info',
-      warning: 'warning'
+      warning: 'warning',
     };
 
     return `uk-notify-message uk-notify-message-${typeMapping[message.type]}`;
-  }
+  },
 };

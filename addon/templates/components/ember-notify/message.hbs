@@ -2,6 +2,6 @@
   {{yield this.message this.close}}
 {{else}}
   <a href {{on "click" this.close}} class="close" role="button">&times;</a>
-  {{!-- template-lint-disable no-triple-curlies --}}
+  {{! template-lint-disable no-triple-curlies }}
   <span class="message">{{this.message.text}}{{{this.message.html}}}</span>
 {{/if}}
