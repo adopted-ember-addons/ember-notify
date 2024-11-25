@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { later } from '@ember/runloop';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
 
@@ -55,7 +55,10 @@ export default Component.extend({
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
-  close: () => {
+  close: action(function (click) {
+    if (click?.preventDefault) {
+      click.preventDefault();
+    }
     if (this.message.closed) {
       return;
     }
@@ -78,7 +81,7 @@ export default Component.extend({
       this.parentView.messages.removeObject(this.message);
       this.set('message.visible', null);
     }
-  },
+  }),
 
   isHovering() {
     return this.element.matches
