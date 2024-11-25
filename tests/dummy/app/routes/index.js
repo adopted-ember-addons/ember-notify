@@ -8,9 +8,7 @@ export default Route.extend({
     return {
       text: 'Hello, world!',
       closeAfter: 2500,
-      html: false
+      html: false,
     };
   },
 });
-
-

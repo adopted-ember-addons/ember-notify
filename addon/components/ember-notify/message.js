@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { later } from '@ember/runloop';
-import { action, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
 
@@ -55,8 +55,7 @@ export default Component.extend({
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
-  @action
-  close() {
+  close: () => {
     if (this.message.closed) {
       return;
     }

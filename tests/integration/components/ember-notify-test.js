@@ -5,7 +5,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { find, click, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-module('EmberNotifyComponent | Integration', hooks => {
+module('EmberNotifyComponent | Integration', (hooks) => {
   setupRenderingTest(hooks);
 
   test('renders block version', async function (assert) {
@@ -21,16 +21,16 @@ module('EmberNotifyComponent | Integration', hooks => {
     let dummyMessage = EmberObject.create({
       text: 'dummy text',
       visible: true,
-      type: 'alert'
+      type: 'alert',
     });
 
     this.set('messages', A([dummyMessage]));
 
     // Ensure block is yielded
-    assert.ok(find('.message-from-block').textContent  === 'dummy text');
+    assert.strictEqual(find('.message-from-block').textContent, 'dummy text');
 
     // Close action is passed
     await click('.close-from-block');
-    assert.ok(!dummyMessage.visible);
+    assert.notOk(dummyMessage.visible);
   });
 });

@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { find,rerender } from '@ember/test-helpers';
+import { find, rerender } from '@ember/test-helpers';
 
-module('Notify helper', hooks => {
+module('Notify helper', (hooks) => {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
   setupRenderingTest(hooks);
 
-  test('can be used to show messages', async function(assert) {
+  test('can be used to show messages', async function (assert) {
     let helper = this.owner.lookup('service:notify');
     let message = helper.info('Hello world');
     await rerender();
@@ -21,7 +21,7 @@ module('Notify helper', hooks => {
     assert.true(message.visible, 'message is visible');
   });
 
-  test('will queue pending messages if the component isn\'t rendered', async function(assert) {
+  test("will queue pending messages if the component isn't rendered", async function (assert) {
     let helper = this.owner.lookup('service:notify');
 
     helper.info('Hello world');
@@ -35,7 +35,7 @@ module('Notify helper', hooks => {
     assert.ok(notify);
   });
 
-  test('handles calling set on a queued message', async function(assert) {
+  test('handles calling set on a queued message', async function (assert) {
     let helper = this.owner.lookup('service:notify');
 
     let message = helper.info('Hello world');
@@ -48,6 +48,10 @@ module('Notify helper', hooks => {
     let notify = find('.ember-notify');
     assert.ok(notify);
 
-    assert.true(find('.message').textContent === 'Frank Zappa', 'message is updated');
+    assert.strictEqual(
+      find('.message').textContent,
+      'Frank Zappa',
+      'message is updated',
+    );
   });
 });
