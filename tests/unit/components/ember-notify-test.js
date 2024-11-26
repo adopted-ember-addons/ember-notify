@@ -168,7 +168,7 @@ module('EmberNotifyComponent', (hooks) => {
   test('supports Bootstrap styling', async function (assert) {
     await render(hbs`
       <EmberNotify @messageStyle="bootstrap" as |message close|>
-        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <a href="#" {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
       </EmberNotify>
     `);
@@ -187,7 +187,7 @@ module('EmberNotifyComponent', (hooks) => {
   test('supports refills styling', async function (assert) {
     await render(hbs`
       <EmberNotify @messageStyle="refills" as |message close|>
-        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <a href="#" {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
       </EmberNotify>
     `);
@@ -206,7 +206,7 @@ module('EmberNotifyComponent', (hooks) => {
   test('supports semantic-ui styling', async function (assert) {
     await render(hbs`
       <EmberNotify @messageStyle="semantic-ui" as |message close|>
-        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <a href="#" {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
       </EmberNotify>
     `);

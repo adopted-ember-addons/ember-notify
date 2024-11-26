@@ -18,7 +18,7 @@ module('EmberNotifyMessageComponent | Integration', (hooks) => {
     // Template block usage:
     await render(hbs`
       <EmberNotify::message @message={{this.message}} as |message close|>
-        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <a href='#' {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
       </EmberNotify::message>
     `);

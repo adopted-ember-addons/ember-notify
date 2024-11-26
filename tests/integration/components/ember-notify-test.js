@@ -13,7 +13,7 @@ module('EmberNotifyComponent | Integration', (hooks) => {
 
     await render(hbs`
       <EmberNotify @messages={{this.messages}} as |message close|>
-        <a {{on 'click' close}} class='close-from-block'>CLOSE</a>
+        <a href="#" {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
       </EmberNotify>
     `);
