@@ -9,7 +9,8 @@ module('multiple sources', (hooks) => {
   setupRenderingTest(hooks);
 
   test('source property allows multiple {{ember-notify}} components', async function (assert) {
-    let primarySource = Notify.create(), secondarySource = Notify.create();
+    let primarySource = Notify.create(),
+      secondarySource = Notify.create();
 
     let component = this.owner.lookup('component:ember-notify');
     component.reopen({ defaultClass: 'primary' });
@@ -23,15 +24,18 @@ module('multiple sources', (hooks) => {
     primarySource.info('Hello world');
     await rerender();
 
-    assert.ok(find('.primary').innerText === '× Hello world');
+    assert.strictEqual(find('.primary').innerText, '× Hello world');
     assert.notOk(find('.secondary').innerText);
     secondarySource.info('Hello again');
     await rerender();
-    assert.ok(find('.secondary').innerText === '× Hello again');
+    assert.strictEqual(find('.secondary').innerText, '× Hello again');
 
     let propertyTest = EmberObject.extend({
       property: Notify.property(),
     }).create();
-    assert.ok(propertyTest.property.show, 'Notify.property provides a Notify instance');
+    assert.ok(
+      propertyTest.property.show,
+      'Notify.property provides a Notify instance',
+    );
   });
 });
