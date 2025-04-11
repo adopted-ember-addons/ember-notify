@@ -1,4 +1,4 @@
-<a href {{action "notifyFromRoute"}} class="route" role="button">route</a>
-<a href {{action "notifyFromController"}} class="controller" role="button">controller</a>
+<a href="#" {{on 'click' this.notifyFromRoute}} class="route" role="button">route</a>
+<a href="#" {{on 'click' this.notifyFromController}} class="controller" role="button">controller</a>
 
-{{notify-on-click}}
+<NotifyOnClick />

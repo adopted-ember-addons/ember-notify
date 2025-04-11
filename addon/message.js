@@ -17,5 +17,5 @@ export default EmberObject.extend({
     if (this.container) {
       this.container.selfClose();
     }
-  }
+  },
 });

@@ -1,52 +1,57 @@
-import { it, describe } from 'mocha';
-import { setupComponentTest } from 'ember-mocha';
-import { find } from 'ember-native-dom-helpers';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, rerender } from '@ember/test-helpers';
 
-let helper;
-
-describe('Notify helper', function() {
+module('Notify helper', (hooks) => {
   // eslint-disable-next-line ember/no-restricted-resolver-tests
-  setupComponentTest('ember-notify', {
-    setup() {
-      helper = this.container.lookup('service:notify');
-    },
-    needs: ['service:notify', 'component:ember-notify/message']
-  });
+  setupRenderingTest(hooks);
 
-  it('can be used to show messages', function() {
+  test('can be used to show messages', async function (assert) {
+    let helper = this.owner.lookup('service:notify');
     let message = helper.info('Hello world');
-    expect(message.visible).to.equal(undefined, 'message is not visible');
+    await rerender();
+    assert.notOk(message.visible, 'message is not visible');
 
-    let component = this.subject();
-    this.render();
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
+    await rerender();
 
-    let notify = find('.ember-notify', component.element);
-    expect(notify).to.exist;
-    expect(message.visible).to.equal(true, 'message is visible');
+    let notify = find('.ember-notify');
+    assert.ok(notify);
+    assert.true(message.visible, 'message is visible');
   });
 
-  it('will queue pending messages if the component isn\'t rendered', function() {
+  test("will queue pending messages if the component isn't rendered", async function (assert) {
+    let helper = this.owner.lookup('service:notify');
+
     helper.info('Hello world');
-    expect(find('.ember-notify')).to.not.exist;
+    assert.notOk(find('.ember-notify'));
 
-    let component = this.subject();
-    this.render();
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
+    await rerender();
 
-    let notify = find('.ember-notify', component.element);
-    expect(notify).to.exist;
+    let notify = find('.ember-notify');
+    assert.ok(notify);
   });
 
-  it('handles calling set on a queued message', function() {
+  test('handles calling set on a queued message', async function (assert) {
+    let helper = this.owner.lookup('service:notify');
+
     let message = helper.info('Hello world');
     message.set('text', 'Frank Zappa');
 
-    let component = this.subject();
-    this.render();
+    let component = this.owner.lookup('component:ember-notify');
+    component.appendTo(this.element);
+    await rerender();
 
-    let notify = find('.ember-notify', component.element);
-    expect(notify).to.exist;
+    let notify = find('.ember-notify');
+    assert.ok(notify);
 
-    expect(find('.message', notify).textContent)
-      .to.equal('Frank Zappa', 'message is updated');
+    assert.strictEqual(
+      find('.message').textContent,
+      'Frank Zappa',
+      'message is updated',
+    );
   });
 });

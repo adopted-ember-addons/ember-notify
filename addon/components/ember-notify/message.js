@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { later } from '@ember/runloop';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import Component from '@ember/component';
 import layout from '../../templates/components/ember-notify/message';
 
@@ -13,8 +13,10 @@ export default Component.extend({
   run: null,
 
   classNameBindings: [
-    'message.visible:ember-notify-show:ember-notify-hide', 'radius::', 'themeClassNames',
-    'message.classNames'
+    'message.visible:ember-notify-show:ember-notify-hide',
+    'radius::',
+    'themeClassNames',
+    'message.classNames',
   ],
 
   attributeBindings: ['data-alert'],
@@ -49,36 +51,37 @@ export default Component.extend({
     }
   },
 
-  themeClassNames: computed('theme', 'message.type', function() {
+  themeClassNames: computed('theme', 'message.type', function () {
     return this.theme ? this.theme.classNamesFor(this.message) : '';
   }),
 
-  actions: {
-    close() {
-      if (this.message.closed) {
+  close: action(function (click) {
+    if (click?.preventDefault) {
+      click.preventDefault();
+    }
+    if (this.message.closed) {
+      return;
+    }
+
+    this.set('message.closed', true);
+    this.set('message.visible', false);
+
+    let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
+    if (removeAfter) {
+      later(this, remove, removeAfter);
+    } else {
+      remove();
+    }
+
+    function remove() {
+      if (this.isDestroyed || !this.parentView || !this.parentView.messages) {
         return;
       }
 
-      this.set('message.closed', true);
-      this.set('message.visible', false);
-
-      let removeAfter = this.message.removeAfter || this.constructor.removeAfter;
-      if (removeAfter) {
-        later(this, remove, removeAfter);
-      } else {
-        remove();
-      }
-
-      function remove() {
-        if (this.isDestroyed || !this.parentView || !this.parentView.messages) {
-          return;
-        }
-
-        this.parentView.messages.removeObject(this.message);
-        this.set('message.visible', null);
-      }
+      this.parentView.messages.removeObject(this.message);
+      this.set('message.visible', null);
     }
-  },
+  }),
 
   isHovering() {
     return this.element.matches
@@ -97,7 +100,7 @@ export default Component.extend({
 
     // When :hover no longer applies, close as normal
     this.send('close');
-  }
+  },
 }).reopenClass({
-  removeAfter: 250 // Allow time for the close animation to finish
+  removeAfter: 250, // Allow time for the close animation to finish
 });

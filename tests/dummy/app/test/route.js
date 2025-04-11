@@ -1,9 +1,8 @@
 import Route from '@ember/routing/route';
+import { action } from '@ember/object';
 
 export default Route.extend({
-  actions: {
-    notifyFromRoute: function() {
-      this.notify.success('It worked!');
-    }
-  }
+  notifyFromRoute: action(function () {
+    this.notify.success('It worked!');
+  }),
 });

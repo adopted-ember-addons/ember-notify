@@ -1,36 +1,36 @@
 import { A } from '@ember/array';
 import EmberObject from '@ember/object';
-import { it, describe } from 'mocha';
-import { setupComponentTest } from 'ember-mocha';
-import { find, click } from 'ember-native-dom-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, click, render } from '@ember/test-helpers';
+import { hbs } from 'ember-cli-htmlbars';
 
-describe('EmberNotifyComponent | Integration', function() {
-  setupComponentTest('ember-notify', {
-    integration: true
-  });
+module('EmberNotifyComponent | Integration', (hooks) => {
+  setupRenderingTest(hooks);
 
-  it('renders block version', function() {
-    this.render(hbs`
-      {{#ember-notify messages=messages as |message close|}}
-        <a {{action close}} class='close-from-block'>CLOSE</a>
+  test('renders block version', async function (assert) {
+    this.set('messages', []);
+
+    await render(hbs`
+      <EmberNotify @messages={{this.messages}} as |message close|>
+        <a href="#" {{on 'click' close}} class='close-from-block'>CLOSE</a>
         <span class='message-from-block'>{{message.text}}</span>
-      {{/ember-notify}}
+      </EmberNotify>
     `);
 
     let dummyMessage = EmberObject.create({
       text: 'dummy text',
       visible: true,
-      type: 'alert'
+      type: 'alert',
     });
 
     this.set('messages', A([dummyMessage]));
 
     // Ensure block is yielded
-    expect(find('.message-from-block').textContent).to.equal('dummy text');
+    assert.strictEqual(find('.message-from-block').textContent, 'dummy text');
 
     // Close action is passed
-    click('.close-from-block');
-    expect(dummyMessage.visible).to.be.false;
+    await click('.close-from-block');
+    assert.notOk(dummyMessage.visible);
   });
 });
