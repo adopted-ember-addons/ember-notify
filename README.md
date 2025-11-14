@@ -27,7 +27,7 @@ The CSS animations are inspired by CSS from [alertify.js](http://fabien-d.github
 
 ```js
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class MyComponent extends Component {

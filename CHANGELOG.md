@@ -1,6 +1,8 @@
 # Changelog
 
 ## UNRELEASED
+  - Fix importing `inject` from `@ember/service` deprecation warning
+
 ### BREAKING CHANGES
   - Messages can be programmatically closed by doing `message.close()`. Changing the `visible` property was broken.
 

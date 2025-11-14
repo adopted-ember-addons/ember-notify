@@ -1,10 +1,13 @@
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { oneWay } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
+import * as emberService from '@ember/service';
 import Component from '@ember/component';
 import layout from '../templates/components/ember-notify';
 import Message from 'ember-notify/message';
+
+// Preserve backward compatibility with Ember versions prior to 4.1
+const service = emberService.service ?? emberService.inject;
 
 export default Component.extend({
   layout,
