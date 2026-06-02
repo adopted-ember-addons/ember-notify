@@ -91,10 +91,6 @@
   }
 }
 
-.ember-notify-cn .clearfix {
-  *zoom: 1;
-}
-
 .ember-notify-cn .clearfix::before,
 .ember-notify-cn .clearfix::after {
   content: " ";
